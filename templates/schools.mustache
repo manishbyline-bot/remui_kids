@@ -1,0 +1,604 @@
+{{!
+    Schools Management Template
+    @package theme_remui_kids
+    @copyright 2024 Riyada Trainings
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+
+<div class="schools-management-container">
+    <!-- Header Section -->
+    <div class="schools-header mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="schools-title mb-2">Schools Management</h1>
+                <p class="schools-subtitle text-muted">Manage and oversee all schools in the system</p>
+            </div>
+            <div class="schools-actions">
+                <button class="btn btn-outline-primary me-2" onclick="showManageSchools()">
+                    <i class="fas fa-cogs"></i> Manage Schools
+                </button>
+                <button class="btn btn-primary" onclick="showCreateSchool()">
+                    <i class="fas fa-plus"></i> Create School
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {{#error}}
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Error!</h4>
+        <p>{{error}}</p>
+    </div>
+    {{/error}}
+
+    {{^error}}
+    <!-- Summary Cards -->
+    <div class="summary-cards mb-4">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="summary-card total-schools">
+                    <div class="card-icon">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-number">{{total_schools}}</h3>
+                        <p class="card-label">Total Schools</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="summary-card active-schools">
+                    <div class="card-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-number">{{active_schools}}</h3>
+                        <p class="card-label">Active Schools</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="summary-card suspended-schools">
+                    <div class="card-icon">
+                        <i class="fas fa-pause-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-number">{{suspended_schools}}</h3>
+                        <p class="card-label">Suspended Schools</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="summary-card average-courses">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-number">{{average_courses}}</h3>
+                        <p class="card-label">Average Courses</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Management Cards Grid -->
+    <div class="management-cards mb-4">
+        <div class="row">
+            <!-- Row 1 -->
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="management-card" onclick="showCreateSchool()">
+                    <div class="card-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Create School</h5>
+                        <p class="card-subtitle">School Management</p>
+                        <p class="card-description">Create new schools and manage school information.</p>
+                        <div class="card-status">
+                            <span class="status-badge">{{total_schools}} Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="management-card" onclick="showEditSchool()">
+                    <div class="card-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Edit School</h5>
+                        <p class="card-subtitle">School Management</p>
+                        <p class="card-description">Edit existing school information and settings.</p>
+                        <div class="card-status">
+                            <span class="status-badge">{{total_schools}} Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="management-card" onclick="showAdvancedSettings()">
+                    <div class="card-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Advanced School Settings</h5>
+                        <p class="card-subtitle">School Configuration</p>
+                        <p class="card-description">Configure advanced school settings and parameters.</p>
+                        <div class="card-status">
+                            <span class="status-badge">Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="management-card" onclick="showManageSchools()">
+                    <div class="card-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Manage Schools</h5>
+                        <p class="card-subtitle">School Management</p>
+                        <p class="card-description">Manage and oversee all schools in the system.</p>
+                        <div class="card-status">
+                            <span class="status-badge">Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="management-card" onclick="showManageDepartments()">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Manage Departments</h5>
+                        <p class="card-subtitle">Department Management</p>
+                        <p class="card-description">Create and manage departments within schools.</p>
+                        <div class="card-status">
+                            <span class="status-badge">Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="management-card" onclick="showOptionalProfiles()">
+                    <div class="card-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Optional Profiles</h5>
+                        <p class="card-subtitle">Profile Management</p>
+                        <p class="card-description">Manage optional user profiles and settings.</p>
+                        <div class="card-status">
+                            <span class="status-badge">Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="management-card" onclick="showRestrictCapabilities()">
+                    <div class="card-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Restrict Capabilities</h5>
+                        <p class="card-subtitle">Access Control</p>
+                        <p class="card-description">Restrict and manage user capabilities and permissions.</p>
+                        <div class="card-status">
+                            <span class="status-badge">Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="management-card" onclick="showImportSchools()">
+                    <div class="card-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Import Schools</h5>
+                        <p class="card-subtitle">Data Import</p>
+                        <p class="card-description">Import schools and school data from external sources.</p>
+                        <div class="card-status">
+                            <span class="status-badge">Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schools List -->
+    {{#schools.length}}
+    <div class="schools-list mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-list"></i> Schools Overview
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>School Name</th>
+                                <th>Courses</th>
+                                <th>Students</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#schools}}
+                            <tr>
+                                <td>
+                                    <div class="school-info">
+                                        <h6 class="school-name mb-1">{{name}}</h6>
+                                        {{#description}}
+                                        <p class="school-description text-muted small mb-0">{{{description}}}</p>
+                                        {{/description}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">{{course_count}}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">{{student_count}}</span>
+                                </td>
+                                <td>
+                                    {{#visible}}
+                                    <span class="badge bg-success">Active</span>
+                                    {{/visible}}
+                                    {{^visible}}
+                                    <span class="badge bg-warning">Suspended</span>
+                                    {{/visible}}
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary btn-sm" onclick="viewSchool({{id}})">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary btn-sm" onclick="editSchool({{id}})">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-outline-warning btn-sm" onclick="toggleSchoolStatus({{id}})">
+                                            {{#visible}}
+                                            <i class="fas fa-pause"></i>
+                                            {{/visible}}
+                                            {{^visible}}
+                                            <i class="fas fa-play"></i>
+                                            {{/visible}}
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/schools}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/schools.length}}
+
+    <!-- Recent Activities -->
+    {{#recent_activities.length}}
+    <div class="recent-activities">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-history"></i> Recent Activities (Last 7 Days)
+                </h5>
+            </div>
+            <div class="card-body">
+                {{#recent_activities}}
+                <div class="activity-item d-flex align-items-center mb-3">
+                    <div class="activity-icon me-3">
+                        <i class="fas fa-circle text-primary"></i>
+                    </div>
+                    <div class="activity-content flex-grow-1">
+                        <h6 class="activity-title mb-1">{{action}} - {{school_name}}</h6>
+                        <p class="activity-user text-muted small mb-0">
+                            by {{firstname}} {{lastname}} • {{timecreated}}
+                        </p>
+                    </div>
+                </div>
+                {{/recent_activities}}
+            </div>
+        </div>
+    </div>
+    {{/recent_activities.length}}
+    {{/error}}
+</div>
+
+<!-- Help Section -->
+<div class="help-section mt-4">
+    <div class="card">
+        <div class="card-body text-center">
+            <h5 class="card-title">
+                <i class="fas fa-question-circle text-primary"></i> Need Help?
+            </h5>
+            <p class="card-text">Get assistance with school management and configuration.</p>
+            <div class="help-features">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="help-item">
+                            <i class="fas fa-rocket text-success"></i>
+                            <p class="small">School will be immediately available</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="help-item">
+                            <i class="fas fa-users text-info"></i>
+                            <p class="small">Can create departments within the school</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="help-item">
+                            <i class="fas fa-graduation-cap text-warning"></i>
+                            <p class="small">Can assign teachers and students</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="help-item">
+                            <i class="fas fa-cogs text-primary"></i>
+                            <p class="small">Settings can be modified anytime</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.schools-management-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.schools-title {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 2.5rem;
+}
+
+.schools-subtitle {
+    font-size: 1.1rem;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+}
+
+.summary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.summary-card.total-schools {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.summary-card.active-schools {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.summary-card.suspended-schools {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+.summary-card.average-courses {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    opacity: 0.8;
+}
+
+.card-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+}
+
+.card-label {
+    font-size: 1rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.management-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 100%;
+    border: none;
+}
+
+.management-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.management-card .card-icon {
+    color: #28a745;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.management-card .card-title {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.management-card .card-subtitle {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.management-card .card-description {
+    color: #495057;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.status-badge {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.school-info {
+    min-width: 200px;
+}
+
+.school-name {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.school-description {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.activity-item {
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.activity-item:hover {
+    background-color: #f8f9fa;
+}
+
+.activity-title {
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.help-section .help-item {
+    padding: 15px;
+}
+
+.help-section .help-item i {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .schools-title {
+        font-size: 2rem;
+    }
+    
+    .summary-card {
+        padding: 20px;
+    }
+    
+    .card-number {
+        font-size: 2rem;
+    }
+    
+    .management-card {
+        padding: 20px;
+    }
+}
+</style>
+
+<script>
+function showCreateSchool() {
+    alert('Create School functionality will be implemented here');
+}
+
+function showEditSchool() {
+    alert('Edit School functionality will be implemented here');
+}
+
+function showAdvancedSettings() {
+    alert('Advanced Settings functionality will be implemented here');
+}
+
+function showManageSchools() {
+    alert('Manage Schools functionality will be implemented here');
+}
+
+function showManageDepartments() {
+    alert('Manage Departments functionality will be implemented here');
+}
+
+function showOptionalProfiles() {
+    alert('Optional Profiles functionality will be implemented here');
+}
+
+function showRestrictCapabilities() {
+    alert('Restrict Capabilities functionality will be implemented here');
+}
+
+function showImportSchools() {
+    alert('Import Schools functionality will be implemented here');
+}
+
+function viewSchool(id) {
+    alert('View School ' + id + ' functionality will be implemented here');
+}
+
+function editSchool(id) {
+    alert('Edit School ' + id + ' functionality will be implemented here');
+}
+
+function toggleSchoolStatus(id) {
+    alert('Toggle School Status ' + id + ' functionality will be implemented here');
+}
+
+// Add hover effects
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.summary-card, .management-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+

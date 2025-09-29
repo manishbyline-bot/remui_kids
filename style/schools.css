@@ -1,0 +1,246 @@
+/* Schools Management Styles - Matching Courses Dashboard */
+/* @package theme_remui_kids */
+
+/* Dashboard Cards Styling - Reduced height with gradient colors */
+.dashboard-cards-container .summary-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    overflow: hidden;
+    height: 120px; /* Reduced height */
+}
+
+.dashboard-cards-container .summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-cards-container .summary-card .card-body {
+    padding: 1rem 1.5rem; /* Reduced vertical padding */
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.dashboard-cards-container .summary-card .summary-icon {
+    margin-right: 1rem;
+    width: 50px; /* Smaller icon container */
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    flex-shrink: 0;
+}
+
+.dashboard-cards-container .summary-card .summary-icon i {
+    color: white;
+    font-size: 1.2rem; /* Smaller icon */
+}
+
+.dashboard-cards-container .summary-card .summary-content {
+    flex: 1;
+}
+
+.dashboard-cards-container .summary-card .summary-content .summary-number {
+    font-size: 2rem; /* Smaller number */
+    font-weight: bold;
+    margin: 0;
+    line-height: 1;
+    color: white;
+}
+
+.dashboard-cards-container .summary-card .summary-content .summary-label {
+    font-size: 0.85rem; /* Smaller label */
+    color: white;
+    margin: 0;
+    margin-top: 0.25rem;
+    opacity: 0.95;
+}
+
+/* Gradient colors like the second image */
+.dashboard-cards-container .summary-card.total-schools {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Purple gradient */
+}
+
+.dashboard-cards-container .summary-card.active-schools {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); /* Pink gradient */
+}
+
+.dashboard-cards-container .summary-card.suspended-schools {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); /* Blue gradient */
+}
+
+.dashboard-cards-container .summary-card.average-courses {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); /* Green gradient */
+}
+
+/* Management Cards Styling */
+.dashboard-cards-container .management-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.dashboard-cards-container .management-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-cards-container .management-card .card-body {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.dashboard-cards-container .management-card .management-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #28a745;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem auto;
+    font-size: 1.5rem;
+}
+
+.dashboard-cards-container .management-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.dashboard-cards-container .management-card .card-subtitle {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+.dashboard-cards-container .management-card .card-text {
+    font-size: 0.85rem;
+    color: #495057;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+}
+
+.dashboard-cards-container .management-card .card-footer-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-cards-container .management-card .card-footer-info .card-availability {
+    font-size: 0.8rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.dashboard-cards-container .management-card .card-footer-info .card-action-icon {
+    width: 24px;
+    height: 24px;
+    background: #e3f2fd;
+    color: #1976d2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.dashboard-cards-container .card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.dashboard-cards-container .card-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Help Section Styling */
+.help-section .card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.help-section .card-title {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.help-section .help-item {
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.help-section .help-item:hover {
+    transform: translateY(-2px);
+}
+
+.help-section .help-item i {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.help-section .help-item p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-cards-container .summary-card {
+        height: 100px;
+    }
+    
+    .dashboard-cards-container .summary-card .card-body {
+        padding: 0.75rem 1rem;
+    }
+    
+    .dashboard-cards-container .summary-card .summary-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 0.75rem;
+    }
+    
+    .dashboard-cards-container .summary-card .summary-icon i {
+        font-size: 1rem;
+    }
+    
+    .dashboard-cards-container .summary-card .summary-content .summary-number {
+        font-size: 1.5rem;
+    }
+    
+    .dashboard-cards-container .summary-card .summary-content .summary-label {
+        font-size: 0.8rem;
+    }
+    
+    .dashboard-cards-container .management-card .card-body {
+        padding: 1rem;
+    }
+    
+    .dashboard-cards-container .management-card .management-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .dashboard-cards-container .management-card .card-title {
+        font-size: 1rem;
+    }
+}

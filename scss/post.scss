@@ -1,0 +1,832 @@
+// Kids-friendly theme customizations
+// This file contains all the custom styles for the child theme
+// The parent theme styles are automatically inherited
+
+// ========================================
+// MOODLE MAIN CONTENT OVERRIDE
+// ========================================
+
+// Hide original course content when custom cards are shown
+// This is the correct Moodle way to handle main_content requirement
+.course-sections-cards ~ .original-course-content {
+    display: none !important;
+}
+
+// Ensure original content is visible when custom cards are not shown
+.original-course-content {
+    display: block;
+}
+
+// ========================================
+// COURSE SECTION CARDS STYLES (Horizontal Layout)
+// ========================================
+
+.course-sections-cards {
+    margin: 2rem 0;
+
+    .course-section-card {
+        display: flex; // Horizontal layout
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        cursor: pointer;
+        text-decoration: none; // Remove underline from link
+        color: inherit; // Inherit text color
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card-image-wrapper {
+            flex-shrink: 0; // Prevent image from shrinking
+            width: 300px; // Fixed width for the image
+            height: 100%; // Take full height of the card
+            position: relative;
+            overflow: hidden;
+            background-color: #f0f0f0; // Placeholder background
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; // Cover the area without distortion
+                transition: transform 0.3s ease;
+            }
+
+            .course-tags {
+                position: absolute;
+                top: 1rem;
+                left: 1rem;
+                display: flex;
+                gap: 0.5rem;
+
+                .tag {
+                    background: rgba(0, 0, 0, 0.6);
+                    color: white;
+                    padding: 0.3rem 0.7rem;
+                    border-radius: 0.5rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        .card-details {
+            flex-grow: 1; // Take remaining space
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+
+            .progress-badge {
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+                background: #8B5CF6; // Purple
+                color: white;
+                padding: 0.4rem 0.8rem;
+                border-radius: 1rem;
+                font-size: 0.8rem;
+                font-weight: bold;
+                z-index: 1;
+            }
+
+            .course-meta {
+                display: flex;
+                gap: 1.5rem;
+                margin-bottom: 1rem;
+                font-size: 0.9rem;
+                color: #6B7280; // Gray
+
+                .meta-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+
+                    .icon {
+                        color: #8B5CF6; // Purple
+                    }
+                }
+            }
+
+            .course-title {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #1F2937; // Dark gray
+                margin-bottom: 0.75rem;
+                line-height: 1.3;
+            }
+
+            .course-description {
+                font-size: 0.95rem;
+                color: #4B5563; // Medium gray
+                margin-bottom: 1.5rem;
+                line-height: 1.5;
+            }
+
+            .progress-section {
+                margin-bottom: 1.5rem;
+
+                .progress-info {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+
+                    .progress-label {
+                        font-size: 0.9rem;
+                        color: #4B5563;
+                        font-weight: 500;
+                    }
+
+                    .progress-percentage {
+                        font-size: 0.85rem;
+                        color: #8B5CF6;
+                        font-weight: 600;
+                    }
+                }
+
+                .progress-bar-container {
+                    height: 6px;
+                    background: #E5E7EB;
+                    border-radius: 3px;
+                    overflow: hidden;
+
+                    .progress-bar {
+                        height: 100%;
+                        background: linear-gradient(90deg, #8B5CF6 0%, #A855F7 100%);
+                        border-radius: 3px;
+                        transition: width 1.5s ease-in-out;
+                    }
+                }
+            }
+
+            .action-buttons {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: auto;
+            }
+
+            .action-button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.6rem 1.2rem;
+                border-radius: 0.75rem;
+                font-weight: bold;
+                font-size: 0.9rem;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                border: none;
+                color: white;
+
+                &.btn-start {
+                    background: linear-gradient(90deg, #8B5CF6 0%, #A855F7 100%); // Purple
+                    &:hover {
+                        box-shadow: 0 8px 15px rgba(139, 92, 246, 0.3);
+                        transform: translateY(-2px);
+                    }
+                }
+
+                &.btn-continue {
+                    background: linear-gradient(90deg, #10B981 0%, #34D399 100%); // Green
+                    &:hover {
+                        box-shadow: 0 8px 15px rgba(16, 185, 129, 0.3);
+                        transform: translateY(-2px);
+                    }
+                }
+
+                &.btn-completed {
+                    background: #D1D5DB; // Gray for completed
+                    color: #6B7280;
+                    cursor: default;
+                    &:hover {
+                        box-shadow: none;
+                        transform: none;
+                    }
+                }
+
+                .icon {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+
+        // Responsive adjustments
+        @media (max-width: 991px) {
+            flex-direction: column; // Stack vertically on smaller screens
+
+            .card-image-wrapper {
+                width: 100%; // Full width for image
+                height: 200px; // Fixed height for image on mobile
+            }
+
+            .card-details {
+                padding: 1.25rem;
+
+                .progress-badge {
+                    position: static; // Adjust position for mobile
+                    margin-bottom: 1rem;
+                    display: inline-block;
+                }
+
+                .course-title {
+                    font-size: 1.3rem;
+                }
+
+                .action-button {
+                    width: 100%; // Full width button on mobile
+                }
+            }
+        }
+    }
+}
+
+// ========================================
+// SECTION ACTIVITIES VIEW
+// ========================================
+
+        .section-activities-view {
+            margin: 2rem 0;
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    
+    .section-header {
+        text-align: center;
+        padding: 2rem 0;
+        background: #f8f9fa;
+        color: #333;
+        border-radius: 1rem;
+        margin-bottom: 2rem;
+        border: 1px solid #e9ecef;
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .section-description {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin: 0;
+        }
+    }
+    
+        .activity-item {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            
+            // Vertical progress line connector
+            &::before {
+                content: '';
+                position: absolute;
+                left: 40px; // Center of the 60px wide indicator
+                top: 60px; // Start from the bottom of the current indicator
+                height: calc(100% + 1.5rem); // Extend to the bottom of the next item
+                width: 4px; // Wider line for better visibility
+                background: linear-gradient(180deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%); // Purple gradient
+                border-radius: 2px; // Rounded edges
+                z-index: 1; // Ensure line is behind the indicators
+                box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2); // Subtle shadow
+            }
+            
+            // Hide the line after the last activity item
+            &:last-child::before {
+                display: none;
+            }
+            
+            .activity-progress-indicator {
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 60px;
+                height: 60px;
+                z-index: 3; // Ensure indicator is above the line
+                background-color: white; // Give it a white background to cover the line
+                border-radius: 50%; // Ensure it's a circle
+                padding: 5px; // Add padding to create a white border effect
+                
+                .progress-star {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.3rem;
+                    font-weight: bold;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                    transition: all 0.3s ease;
+                    border: 3px solid white; // White border for better contrast
+                    
+                    &.completed {
+                        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+                        color: white;
+                        
+                        &:hover {
+                            transform: scale(1.1);
+                            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+                        }
+                    }
+                    
+                    &.in-progress {
+                        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+                        color: white;
+                        
+                        &:hover {
+                            transform: scale(1.1);
+                            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+                        }
+                    }
+                    
+                    &.pending {
+                        background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
+                        color: white;
+                        
+                        &:hover {
+                            transform: scale(1.1);
+                            box-shadow: 0 6px 20px rgba(107, 114, 128, 0.5);
+                        }
+                    }
+                }
+            }
+            
+            .card {
+                border-radius: 1rem;
+                border: 1px solid #e9ecef;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                transition: all 0.3s ease;
+                overflow: hidden;
+                background-color: #f8f9fa;
+                
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+                }
+            }
+        
+        .card-body {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .activity-image {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background: #f8f9fa;
+            
+            .activity-image-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+        
+        .activity-content {
+            flex-grow: 1;
+            
+            .activity-meta {
+                display: flex;
+                gap: 1.5rem;
+                margin-bottom: 0.75rem;
+                font-size: 0.9rem;
+                color: #6c757d;
+                
+                .meta-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    
+                    .icon {
+                        color: #8B5CF6;
+                    }
+                }
+            }
+            
+            .activity-title {
+                color: #2c3e50;
+                font-weight: 600;
+                font-size: 1.25rem;
+                margin-bottom: 0.5rem;
+                line-height: 1.3;
+            }
+            
+            .activity-description {
+                color: #6c757d;
+                font-size: 0.95rem;
+                margin-bottom: 0;
+                line-height: 1.4;
+            }
+        }
+        
+        .activity-actions {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+            min-height: 120px;
+            padding: 0.5rem 0;
+            position: relative;
+            
+            .activity-icon-right {
+                margin-top: -1rem;
+                margin-right: -1rem;
+                
+                .activity-icon-small {
+                    width: 32px;
+                    height: 32px;
+                    opacity: 0.7;
+                }
+            }
+            
+            .btn {
+                border-radius: 0.75rem;
+                font-weight: 600;
+                padding: 0.6rem 1.2rem;
+                border: none;
+                color: white;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 0.9rem;
+                margin-bottom: -1rem;
+                margin-right: -1rem;
+                
+                &.btn-start {
+                    background: #d7d0e7;
+                    color: #7C3AED;
+                    
+                    &:hover {
+                        background: #7C3AED;
+                        transform: translateY(-1px);
+                        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+                        color: #d7d0e7;
+                    }
+                }
+                
+                &.btn-continue {
+                    background: #10B981;
+                    
+                    &:hover {
+                        background: #059669;
+                        transform: translateY(-1px);
+                        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+                    }
+                }
+            }
+            
+            .badge {
+                border-radius: 0.75rem;
+                padding: 0.6rem 1.2rem;
+                font-weight: 600;
+                font-size: 0.9rem;
+                margin-bottom: -0.5rem;
+                margin-right: -0.5rem;
+                background: #D1FAE5 !important;
+                color: #065F46 !important;
+                border: 1px solid #A7F3D0;
+            }
+        }
+    }
+}
+
+// ========================================
+// KIDS-FRIENDLY GLOBAL STYLES
+// ========================================
+
+// Override some parent theme colors with kids-friendly ones
+:root {
+    --primary-color: #FF6B35;
+    --secondary-color: #4ECDC4;
+    --success-color: #96CEB4;
+    --info-color: #45B7D1;
+    --warning-color: #FFEAA7;
+    --danger-color: #DDA0DD;
+}
+
+// Make buttons more rounded and playful
+.btn {
+    border-radius: 1rem !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+}
+
+// Make cards more rounded
+.card {
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+// Make form elements more rounded
+.form-control {
+    border-radius: 0.75rem !important;
+}
+
+// Make navigation more playful
+.navbar {
+    border-radius: 0 0 1rem 1rem;
+}
+
+// Add some fun animations
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+// Make progress bars more colorful
+.progress {
+    border-radius: 1rem;
+    overflow: hidden;
+    
+    .progress-bar {
+        background: linear-gradient(90deg, #FF6B35 0%, #4ECDC4 100%);
+    }
+}
+
+// Make badges more rounded
+.badge {
+    border-radius: 1rem;
+    font-weight: 600;
+}
+
+// Make alerts more rounded
+.alert {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+// Make modals more rounded
+.modal-content {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+// Make dropdowns more rounded
+.dropdown-menu {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+// Make pagination more rounded
+.pagination {
+    .page-link {
+        border-radius: 0.5rem;
+        margin: 0 0.2rem;
+        border: none;
+        color: #8B5CF6;
+        
+        &:hover {
+            background-color: #8B5CF6;
+            color: white;
+            transform: translateY(-2px);
+        }
+    }
+    
+    .page-item.active .page-link {
+        background-color: #8B5CF6;
+        border-color: #8B5CF6;
+    }
+}
+
+// Make tables more rounded
+.table {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    
+    th {
+        background-color: #8B5CF6;
+        color: white;
+        border: none;
+        font-weight: 600;
+    }
+    
+    td {
+        border-color: #E5E7EB;
+    }
+}
+
+// Make list groups more rounded
+.list-group-item {
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    
+    &:first-child {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+    }
+    
+    &:last-child {
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+    }
+}
+
+// Make breadcrumbs more rounded
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    
+    .breadcrumb-item {
+        a {
+            color: #8B5CF6;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                background-color: #8B5CF6;
+                color: white;
+                transform: translateY(-2px);
+            }
+        }
+        
+        &.active {
+            color: #6B7280;
+        }
+    }
+}
+
+// Make tabs more rounded
+.nav-tabs {
+    border-bottom: none;
+    
+    .nav-link {
+        border-radius: 1rem 1rem 0 0;
+        border: none;
+        color: #6B7280;
+        margin-right: 0.5rem;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background-color: #F3F4F6;
+            color: #8B5CF6;
+            transform: translateY(-2px);
+        }
+        
+        &.active {
+            background-color: #8B5CF6;
+            color: white;
+        }
+    }
+}
+
+// Make accordions more rounded
+.accordion {
+    .accordion-item {
+        border-radius: 1rem;
+        margin-bottom: 1rem;
+        border: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        
+        .accordion-header {
+            .accordion-button {
+                border-radius: 1rem;
+                border: none;
+                background-color: #F9FAFB;
+                color: #374151;
+                font-weight: 600;
+                
+                &:not(.collapsed) {
+                    background-color: #8B5CF6;
+                    color: white;
+                }
+                
+                &:focus {
+                    box-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.25);
+                }
+            }
+        }
+        
+        .accordion-body {
+            border-radius: 0 0 1rem 1rem;
+        }
+    }
+}
+
+// Make tooltips more rounded
+.tooltip {
+    .tooltip-inner {
+        border-radius: 0.5rem;
+        background-color: #8B5CF6;
+    }
+}
+
+// Make popovers more rounded
+.popover {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+// Make carousels more rounded
+.carousel {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+// Make jumbotrons more rounded
+.jumbotron {
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+// Make wells more rounded
+.well {
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+// Make panels more rounded
+.panel {
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    
+    .panel-heading {
+        border-radius: 1rem 1rem 0 0;
+        background-color: #8B5CF6;
+        color: white;
+        border: none;
+    }
+    
+    .panel-body {
+        border-radius: 0 0 1rem 1rem;
+    }
+}
+
+// Make wells more rounded
+.well {
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+// Make panels more rounded
+.panel {
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    
+    .panel-heading {
+        border-radius: 1rem 1rem 0 0;
+        background-color: #8B5CF6;
+        color: white;
+        border: none;
+    }
+    
+    .panel-body {
+        border-radius: 0 0 1rem 1rem;
+    }
+}
+
+.activity-item{
+    background-color: #00000000;
+}

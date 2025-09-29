@@ -1,0 +1,198 @@
+{{!
+    Teacher Edit Template
+    @package theme_remui_kids
+    @copyright 2024 Riyada Trainings
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+
+{{#error}}
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Error!</h4>
+    <p>{{error}}</p>
+    <hr>
+    <a href="teachers.php" class="btn btn-primary">Back to Teachers</a>
+</div>
+{{/error}}
+
+{{^error}}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1">Edit Teacher</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="teachers.php">Teachers</a></li>
+                            <li class="breadcrumb-item"><a href="teacher_view.php?id={{teacherid}}">{{teacher.firstname}} {{teacher.lastname}}</a></li>
+                            <li class="breadcrumb-item active">Edit</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="btn-group">
+                    <a href="teacher_view.php?id={{teacherid}}" class="btn btn-outline-info">
+                        <i class="fas fa-eye"></i> View Teacher
+                    </a>
+                    <a href="teachers.php" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Teachers
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{#success_message}}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle"></i> {{success_message}}
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+    {{/success_message}}
+
+    {{#error_message}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle"></i> {{error_message}}
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+    {{/error_message}}
+
+    <!-- Edit Form -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-edit"></i> Teacher Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        <input type="hidden" name="sesskey" value="{{sesskey}}">
+                        
+                        <!-- Basic Information -->
+                        <h6 class="text-primary mb-3">Basic Information</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="firstname">First Name *</label>
+                                    <input type="text" class="form-control" id="firstname" name="firstname" 
+                                           value="{{teacher.firstname}}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="lastname">Last Name *</label>
+                                    <input type="text" class="form-control" id="lastname" name="lastname" 
+                                           value="{{teacher.lastname}}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" class="form-control" id="email" name="email" 
+                                           value="{{teacher.email}}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input type="text" class="form-control" id="username" 
+                                           value="{{teacher.username}}" readonly>
+                                    <small class="form-text text-muted">Username cannot be changed</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <hr class="my-4">
+                        <h6 class="text-primary mb-3">Contact Information</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="phone1">Primary Phone</label>
+                                    <input type="text" class="form-control" id="phone1" name="phone1" 
+                                           value="{{teacher.phone1}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="phone2">Secondary Phone</label>
+                                    <input type="text" class="form-control" id="phone2" name="phone2" 
+                                           value="{{teacher.phone2}}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" id="city" name="city" 
+                                           value="{{teacher.city}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <select class="form-control" id="country" name="country">
+                                        <option value="">Select Country</option>
+                                        {{#countries}}
+                                        <option value="{{.}}" {{#teacher.country}}{{#is_selected}}selected{{/is_selected}}{{/teacher.country}}>{{.}}</option>
+                                        {{/countries}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Professional Information -->
+                        <hr class="my-4">
+                        <h6 class="text-primary mb-3">Professional Information</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="department">Department</label>
+                                    <input type="text" class="form-control" id="department" name="department" 
+                                           value="{{department}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="specialization">Specialization</label>
+                                    <input type="text" class="form-control" id="specialization" name="specialization" 
+                                           value="{{specialization}}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <hr class="my-4">
+                        <div class="d-flex justify-content-end">
+                            <a href="teachers.php" class="btn btn-secondary mr-2">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-dismiss alerts after 5 seconds
+setTimeout(function() {
+    $('.alert').fadeOut('slow');
+}, 5000);
+</script>
+{{/error}}
+

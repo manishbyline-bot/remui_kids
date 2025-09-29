@@ -1,0 +1,206 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    Riyada Sidebar Component
+    @package theme_remui_kids
+    @copyright 2024 Riyada Trainings
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+
+{{!
+    @template theme_remui_kids/riyada_sidebar
+
+    Riyada custom sidebar navigation component matching the exact design
+
+    Example context (json):
+    {
+        "wwwroot": "http://localhost/Kodeit-Iomad-local/Kodeit-Iomad-local/iomad-test",
+        "sitename": "Riyada Trainings"
+    }
+}}
+
+<div id="riyada-sidebar" class="riyada-sidebar-container">
+    <!-- Sidebar Navigation -->
+    <nav class="riyada-sidebar-nav">
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">DASHBOARD</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/my/" class="riyada-nav-link" data-page="dashboard">
+                        <span class="riyada-nav-icon">⊞</span>
+                        <span class="riyada-nav-text">Dashboard</span>
+                        <span class="riyada-nav-indicator"></span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/user/index.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">👥</span>
+                        <span class="riyada-nav-text">Community</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/theme/remui_kids/enrollments.php" class="riyada-nav-link" data-page="enrollments">
+                        <span class="riyada-nav-icon">🎓</span>
+                        <span class="riyada-nav-text">Enrollments</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">TEACHERS</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/theme/remui_kids/teachers.php" class="riyada-nav-link" data-page="teachers">
+                        <span class="riyada-nav-icon">👥</span>
+                        <span class="riyada-nav-text">Teachers</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/user/index.php?roleid=4" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">🏅</span>
+                        <span class="riyada-nav-text">Master Trainers</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">COURSES & PROGRAMS</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/theme/remui_kids/courses.php" class="riyada-nav-link" data-page="courses" target="_self">
+                        <span class="riyada-nav-icon">📖</span>
+                        <span class="riyada-nav-text">Courses & Programs</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/badges/index.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">📜</span>
+                        <span class="riyada-nav-text">Certifications</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/mod/quiz/index.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">🎯</span>
+                        <span class="riyada-nav-text">Assessments</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/theme/remui_kids/schools.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">🏫</span>
+                        <span class="riyada-nav-text">Schools</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">INSIGHTS</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/reportbuilder/index.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">📊</span>
+                        <span class="riyada-nav-text">Analytics</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/admin/tool/analytics/index.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">🧠</span>
+                        <span class="riyada-nav-text">Predictive Models</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/reportbuilder/index.php?source=users" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">📈</span>
+                        <span class="riyada-nav-text">ROI Analysis</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/reportbuilder/index.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">📄</span>
+                        <span class="riyada-nav-text">Reports</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/reportbuilder/index.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">📊</span>
+                        <span class="riyada-nav-text">Analytics Dashboard</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">SETTINGS</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/admin/index.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">⚙️</span>
+                        <span class="riyada-nav-text">System Settings</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/theme/remui_kids/user_management.php" class="riyada-nav-link" data-page="user-management">
+                        <span class="riyada-nav-icon">👥</span>
+                        <span class="riyada-nav-text">User Management</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Floating Action Button -->
+    <div class="riyada-fab">
+        <button class="riyada-fab-btn" title="Toggle Sidebar">
+            <span class="riyada-fab-icon">→</span>
+        </button>
+    </div>
+</div>
+
+<script>
+// Dynamic sidebar highlighting based on current page
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    const currentPage = getCurrentPage(currentPath);
+    
+    // Remove all active classes
+    document.querySelectorAll('.riyada-nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Add active class to current page
+    const activeLink = document.querySelector(`[data-page="${currentPage}"]`);
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+});
+
+function getCurrentPage(path) {
+    if (path.includes('/my/') && !path.includes('/courses.php')) {
+        return 'dashboard';
+    } else if (path.includes('/enrollments.php')) {
+        return 'enrollments';
+    } else if (path.includes('/courses.php')) {
+        return 'courses';
+    } else if (path.includes('/user_management.php')) {
+        return 'user-management';
+    } else if (path.includes('/teachers.php')) {
+        return 'teachers';
+    }
+    return null;
+}
+</script>

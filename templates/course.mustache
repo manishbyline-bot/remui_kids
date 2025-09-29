@@ -1,0 +1,273 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    RemUI Kids - Child theme of RemUI
+    @package theme_remui_kids
+    @copyright (c) 2025 Kodeit
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+{{!
+    @template theme_remui_kids/course
+
+    Kids-friendly course template with horizontal card-based sections.
+
+    Context variables required for this template:
+    * sitename - The name of the site
+    * output - The core renderer for the page
+    * bodyattributes - attributes for the body tag as a string of html attributes
+    * sidepreblocks - HTML for the blocks
+    * hasblocks - true if there are blocks on this page
+    * courseindexopen - true if the nav drawer should be open on page load
+    * regionmainsettingsmenu - HTML for the region main settings menu
+    * hasregionmainsettingsmenu - There is a region main settings menu on this page.
+    * custom_course_cards - true if we should show custom course cards
+    * course_sections - array of course section data
+}}
+{{> theme_remui/common_start}}
+
+<div id="page-content" class="pb-4 d-print-block">
+    <div id="region-main-box">
+        {{#hasregionmainsettingsmenu}}
+        <div id="region-main-settings-menu" class="d-print-none">
+            <div> {{{ regionmainsettingsmenu }}} </div>
+        </div>
+        {{/hasregionmainsettingsmenu}}
+        <section id="region-main" aria-label="{{#str}}content{{/str}}">
+            {{#hasregionmainsettingsmenu}}
+                <div class="region_main_settings_menu_proxy"></div>
+            {{/hasregionmainsettingsmenu}}
+            {{{ output.course_content_header }}}
+            {{#headercontent}}
+                {{> core/activity_header }}
+            {{/headercontent}}
+            {{#overflow}}
+                <div class="container-fluid tertiary-navigation">
+                    <div class="navitem">
+                        {{> core/url_select}}
+                    </div>
+                </div>
+            {{/overflow}}
+
+            {{#custom_course_cards}}
+            <!-- Custom Course Sections as Cards -->
+            <div class="course-sections-cards">
+                <div class="container-fluid">
+                    <div class="row">
+                        {{#course_sections}}
+                        {{#uservisible}}
+                        <div class="col-lg-6 col-md-12 mb-4">
+                            <a href="{{{url}}}" class="course-section-card d-flex">
+                                <div class="card-image-wrapper">
+                                    <img src="{{section_image}}" alt="Section Image" class="img-fluid">
+                                    <div class="course-tags">
+                                        <span class="tag">Section {{section}}</span>
+                                    </div>
+                                </div>
+                                <div class="card-details">
+                                   
+                                    <div class="course-meta">
+                                        <div class="meta-item">
+                                            <i class="icon fa fa-book" aria-hidden="true"></i>
+                                            <span>{{total_activities}} Activities</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="icon fa fa-users" aria-hidden="true"></i>
+                                            <span>{{completed_activities}} Completed</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="course-title">{{name}}</h3>
+                                    {{#summary}}
+                                    <p class="course-description">{{{summary}}}</p>
+                                    {{/summary}}
+                                    {{^summary}}
+                                    <p class="course-description">Explore this section to learn new concepts and complete activities.</p>
+                                    {{/summary}}
+                                    <div class="progress-section">
+                                        <div class="progress-info">
+                                            <span class="progress-label">Progress - {{progress}}%</span>
+                                        </div>
+                                        <div class="progress-bar-container">
+                                            <div class="progress-bar" style="width: {{progress}}%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="action-buttons">
+                                        {{#is_completed}}
+                                        <span class="action-button btn-completed"><i class="icon fa fa-check-circle" aria-hidden="true"></i> Completed</span>
+                                        {{/is_completed}}
+                                        {{^is_completed}}
+                                            {{#has_started}}
+                                            <span class="action-button btn-continue"><i class="icon fa fa-play-circle" aria-hidden="true"></i> Continue</span>
+                                            {{/has_started}}
+                                            {{^has_started}}
+                                            <span class="action-button btn-start"><i class="icon fa fa-play-circle" aria-hidden="true"></i> Start Learning</span>
+                                            {{/has_started}}
+                                        {{/is_completed}}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {{/uservisible}}
+                        {{/course_sections}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Original RemUI Course Content (hidden when custom cards are shown) -->
+            <div class="original-course-content" {{#custom_course_cards}}style="display: none;"{{/custom_course_cards}}>
+                {{{ output.main_content }}}
+            </div>
+            {{/custom_course_cards}}
+
+            {{#custom_section_view}}
+            <!-- Custom Section Activities View -->
+            <div class="section-activities-view">
+                <div class="container-fluid">
+                    <!-- Back to Course Button -->
+                    <div class="mb-4">
+                        <a href="{{{course_url}}}" class="btn btn-outline-primary">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Course
+                        </a>
+                    </div>
+                    
+                    <!-- Section Header -->
+                    <div class="section-header mb-4">
+                        <h1 class="section-title">{{section_activities.section_name}}</h1>
+                        {{#section_activities.section_summary}}
+                        <p class="section-description">{{{section_activities.section_summary}}}</p>
+                        {{/section_activities.section_summary}}
+                    </div>
+                    
+                    <!-- Activities List -->
+                    <div class="activities-list">
+                        {{#section_activities.activities}}
+                        <div class="activity-item">
+                            <div class="activity-progress-indicator">
+                                {{#is_completed}}
+                                <div class="progress-star completed">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                {{/is_completed}}
+                                {{^is_completed}}
+                                    {{#has_started}}
+                                    <div class="progress-star in-progress">
+                                        <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                    </div>
+                                    {{/has_started}}
+                                    {{^has_started}}
+                                    <div class="progress-star pending">
+                                        <i class="fa fa-clock" aria-hidden="true"></i>
+                                    </div>
+                                    {{/has_started}}
+                                {{/is_completed}}
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="activity-image">
+                                        <img src="{{{activity_image}}}" alt="{{name}}" class="activity-image-img">
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-meta">
+                                            <div class="meta-item">
+                                                <i class="fa fa-calendar icon" aria-hidden="true"></i>
+                                                <span>{{start_date}}</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="fa fa-clock icon" aria-hidden="true"></i>
+                                                <span>{{end_date}}</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="fa fa-tag icon" aria-hidden="true"></i>
+                                                <span>{{modname}}</span>
+                                            </div>
+                                        </div>
+                                        <h5 class="activity-title">{{name}}</h5>
+                                        <div class="activity-description">{{{description}}}</div>
+                                    </div>
+                                    <div class="activity-actions">
+                                        <div class="activity-icon-right">
+                                            <img src="{{{icon}}}" alt="{{modname}}" class="activity-icon-small">
+                                        </div>
+                                        {{#is_completed}}
+                                        <span class="badge bg-success">Completed</span>
+                                        {{/is_completed}}
+                                        {{^is_completed}}
+                                            {{#has_started}}
+                                            <a href="{{{url}}}" class="btn btn-continue">
+                                                Continue <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                            </a>
+                                            {{/has_started}}
+                                            {{^has_started}}
+                                            <a href="{{{url}}}" class="btn btn-start">
+                                                Start <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                            </a>
+                                            {{/has_started}}
+                                        {{/is_completed}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/section_activities.activities}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Original RemUI Course Content (hidden when custom section view is shown) -->
+            <div class="original-course-content" style="display: none;">
+                {{{ output.main_content }}}
+            </div>
+            {{/custom_section_view}}
+
+            {{^custom_course_cards}}
+            {{^custom_section_view}}
+            <!-- Original RemUI Course Content -->
+            {{{ output.main_content }}}
+            {{/custom_section_view}}
+            {{/custom_course_cards}}
+
+            {{{ output.activity_navigation }}}
+            {{{ output.course_content_footer }}}
+
+        </section>
+    </div>
+</div>
+
+{{> theme_remui/common_end}}
+
+{{#js}}
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate progress bars on load
+    document.querySelectorAll('.progress-bar').forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 100);
+    });
+
+    // Add hover effects to course section cards
+    const cards = document.querySelectorAll('.course-section-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.querySelector('.card-image-wrapper img').style.transform = 'scale(1.05)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.querySelector('.card-image-wrapper img').style.transform = 'scale(1)';
+        });
+    });
+});
+{{/js}}

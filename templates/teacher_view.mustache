@@ -1,0 +1,183 @@
+{{!
+    Teacher View Template
+    @package theme_remui_kids
+    @copyright 2024 Riyada Trainings
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+
+{{#error}}
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Error!</h4>
+    <p>{{error}}</p>
+    <hr>
+    <a href="teachers.php" class="btn btn-primary">Back to Teachers</a>
+</div>
+{{/error}}
+
+{{^error}}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1">Teacher Details</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{wwwroot}}/teachers.php">Teachers</a></li>
+                            <li class="breadcrumb-item active">{{teacher.firstname}} {{teacher.lastname}}</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="btn-group">
+                    <a href="teacher_edit.php?id={{teacherid}}" class="btn btn-outline-primary">
+                        <i class="fas fa-edit"></i> Edit Teacher
+                    </a>
+                    <a href="teacher_suspend.php?id={{teacherid}}" class="btn btn-outline-warning">
+                        <i class="fas fa-user-lock"></i> Manage Status
+                    </a>
+                    <a href="teachers.php" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Teachers
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Information Card -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-user-graduate"></i> Teacher Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row mb-3">
+                                <div class="col-sm-3"><strong>Full Name:</strong></div>
+                                <div class="col-sm-9">{{teacher.firstname}} {{teacher.lastname}}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3"><strong>Username:</strong></div>
+                                <div class="col-sm-9">{{teacher.username}}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3"><strong>Email:</strong></div>
+                                <div class="col-sm-9">
+                                    <a href="mailto:{{teacher.email}}">{{teacher.email}}</a>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3"><strong>Phone 1:</strong></div>
+                                <div class="col-sm-9">{{teacher.phone1}}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3"><strong>Phone 2:</strong></div>
+                                <div class="col-sm-9">{{teacher.phone2}}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3"><strong>Location:</strong></div>
+                                <div class="col-sm-9">{{teacher.city}}, {{teacher.country}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="avatar-lg mx-auto mb-3">
+                                <div class="avatar-title bg-primary rounded-circle text-white display-4">
+                                    {{teacher.firstname.0}}{{teacher.lastname.0}}
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <span class="badge badge-{{status_class}} badge-lg">{{status_text}}</span>
+                            </div>
+                            <div class="text-muted small">
+                                <div>Last Access: {{last_access}}</div>
+                                <div>Created: {{created_date}}</div>
+                                <div>Last Login: {{last_login}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Assignments -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-user-tag"></i> Role Assignments
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{#role_assignments}}
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="badge badge-info mr-2">{{shortname}}</span>
+                        <span class="text-muted">{{name}}</span>
+                    </div>
+                    {{/role_assignments}}
+                    {{^role_assignments}}
+                    <p class="text-muted">No role assignments found.</p>
+                    {{/role_assignments}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Fields -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle"></i> Additional Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{#profile_fields}}
+                    <div class="row mb-2">
+                        <div class="col-sm-4"><strong>{{name}}:</strong></div>
+                        <div class="col-sm-8">{{data}}</div>
+                    </div>
+                    {{/profile_fields}}
+                    {{^profile_fields}}
+                    <p class="text-muted">No additional information available.</p>
+                    {{/profile_fields}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Courses -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-book"></i> Assigned Courses ({{courses.length}})
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{#courses}}
+                    <div class="d-flex align-items-center mb-3 p-3 border rounded">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">{{fullname}}</h6>
+                            <small class="text-muted">{{shortname}} • Created: {{timecreated}}</small>
+                        </div>
+                        <div class="ml-3">
+                            <span class="badge badge-secondary">Teacher</span>
+                        </div>
+                    </div>
+                    {{/courses}}
+                    {{^courses}}
+                    <p class="text-muted">No courses assigned to this teacher.</p>
+                    {{/courses}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/error}}
+
