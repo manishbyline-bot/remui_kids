@@ -1,0 +1,584 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    Custom Dashboard Template for remui_kids theme
+    @package    theme_remui_kids
+    @copyright  2025 Kodeit
+    @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+
+{{> theme_remui_kids/common_start}}
+
+<div id="page-content" class="pb-4 d-print-block">
+    <div id="region-main-box">
+        <section id="region-main" aria-label="{{#str}}content{{/str}}">
+            {{{ output.course_content_header }}}
+            {{#headercontent}}
+                {{> core/activity_header }}
+            {{/headercontent}}
+            {{#overflow}}
+                <div class="container-fluid tertiary-navigation">
+                    <div class="navitem">
+                        {{> core/url_select}}
+                    </div>
+                </div>
+            {{/overflow}}
+
+            <!-- Comprehensive Admin Dashboard -->
+            <div class="admin-dashboard">
+                <!-- Header Section -->
+                <div class="dashboard-header">
+                    <div class="header-left">
+                        <h1 class="dashboard-title">Admin Dashboard</h1>
+                        <p class="dashboard-subtitle">Comprehensive system management and analytics</p>
+                    </div>
+                    <div class="header-right">
+                        <div class="quick-actions">
+                            <button class="action-btn primary" onclick="window.location.href='{{wwwroot}}/admin/settings.php'">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+                                </svg>
+                                Settings
+                            </button>
+                            <button class="action-btn secondary" onclick="window.location.href='{{wwwroot}}/admin/users.php'">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M16,4C18.21,4 20,5.79 20,8C20,10.21 18.21,12 16,12C13.79,12 12,10.21 12,8C12,5.79 13.79,4 16,4M16,14C20.42,14 24,15.79 24,18V20H8V18C8,15.79 11.58,14 16,14M8,4C10.21,4 12,5.79 12,8C12,10.21 10.21,12 8,12C5.79,12 4,10.21 4,8C4,5.79 5.79,4 8,4M8,14C12.42,14 16,15.79 16,18V20H0V18C0,15.79 3.58,14 8,14Z" />
+                                </svg>
+                                Users
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Statistics Grid -->
+                <div class="main-stats-grid">
+                    <div class="stat-card users">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16,4C18.21,4 20,5.79 20,8C20,10.21 18.21,12 16,12C13.79,12 12,10.21 12,8C12,5.79 13.79,4 16,4M16,14C20.42,14 24,15.79 24,18V20H8V18C8,15.79 11.58,14 16,14M8,4C10.21,4 12,5.79 12,8C12,10.21 10.21,12 8,12C5.79,12 4,10.21 4,8C4,5.79 5.79,4 8,4M8,14C12.42,14 16,15.79 16,18V20H0V18C0,15.79 3.58,14 8,14Z" />
+                            </svg>
+                        </div>
+                        <div class="stat-value">{{dashboarddata.total_users}}</div>
+                        <div class="stat-label">Total Users</div>
+                        <div class="stat-subtitle">{{dashboarddata.active_users}} active</div>
+                        <div class="stat-change positive">↑ +12% this month</div>
+                    </div>
+
+                    <div class="stat-card teachers">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+                            </svg>
+                        </div>
+                        <div class="stat-value">{{dashboarddata.teachers}}</div>
+                        <div class="stat-label">Teachers</div>
+                        <div class="stat-subtitle">Active instructors</div>
+                        <div class="stat-change positive">↑ +8% this month</div>
+                    </div>
+
+                    <div class="stat-card students">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                            </svg>
+                        </div>
+                        <div class="stat-value">{{dashboarddata.students}}</div>
+                        <div class="stat-label">Students</div>
+                        <div class="stat-subtitle">Enrolled learners</div>
+                        <div class="stat-change positive">↑ +15% this month</div>
+                    </div>
+
+                    <div class="stat-card courses">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                            </svg>
+                        </div>
+                        <div class="stat-value">{{dashboarddata.total_courses}}</div>
+                        <div class="stat-label">Courses</div>
+                        <div class="stat-subtitle">Available courses</div>
+                        <div class="stat-change positive">↑ +5% this month</div>
+                    </div>
+
+                    <div class="stat-card companies">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,7V3H2V21H22V7H12M6,19H4V17H6V19M6,15H4V13H6V15M6,11H4V9H6V11M6,7H4V5H6V7M10,19H8V17H10V19M10,15H8V13H10V15M10,11H8V9H10V11M10,7H8V5H10V7M20,19H12V17H14V15H12V13H14V11H12V9H20V19M18,11H16V13H18V11M18,15H16V17H18V15Z" />
+                            </svg>
+                        </div>
+                        <div class="stat-value">{{dashboarddata.total_companies}}</div>
+                        <div class="stat-label">Companies</div>
+                        <div class="stat-subtitle">IOMAD companies</div>
+                        <div class="stat-change positive">↑ +3% this month</div>
+                    </div>
+
+                    <div class="stat-card enrollments">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" />
+                            </svg>
+                        </div>
+                        <div class="stat-value">{{dashboarddata.total_enrollments}}</div>
+                        <div class="stat-label">Enrollments</div>
+                        <div class="stat-subtitle">Total enrollments</div>
+                        <div class="stat-change positive">↑ +18% this month</div>
+                    </div>
+                </div>
+
+                <!-- Detailed Analytics Grid -->
+                <div class="analytics-grid">
+                    <!-- Teacher Analytics -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Teacher Analytics</h3>
+                            <a href="{{wwwroot}}/admin/users.php" class="card-action">View All</a>
+                        </div>
+                        <div class="teacher-stats">
+                            <div class="teacher-stat-item">
+                                <span class="teacher-stat-label">Active Teachers:</span>
+                                <span class="teacher-stat-value">{{dashboarddata.teachers}}</span>
+                            </div>
+                            <div class="teacher-stat-item">
+                                <span class="teacher-stat-label">New This Month:</span>
+                                <span class="teacher-stat-value positive">+12</span>
+                            </div>
+                            <div class="teacher-stat-item">
+                                <span class="teacher-stat-label">Certified:</span>
+                                <span class="teacher-stat-value positive">85%</span>
+                            </div>
+                            <div class="teacher-stat-item">
+                                <span class="teacher-stat-label">Avg. Rating:</span>
+                                <span class="teacher-stat-value positive">4.7/5</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill blue" style="width: 85%"></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 8px; font-size: 0.75rem; color: #6b7280;">
+                            Teacher Certification Progress
+                        </div>
+                    </div>
+
+                    <!-- Course Analytics -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Course Analytics</h3>
+                            <a href="{{wwwroot}}/course/index.php" class="card-action">Manage</a>
+                        </div>
+                        <div class="course-list">
+                            {{#dashboarddata.top_courses}}
+                            <div class="course-item">
+                                <div class="course-name">{{fullname}}</div>
+                                <div class="course-shortname">{{shortname}}</div>
+                                <div class="course-stats">
+                                    <div class="course-enrollments">{{enrollments}}</div>
+                                    <div class="course-completion">{{completion_rate}}%</div>
+                                </div>
+                            </div>
+                            {{/dashboarddata.top_courses}}
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill green" style="width: {{dashboarddata.completion_rate}}%"></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 8px; font-size: 0.75rem; color: #6b7280;">
+                            Overall Completion Rate: {{dashboarddata.completion_rate}}%
+                        </div>
+                    </div>
+
+                    <!-- Student Analytics -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Student Analytics</h3>
+                            <a href="{{wwwroot}}/admin/users.php" class="card-action">View All</a>
+                        </div>
+                        <div class="student-breakdown">
+                            <div class="student-category">
+                                <div class="student-category-value">{{dashboarddata.students}}</div>
+                                <div class="student-category-label">Total Students</div>
+                            </div>
+                            <div class="student-category">
+                                <div class="student-category-value">{{dashboarddata.active_users}}</div>
+                                <div class="student-category-label">Active This Month</div>
+                            </div>
+                        </div>
+                        <div class="teacher-stats">
+                            <div class="teacher-stat-item">
+                                <span class="teacher-stat-label">Completion Rate:</span>
+                                <span class="teacher-stat-value positive">{{dashboarddata.completion_rate}}%</span>
+                            </div>
+                            <div class="teacher-stat-item">
+                                <span class="teacher-stat-label">Avg. Progress:</span>
+                                <span class="teacher-stat-value positive">68%</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill purple" style="width: 68%"></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 8px; font-size: 0.75rem; color: #6b7280;">
+                            Average Student Progress
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Management Tools Grid -->
+                <div class="management-tools">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16,4C18.21,4 20,5.79 20,8C20,10.21 18.21,12 16,12C13.79,12 12,10.21 12,8C12,5.79 13.79,4 16,4M16,14C20.42,14 24,15.79 24,18V20H8V18C8,15.79 11.58,14 16,14M8,4C10.21,4 12,5.79 12,8C12,10.21 10.21,12 8,12C5.79,12 4,10.21 4,8C4,5.79 5.79,4 8,4M8,14C12.42,14 16,15.79 16,18V20H0V18C0,15.79 3.58,14 8,14Z" />
+                            </svg>
+                        </div>
+                        <div class="tool-title">User Management</div>
+                        <div class="tool-description">Manage users, roles, and permissions</div>
+                        <div class="tool-stats">
+                            <div class="tool-stat">
+                                <div class="tool-stat-value">{{dashboarddata.total_users}}</div>
+                                <div class="tool-stat-label">Total Users</div>
+                            </div>
+                            <div class="tool-stat">
+                                <div class="tool-stat-value">{{dashboarddata.teachers}}</div>
+                                <div class="tool-stat-label">Teachers</div>
+                            </div>
+                        </div>
+                        <a href="{{wwwroot}}/admin/user.php" class="tool-link">Manage Users</a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                            </svg>
+                        </div>
+                        <div class="tool-title">Course Management</div>
+                        <div class="tool-description">Create and manage courses</div>
+                        <div class="tool-stats">
+                            <div class="tool-stat">
+                                <div class="tool-stat-value">{{dashboarddata.total_courses}}</div>
+                                <div class="tool-stat-label">Courses</div>
+                            </div>
+                            <div class="tool-stat">
+                                <div class="tool-stat-value">{{dashboarddata.total_enrollments}}</div>
+                                <div class="tool-stat-label">Enrollments</div>
+                            </div>
+                        </div>
+                        <a href="{{wwwroot}}/course/index.php" class="tool-link">Manage Courses</a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,7V3H2V21H22V7H12M6,19H4V17H6V19M6,15H4V13H6V15M6,11H4V9H6V11M6,7H4V5H6V7M10,19H8V17H10V19M10,15H8V13H10V15M10,11H8V9H10V11M10,7H8V5H10V7M20,19H12V17H14V15H12V13H14V11H12V9H20V19M18,11H16V13H18V11M18,15H16V17H18V15Z" />
+                            </svg>
+                        </div>
+                        <div class="tool-title">Company Management</div>
+                        <div class="tool-description">Manage IOMAD companies and departments</div>
+                        <div class="tool-stats">
+                            <div class="tool-stat">
+                                <div class="tool-stat-value">{{dashboarddata.total_companies}}</div>
+                                <div class="tool-stat-label">Companies</div>
+                            </div>
+                            <div class="tool-stat">
+                                <div class="tool-stat-value">{{dashboarddata.total_departments}}</div>
+                                <div class="tool-stat-label">Departments</div>
+                            </div>
+                        </div>
+                        <a href="{{wwwroot}}/local/iomad/index.php" class="tool-link">Manage Companies</a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+                            </svg>
+                        </div>
+                        <div class="tool-title">Reports & Analytics</div>
+                        <div class="tool-description">View system reports and analytics</div>
+                        <div class="tool-stats">
+                            <div class="tool-stat">
+                                <div class="tool-stat-value">{{dashboarddata.completion_rate}}%</div>
+                                <div class="tool-stat-label">Completion</div>
+                            </div>
+                            <div class="tool-stat">
+                                <div class="tool-stat-value">{{dashboarddata.active_users}}</div>
+                                <div class="tool-stat-label">Active Users</div>
+                            </div>
+                        </div>
+                        <a href="{{wwwroot}}/admin/reports.php" class="tool-link">View Reports</a>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Grid -->
+                <div class="quick-actions-grid">
+                    <a href="{{wwwroot}}/admin/user.php" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16,4C18.21,4 20,5.79 20,8C20,10.21 18.21,12 16,12C13.79,12 12,10.21 12,8C12,5.79 13.79,4 16,4M16,14C20.42,14 24,15.79 24,18V20H8V18C8,15.79 11.58,14 16,14M8,4C10.21,4 12,5.79 12,8C12,10.21 10.21,12 8,12C5.79,12 4,10.21 4,8C4,5.79 5.79,4 8,4M8,14C12.42,14 16,15.79 16,18V20H0V18C0,15.79 3.58,14 8,14Z" />
+                            </svg>
+                        </div>
+                        <div class="quick-action-title">Add User</div>
+                        <div class="quick-action-description">Create new user</div>
+                    </a>
+
+                    <a href="{{wwwroot}}/course/edit.php" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                            </svg>
+                        </div>
+                        <div class="quick-action-title">Create Course</div>
+                        <div class="quick-action-description">Add new course</div>
+                    </a>
+
+                    <a href="{{wwwroot}}/admin/plugins.php" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+                            </svg>
+                        </div>
+                        <div class="quick-action-title">Plugins</div>
+                        <div class="quick-action-description">Manage plugins</div>
+                    </a>
+
+                    <a href="{{wwwroot}}/admin/settings.php" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+                            </svg>
+                        </div>
+                        <div class="quick-action-title">Settings</div>
+                        <div class="quick-action-description">System settings</div>
+                    </a>
+
+                    <a href="{{wwwroot}}/admin/reports.php" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22,21H2V3H4V19H6V17H10V19H12V16H16V19H18V17H22V21Z" />
+                            </svg>
+                        </div>
+                        <div class="quick-action-title">Reports</div>
+                        <div class="quick-action-description">View reports</div>
+                    </a>
+
+                    <a href="{{wwwroot}}/local/iomad/index.php" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,7V3H2V21H22V7H12M6,19H4V17H6V19M6,15H4V13H6V15M6,11H4V9H6V11M6,7H4V5H6V7M10,19H8V17H10V19M10,15H8V13H10V15M10,11H8V9H10V11M10,7H8V5H10V7M20,19H12V17H14V15H12V13H14V11H12V9H20V19M18,11H16V13H18V11M18,15H16V17H18V15Z" />
+                            </svg>
+                        </div>
+                        <div class="quick-action-title">IOMAD</div>
+                        <div class="quick-action-description">Company management</div>
+                    </a>
+                </div>
+
+                <!-- System Status -->
+                <div class="system-status">
+                    <div class="status-card">
+                        <div class="status-header">
+                            <h3 class="status-title">Database Status</h3>
+                            <div class="status-indicator online"></div>
+                        </div>
+                        <div class="status-metrics">
+                            <div class="status-metric">
+                                <span class="status-metric-label">Connection:</span>
+                                <span class="status-metric-value positive">Online</span>
+                            </div>
+                            <div class="status-metric">
+                                <span class="status-metric-label">Size:</span>
+                                <span class="status-metric-value">{{dashboarddata.system_metrics.database_size}} MB</span>
+                            </div>
+                            <div class="status-metric">
+                                <span class="status-metric-label">Tables:</span>
+                                <span class="status-metric-value">245</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="status-card">
+                        <div class="status-header">
+                            <h3 class="status-title">Storage Status</h3>
+                            <div class="status-indicator warning"></div>
+                        </div>
+                        <div class="status-metrics">
+                            <div class="status-metric">
+                                <span class="status-metric-label">Used:</span>
+                                <span class="status-metric-value warning">{{dashboarddata.system_metrics.storage_used}} MB</span>
+                            </div>
+                            <div class="status-metric">
+                                <span class="status-metric-label">Files:</span>
+                                <span class="status-metric-value">{{dashboarddata.system_metrics.total_files}}</span>
+                            </div>
+                            <div class="status-metric">
+                                <span class="status-metric-label">Available:</span>
+                                <span class="status-metric-value positive">2.1 GB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="status-card">
+                        <div class="status-header">
+                            <h3 class="status-title">System Performance</h3>
+                            <div class="status-indicator online"></div>
+                        </div>
+                        <div class="status-metrics">
+                            <div class="status-metric">
+                                <span class="status-metric-label">Load Time:</span>
+                                <span class="status-metric-value positive">1.2s</span>
+                            </div>
+                            <div class="status-metric">
+                                <span class="status-metric-label">Memory:</span>
+                                <span class="status-metric-value positive">256 MB</span>
+                            </div>
+                            <div class="status-metric">
+                                <span class="status-metric-label">Uptime:</span>
+                                <span class="status-metric-value positive">99.9%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{{ output.activity_navigation }}}
+            {{{ output.course_content_footer }}}
+        </section>
+    </div>
+</div>
+
+    <link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/admin-dashboard.css">
+    
+    <style>
+    /* Hide Moodle's default main content completely */
+    .moodle-main-content {
+        display: none !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        left: -9999px !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+    }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize admin dashboard
+        initializeAdminDashboard();
+    });
+
+    function initializeAdminDashboard() {
+        // Add smooth animations
+        addAnimations();
+        
+        // Add hover effects to cards
+        addCardHoverEffects();
+    }
+
+    function addAnimations() {
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes slideInLeft {
+                from {
+                    opacity: 0;
+                    transform: translateX(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            .overview-card {
+                animation: fadeInUp 0.6s ease-out;
+            }
+            
+            .tool-card {
+                animation: slideInLeft 0.8s ease-out;
+            }
+            
+            .action-card {
+                animation: fadeInUp 0.4s ease-out;
+            }
+            
+            .overview-card:nth-child(1) { animation-delay: 0.1s; }
+            .overview-card:nth-child(2) { animation-delay: 0.2s; }
+            .overview-card:nth-child(3) { animation-delay: 0.3s; }
+            .overview-card:nth-child(4) { animation-delay: 0.4s; }
+            
+            .tool-card:nth-child(1) { animation-delay: 0.5s; }
+            .tool-card:nth-child(2) { animation-delay: 0.6s; }
+            .tool-card:nth-child(3) { animation-delay: 0.7s; }
+            .tool-card:nth-child(4) { animation-delay: 0.8s; }
+            
+            .action-card:nth-child(1) { animation-delay: 0.9s; }
+            .action-card:nth-child(2) { animation-delay: 1.0s; }
+            .action-card:nth-child(3) { animation-delay: 1.1s; }
+            .action-card:nth-child(4) { animation-delay: 1.2s; }
+        `;
+        document.head.appendChild(style);
+    }
+
+    function addCardHoverEffects() {
+        // Add hover effects to overview cards
+        const overviewCards = document.querySelectorAll('.overview-card');
+        overviewCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-4px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add hover effects to tool cards
+        const toolCards = document.querySelectorAll('.tool-card');
+        toolCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-4px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add hover effects to action cards
+        const actionCards = document.querySelectorAll('.action-card');
+        actionCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    }
+    </script>
+
+{{> theme_remui_kids/common_end}}
