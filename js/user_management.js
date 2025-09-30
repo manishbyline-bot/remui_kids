@@ -58,32 +58,32 @@ function handleTabAction(tabName) {
             
         case 'create':
             // Redirect to create user form
-            window.location.href = (typeof MOODLE_WWWROOT !== 'undefined' ? MOODLE_WWWROOT : '../../') + 'blocks/iomad_company_admin/company_user_create_form.php';
+            window.location.href = '../../blocks/iomad_company_admin/company_user_create_form.php';
             break;
             
         case 'edit':
             // Redirect to edit users page
-            window.location.href = (typeof MOODLE_WWWROOT !== 'undefined' ? MOODLE_WWWROOT : '../../') + 'blocks/iomad_company_admin/editusers.php';
+            window.location.href = '../../blocks/iomad_company_admin/editusers.php';
             break;
             
         case 'department':
             // Redirect to department managers form
-            window.location.href = (typeof MOODLE_WWWROOT !== 'undefined' ? MOODLE_WWWROOT : '../../') + 'blocks/iomad_company_admin/company_managers_form.php';
+            window.location.href = '../../blocks/iomad_company_admin/company_managers_form.php';
             break;
             
         case 'assign':
             // Redirect to company users form
-            window.location.href = (typeof MOODLE_WWWROOT !== 'undefined' ? MOODLE_WWWROOT : '../../') + 'blocks/iomad_company_admin/company_users_form.php';
+            window.location.href = '../../blocks/iomad_company_admin/company_users_form.php';
             break;
             
         case 'upload':
             // Redirect to upload user page
-            window.location.href = (typeof MOODLE_WWWROOT !== 'undefined' ? MOODLE_WWWROOT : '../../') + 'blocks/iomad_company_admin/uploaduser.php';
+            window.location.href = '../../blocks/iomad_company_admin/uploaduser.php';
             break;
             
         case 'download':
             // Redirect to user bulk download page
-            window.location.href = (typeof MOODLE_WWWROOT !== 'undefined' ? MOODLE_WWWROOT : '../../') + 'blocks/iomad_company_admin/user_bulk_download.php';
+            window.location.href = '../../blocks/iomad_company_admin/user_bulk_download.php';
             break;
             
         case 'training':

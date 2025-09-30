@@ -3,39 +3,14 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
-redirect_if_major_upgrade_required();
-
+// Require login
 require_login();
 
-// Check if user is admin - restrict access to admins only
-$hassiteconfig = has_capability('moodle/site:config', context_system::instance());
-if (!$hassiteconfig) {
-    // User is not an admin, redirect to dashboard
-    redirect(new moodle_url('/my/'), 'Access denied. This page is only available to administrators.', null, \core\output\notification::NOTIFY_ERROR);
-}
-
-if ($hassiteconfig && moodle_needs_upgrading()) {
-    redirect(new moodle_url('/admin/index.php'));
-}
-
-$context = context_system::instance();
-
-// Set up the page exactly like schools.php
-$PAGE->set_context($context);
+// Set up the page
+$PAGE->set_context(context_system::instance());
 $PAGE->set_url('/theme/remui_kids/enrollments.php');
-$PAGE->add_body_classes(['limitedwidth', 'page-myenrollments']);
-$PAGE->set_pagelayout('mycourses');
-
-$PAGE->set_pagetype('enrollments-index');
-$PAGE->blocks->add_region('content');
-$PAGE->set_title('Enrollments Management - Riyada Trainings');
+$PAGE->set_title('Enrollments Management');
 $PAGE->set_heading('Enrollments Management');
-
-// Force the add block out of the default area.
-$PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
-
-// Include full width CSS - MUST be before header output
-$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 
 // Include JavaScript file
 $PAGE->requires->js('/theme/remui_kids/js/enrollments.js');
@@ -363,10 +338,10 @@ echo $OUTPUT->header();
 
 <style>
 .enrollments-container {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
+    background: #f8f9fa;
     min-height: 100vh;
 }
 
@@ -846,7 +821,7 @@ echo $OUTPUT->header();
                 <h1 class="header-title">Enrollments Management</h1>
                 <p class="header-subtitle">Manage user enrollments and course assignments</p>
             </div>
-            <a href="<?php echo $CFG->wwwroot; ?>/my/" class="back-btn" title="Go back to Home Dashboard">
+            <a href="/Kodeit-Iomad-local/iomad-test/my/" class="back-btn" title="Go back to Home Dashboard">
                 ← Back to Dashboard
             </a>
         </div>
@@ -1072,7 +1047,7 @@ document.addEventListener('DOMContentLoaded', function() {
             params.set('status', statusFilter.value);
         }
         
-        fetch(`<?php echo $CFG->wwwroot; ?>/theme/remui_kids/enrollments.php?${params.toString()}`)
+        fetch(`/Kodeit-Iomad-local/Kodeit-Iomad-local/iomad-test/theme/remui_kids/enrollments.php?${params.toString()}`)
             .then(response => response.json())
             .then(data => {
                 hideLoading();
