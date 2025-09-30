@@ -830,7 +830,7 @@ echo $OUTPUT->header();
     <!-- Summary Cards -->
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-icon">📊</div>
+            <div class="stat-icon">●</div>
             <div class="stat-number"><?php echo number_format($total_enrollments); ?></div>
             <div class="stat-title">Total Enrollments</div>
             <div class="stat-description">All user course enrollments</div>
@@ -844,7 +844,7 @@ echo $OUTPUT->header();
         </div>
         
         <div class="stat-card">
-            <div class="stat-icon">⏸️</div>
+            <div class="stat-icon">●</div>
             <div class="stat-number" id="suspendedCount"><?php echo number_format($suspended_enrollments); ?></div>
             <div class="stat-title">Suspended Enrollments</div>
             <div class="stat-description">Suspended and inactive user enrollments</div>
