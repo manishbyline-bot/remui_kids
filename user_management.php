@@ -23,38 +23,16 @@
  */
 
 require_once(__DIR__ . '/../../config.php');
-require_once($CFG->libdir.'/adminlib.php');
 
-redirect_if_major_upgrade_required();
-
+// Require login only - allow all logged-in users to access
 require_login();
 
-// Check if user is admin - restrict access to admins only
-$hassiteconfig = has_capability('moodle/site:config', context_system::instance());
-if (!$hassiteconfig) {
-    // User is not an admin, redirect to dashboard
-    redirect(new moodle_url('/my/'), 'Access denied. This page is only available to administrators.', null, \core\output\notification::NOTIFY_ERROR);
-}
-
-if ($hassiteconfig && moodle_needs_upgrading()) {
-    redirect(new moodle_url('/admin/index.php'));
-}
-
-$context = context_system::instance();
-
-// Set up the page exactly like schools.php
-$PAGE->set_context($context);
+// Set up the page
 $PAGE->set_url('/theme/remui_kids/user_management.php');
-$PAGE->add_body_classes(['limitedwidth', 'page-myusers']);
-$PAGE->set_pagelayout('mycourses');
-
-$PAGE->set_pagetype('users-index');
-$PAGE->blocks->add_region('content');
-$PAGE->set_title('Users Management - Riyada Trainings');
+$PAGE->set_context(context_system::instance());
+$PAGE->set_title('Users Management');
 $PAGE->set_heading('Users Management');
-
-// Force the add block out of the default area.
-$PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
+$PAGE->set_pagelayout('standard');
 
 // Handle AJAX request for refreshing user statistics
 if (isset($_GET['action']) && $_GET['action'] === 'refresh_stats') {
@@ -172,24 +150,18 @@ try {
 // Recent user activities (static data for now)
 $recent_activities = [];
 
-// Include full width CSS - MUST be before header output
-$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
-
 echo $OUTPUT->header();
 
 // Add user management JavaScript
 $PAGE->requires->js('/theme/remui_kids/js/user_management.js');
-
-// Pass wwwroot to JavaScript
-echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
 ?>
 
 <style>
 .user-management-container {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
+    background: #f8f9fa;
     min-height: 100vh;
 }
 
@@ -262,12 +234,12 @@ echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
 }
 
 .navigation-tabs {
-    background: white;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     margin-bottom: 30px;
     overflow: hidden;
-    border: 1px solid #e9ecef;
+    border: 1px solid #dee2e6;
 }
 
 
@@ -561,10 +533,10 @@ echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
 
 /* Navigation Tabs - Light Color Design */
 .navigation-tabs {
-    background: white;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     padding: 20px 0;
     margin-bottom: 30px;
-    border: 1px solid #e9ecef;
+    border: 1px solid #dee2e6;
 }
 
 .tab-container {
