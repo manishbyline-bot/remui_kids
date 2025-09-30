@@ -1,3 +1,186 @@
+/* Riyada Sidebar Styles - Matching First Sidebar Design - Updated */
+.riyada-sidebar-container {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 60px);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    z-index: 999;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #e5e7eb;
+}
+
+.riyada-sidebar-nav {
+    padding: 20px 0;
+    flex: 1;
+}
+
+.riyada-nav-section {
+    margin-bottom: 32px;
+}
+
+.riyada-nav-section-title {
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 0 24px 16px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.riyada-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.riyada-nav-item {
+    margin: 0;
+}
+
+.riyada-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 14px 24px;
+    color: #374151;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    position: relative;
+    border-left: 3px solid transparent;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.riyada-nav-link:hover {
+    background: rgba(59, 130, 246, 0.08);
+    color: #1f2937;
+    border-left-color: #3b82f6;
+}
+
+.riyada-nav-link.active {
+    background: rgba(59, 130, 246, 0.12);
+    color: #1f2937;
+    border-left-color: #3b82f6;
+    font-weight: 600;
+}
+
+.riyada-nav-icon {
+    font-size: 1.1rem;
+    margin-right: 14px;
+    width: 20px;
+    text-align: center;
+    opacity: 0.9;
+}
+
+.riyada-nav-text {
+    font-size: 0.9rem;
+    font-weight: inherit;
+    flex: 1;
+}
+
+.riyada-nav-indicator {
+    width: 6px;
+    height: 6px;
+    background: #3b82f6;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    margin-left: auto;
+}
+
+.riyada-nav-link.active .riyada-nav-indicator {
+    opacity: 1;
+}
+
+
+/* Mobile sidebar styles */
+@media (max-width: 768px) {
+    .riyada-sidebar-container {
+        top: 60px;
+        height: calc(100vh - 60px);
+        transform: translateX(-100%);
+    }
+    
+    .riyada-sidebar-container.mobile-open {
+        transform: translateX(0);
+    }
+    
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+/* Adjust page content when sidebar is present */
+body.has-sidebar {
+    margin-left: 280px;
+}
+
+/* Fix site administration page layout */
+.path-admin .has-sidebar {
+    margin-left: 0;
+}
+
+.path-admin #riyada-sidebar {
+    display: none;
+    visibility: hidden;
+    position: absolute;
+    left: -9999px;
+}
+
+/* Hide sidebar on all admin pages */
+body.path-admin #riyada-sidebar {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Reset body margin for admin pages */
+body.path-admin.has-sidebar {
+    margin-left: 0 !important;
+}
+
+/* Ensure admin page layout is not affected */
+body.path-admin {
+    margin-left: 0 !important;
+}
+
+/* Ensure admin page content is not affected by sidebar */
+.path-admin .admin-dashboard {
+    margin-left: 0;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    body.has-sidebar {
+        margin-left: 0;
+    }
+}
+
 /* Admin Dashboard Comprehensive Styles */
 .admin-dashboard {
     max-width: 1400px;
@@ -841,3 +1024,4 @@
 .tool-card:nth-child(2) { animation-delay: 1.1s; }
 .tool-card:nth-child(3) { animation-delay: 1.2s; }
 .tool-card:nth-child(4) { animation-delay: 1.3s; }
+

@@ -156,6 +156,14 @@ try {
 // Add dashboard data to template context
 $templatecontext['dashboarddata'] = $dashboarddata;
 $templatecontext['wwwroot'] = $CFG->wwwroot;
+$templatecontext['config'] = array('wwwroot' => $CFG->wwwroot);
+$templatecontext['timestamp'] = time();
+
+// Check if this is an admin page
+$templatecontext['is_admin_page'] = (strpos($PAGE->url->get_path(), '/admin/') !== false || 
+                                    strpos($PAGE->url->get_path(), 'admin') !== false ||
+                                    $PAGE->pagetype == 'admin-index' ||
+                                    $PAGE->pagetype == 'admin');
 
 // Must be called before rendering the template.
 require_once($CFG->dirroot . '/theme/remui_kids/layout/common_end.php');

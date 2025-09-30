@@ -22,6 +22,9 @@
 
 {{> theme_remui_kids/common_start}}
 
+<!-- Include the sidebar only for non-admin pages -->
+{{^is_admin_page}}{{> theme_remui_kids/riyada_sidebar}}{{/is_admin_page}}
+
 <div id="page-content" class="pb-4 d-print-block">
     <div id="region-main-box">
         <section id="region-main" aria-label="{{#str}}content{{/str}}">
@@ -384,70 +387,7 @@
                 </div>
 
                 <!-- System Status -->
-                <div class="system-status">
-                    <div class="status-card">
-                        <div class="status-header">
-                            <h3 class="status-title">Database Status</h3>
-                            <div class="status-indicator online"></div>
-                        </div>
-                        <div class="status-metrics">
-                            <div class="status-metric">
-                                <span class="status-metric-label">Connection:</span>
-                                <span class="status-metric-value positive">Online</span>
-                            </div>
-                            <div class="status-metric">
-                                <span class="status-metric-label">Size:</span>
-                                <span class="status-metric-value">{{dashboarddata.system_metrics.database_size}} MB</span>
-                            </div>
-                            <div class="status-metric">
-                                <span class="status-metric-label">Tables:</span>
-                                <span class="status-metric-value">245</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="status-card">
-                        <div class="status-header">
-                            <h3 class="status-title">Storage Status</h3>
-                            <div class="status-indicator warning"></div>
-                        </div>
-                        <div class="status-metrics">
-                            <div class="status-metric">
-                                <span class="status-metric-label">Used:</span>
-                                <span class="status-metric-value warning">{{dashboarddata.system_metrics.storage_used}} MB</span>
-                            </div>
-                            <div class="status-metric">
-                                <span class="status-metric-label">Files:</span>
-                                <span class="status-metric-value">{{dashboarddata.system_metrics.total_files}}</span>
-                            </div>
-                            <div class="status-metric">
-                                <span class="status-metric-label">Available:</span>
-                                <span class="status-metric-value positive">2.1 GB</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="status-card">
-                        <div class="status-header">
-                            <h3 class="status-title">System Performance</h3>
-                            <div class="status-indicator online"></div>
-                        </div>
-                        <div class="status-metrics">
-                            <div class="status-metric">
-                                <span class="status-metric-label">Load Time:</span>
-                                <span class="status-metric-value positive">1.2s</span>
-                            </div>
-                            <div class="status-metric">
-                                <span class="status-metric-label">Memory:</span>
-                                <span class="status-metric-value positive">256 MB</span>
-                            </div>
-                            <div class="status-metric">
-                                <span class="status-metric-label">Uptime:</span>
-                                <span class="status-metric-value positive">99.9%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
             {{{ output.activity_navigation }}}
@@ -456,7 +396,12 @@
     </div>
 </div>
 
-    <link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/admin-dashboard.css">
+    <link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/admin-dashboard.css?v={{timestamp}}">
+    
+    <script>
+    // Force cache refresh
+    console.log('Dashboard template loaded with sidebar');
+    </script>
     
     <style>
     /* Hide Moodle's default main content completely */
@@ -470,12 +415,246 @@
         overflow: hidden !important;
         opacity: 0 !important;
     }
+    
+    /* Force sidebar styles to be applied */
+    #riyada-sidebar {
+        position: fixed !important;
+        top: 60px !important;
+        left: 0 !important;
+        width: 280px !important;
+        height: calc(100vh - 60px) !important;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+        z-index: 999 !important;
+        overflow-y: auto !important;
+        transition: transform 0.3s ease !important;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        border-right: 1px solid #e5e7eb !important;
+    }
+    
+    .riyada-sidebar-nav {
+        padding: 20px 0 !important;
+        flex: 1 !important;
+    }
+    
+    .riyada-nav-section {
+        margin-bottom: 32px !important;
+    }
+    
+    .riyada-nav-section-title {
+        color: #6b7280 !important;
+        font-size: 0.75rem !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.8px !important;
+        padding: 0 24px 16px !important;
+        margin-bottom: 8px !important;
+        border-bottom: 1px solid #e5e7eb !important;
+    }
+    
+    .riyada-nav-list {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .riyada-nav-item {
+        margin: 0 !important;
+    }
+    
+    .riyada-nav-link {
+        display: flex !important;
+        align-items: center !important;
+        padding: 14px 24px !important;
+        color: #374151 !important;
+        text-decoration: none !important;
+        transition: all 0.2s ease !important;
+        position: relative !important;
+        border-left: 3px solid transparent !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+    }
+    
+    .riyada-nav-link:hover {
+        background: rgba(59, 130, 246, 0.08) !important;
+        color: #1f2937 !important;
+        border-left-color: #3b82f6 !important;
+    }
+    
+    .riyada-nav-link.active {
+        background: rgba(59, 130, 246, 0.12) !important;
+        color: #1f2937 !important;
+        border-left-color: #3b82f6 !important;
+        font-weight: 600 !important;
+    }
+    
+    .riyada-nav-icon {
+        font-size: 1.1rem !important;
+        margin-right: 14px !important;
+        width: 20px !important;
+        text-align: center !important;
+        opacity: 0.9 !important;
+    }
+    
+    .riyada-nav-text {
+        font-size: 0.9rem !important;
+        font-weight: inherit !important;
+        flex: 1 !important;
+    }
+    
+    .riyada-nav-indicator {
+        width: 6px !important;
+        height: 6px !important;
+        background: #3b82f6 !important;
+        border-radius: 50% !important;
+        opacity: 0 !important;
+        transition: opacity 0.2s ease !important;
+        margin-left: auto !important;
+    }
+    
+    .riyada-nav-link.active .riyada-nav-indicator {
+        opacity: 1 !important;
+    }
+    
+    
+    /* Adjust page content when sidebar is present */
+    body.has-sidebar {
+        margin-left: 280px !important;
+    }
+    
+    /* Fix site administration page layout */
+    .path-admin .has-sidebar {
+        margin-left: 0 !important;
+    }
+    
+    .path-admin #riyada-sidebar {
+        display: none !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        left: -9999px !important;
+    }
+    
+    /* Ensure admin page content is not affected by sidebar */
+    .path-admin .admin-dashboard {
+        margin-left: 0 !important;
+        max-width: 100% !important;
+    }
+    
+    /* Hide sidebar on all admin pages */
+    body.path-admin #riyada-sidebar {
+        display: none !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        left: -9999px !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Reset body margin for admin pages */
+    body.path-admin.has-sidebar {
+        margin-left: 0 !important;
+    }
+    
+    /* Ensure admin page layout is not affected */
+    body.path-admin {
+        margin-left: 0 !important;
+    }
+    
+    /* Ensure navigation bar text is visible */
+    .navbar, .navbar-nav, .navbar-brand, .navbar-text {
+        color: #1f2937 !important;
+        z-index: 1000 !important;
+    }
+    
+    .navbar a, .navbar-nav a, .navbar-brand a {
+        color: #1f2937 !important;
+    }
+    
+    .navbar .nav-link {
+        color: #1f2937 !important;
+    }
+    
+    .navbar .dropdown-menu {
+        background: white !important;
+        border: 1px solid #e5e7eb !important;
+    }
+    
+    .navbar .dropdown-item {
+        color: #374151 !important;
+    }
+    
+    .navbar .dropdown-item:hover {
+        background: #f8fafc !important;
+        color: #1f2937 !important;
+    }
+    
+    /* Fix site administration specific issues */
+    .path-admin .region-main {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    
+    .path-admin .admin-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    
+    .path-admin .admin-nav {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    
+    .path-admin .admin-tabs {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    
+    .path-admin .admin-search {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    
+    /* Ensure admin forms work properly */
+    .path-admin form {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    
+    .path-admin .form-group {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    
+    .path-admin .btn {
+        margin-left: 0 !important;
+    }
+    
+    @media (max-width: 768px) {
+        body.has-sidebar {
+            margin-left: 0 !important;
+        }
+        
+        #riyada-sidebar {
+            top: 60px !important;
+            height: calc(100vh - 60px) !important;
+            transform: translateX(-100%) !important;
+        }
+        
+        #riyada-sidebar.mobile-open {
+            transform: translateX(0) !important;
+        }
+    }
     </style>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize admin dashboard
         initializeAdminDashboard();
+        
+        // Initialize sidebar
+        initializeSidebar();
     });
 
     function initializeAdminDashboard() {
@@ -578,6 +757,137 @@
                 this.style.transform = 'translateY(0)';
             });
         });
+    }
+    
+    function initializeSidebar() {
+        // Check if we're on an admin page
+        const isAdminPage = document.body.classList.contains('path-admin') || 
+                           window.location.pathname.includes('/admin/') ||
+                           window.location.pathname.includes('admin');
+        
+        if (isAdminPage) {
+            // Remove sidebar completely from admin pages
+            const sidebar = document.querySelector('#riyada-sidebar');
+            if (sidebar) {
+                sidebar.style.display = 'none';
+                sidebar.style.visibility = 'hidden';
+                sidebar.style.position = 'absolute';
+                sidebar.style.left = '-9999px';
+                sidebar.style.width = '0';
+                sidebar.style.height = '0';
+                sidebar.style.overflow = 'hidden';
+            }
+            
+            // Remove sidebar class from body
+            document.body.classList.remove('has-sidebar');
+            document.body.style.marginLeft = '0';
+            return;
+        }
+        
+        // Add sidebar class to body for non-admin pages
+        document.body.classList.add('has-sidebar');
+        
+        // Mobile sidebar functionality
+        if (window.innerWidth <= 768) {
+            createMobileHeader();
+        }
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 768) {
+                createMobileHeader();
+            } else {
+                removeMobileHeader();
+            }
+        });
+        
+        // Initialize sidebar toggle functionality
+        const fabBtn = document.querySelector('.riyada-fab-btn');
+        if (fabBtn) {
+            fabBtn.addEventListener('click', toggleSidebar);
+        }
+    }
+    
+    function createMobileHeader() {
+        if (document.querySelector('.mobile-header')) return;
+        
+        const mobileHeader = document.createElement('div');
+        mobileHeader.className = 'mobile-header';
+        mobileHeader.innerHTML = `
+            <button class="hamburger-menu" onclick="toggleSidebar()">
+                ☰
+            </button>
+            <div class="mobile-logo">Dashboard</div>
+        `;
+        
+        // Add mobile header styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .mobile-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 60px;
+                background: #1e293b;
+                color: white;
+                display: flex;
+                align-items: center;
+                padding: 0 20px;
+                z-index: 1002;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .hamburger-menu {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 8px;
+                margin-right: 15px;
+            }
+            
+            .mobile-logo {
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        document.body.insertBefore(mobileHeader, document.body.firstChild);
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        overlay.onclick = closeSidebar;
+        document.body.appendChild(overlay);
+    }
+    
+    function removeMobileHeader() {
+        const mobileHeader = document.querySelector('.mobile-header');
+        const overlay = document.querySelector('.sidebar-overlay');
+        
+        if (mobileHeader) mobileHeader.remove();
+        if (overlay) overlay.remove();
+    }
+    
+    function toggleSidebar() {
+        const sidebar = document.querySelector('#riyada-sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        
+        if (sidebar && overlay) {
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('show');
+        }
+    }
+    
+    function closeSidebar() {
+        const sidebar = document.querySelector('#riyada-sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        
+        if (sidebar && overlay) {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('show');
+        }
     }
     </script>
 
