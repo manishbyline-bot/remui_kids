@@ -1,12 +1,38 @@
 <?php
 require_once(__DIR__ . '/../../config.php');
+require_once($CFG->libdir.'/adminlib.php');
+
+redirect_if_major_upgrade_required();
+
 require_login();
 
+// Check if user is admin - restrict access to admins only
+$hassiteconfig = has_capability('moodle/site:config', context_system::instance());
+if (!$hassiteconfig) {
+    // User is not an admin, redirect to dashboard
+    redirect(new moodle_url('/my/'), 'Access denied. This page is only available to administrators.', null, \core\output\notification::NOTIFY_ERROR);
+}
+
+$hassiteconfig = has_capability('moodle/site:config', context_system::instance());
+if ($hassiteconfig && moodle_needs_upgrading()) {
+    redirect(new moodle_url('/admin/index.php'));
+}
+
+$context = context_system::instance();
+
+// Set up the page exactly like schools.php
+$PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/pending_approvals.php');
-$PAGE->set_context(context_system::instance());
-$PAGE->set_title('Pending Approvals');
+$PAGE->add_body_classes(['limitedwidth', 'page-mypendingapprovals']);
+$PAGE->set_pagelayout('mycourses');
+
+$PAGE->set_pagetype('pendingapprovals-index');
+$PAGE->blocks->add_region('content');
+$PAGE->set_title('Pending Approvals - Riyada Trainings');
 $PAGE->set_heading('Pending Approvals');
-$PAGE->set_pagelayout('standard');
+
+// Force the add block out of the default area.
+$PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
 
 // Handle AJAX request for search suggestions
 if (isset($_GET['action']) && $_GET['action'] === 'search_suggestions') {
@@ -44,6 +70,9 @@ if ($table_exists) {
 // Calculate pagination
 $total_pages = ceil($total_approvals / $perpage);
 
+// Include full width CSS - MUST be before header output
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
+
 echo $OUTPUT->header();
 
 // Add pending approvals JavaScript
@@ -52,8 +81,9 @@ $PAGE->requires->js('/theme/remui_kids/js/pending_approvals.js');
 
 <style>
 .user-details-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
     padding: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
