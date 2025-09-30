@@ -15,20 +15,30 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Custom layout for all pages with admin restrictions
+ * Check if current user is admin
  *
  * @package    theme_remui_kids
  * @copyright  2024 Riyada Trainings
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+require_once(__DIR__ . '/../../config.php');
 
-// Include common layout elements
-require_once(__DIR__ . '/common.php');
+// Set content type to JSON
+header('Content-Type: application/json');
 
-// Include the sidebar template
-echo $OUTPUT->render_from_template('theme_remui_kids/riyada_sidebar', [
-    'wwwroot' => $CFG->wwwroot,
-    'sitename' => $SITE->shortname
+// Check if user is logged in
+if (!isloggedin()) {
+    echo json_encode(['isadmin' => false]);
+    exit;
+}
+
+// Check if user has admin capabilities
+$isadmin = has_capability('moodle/site:config', context_system::instance());
+
+// Return JSON response with admin status and user menu visibility
+echo json_encode([
+    'isadmin' => $isadmin,
+    'show_user_menu' => $isadmin, // Only show user menu for admins
+    'show_sidebar' => $isadmin    // Only show sidebar for admins
 ]);

@@ -23,16 +23,38 @@
  */
 
 require_once(__DIR__ . '/../../config.php');
+require_once($CFG->libdir.'/adminlib.php');
 
-// Require login only - allow all logged-in users to access
+redirect_if_major_upgrade_required();
+
 require_login();
 
-// Set up the page
+// Check if user is admin - restrict access to admins only
+$hassiteconfig = has_capability('moodle/site:config', context_system::instance());
+if (!$hassiteconfig) {
+    // User is not an admin, redirect to dashboard
+    redirect(new moodle_url('/my/'), 'Access denied. This page is only available to administrators.', null, \core\output\notification::NOTIFY_ERROR);
+}
+
+if ($hassiteconfig && moodle_needs_upgrading()) {
+    redirect(new moodle_url('/admin/index.php'));
+}
+
+$context = context_system::instance();
+
+// Set up the page exactly like schools.php
+$PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/user_details.php');
-$PAGE->set_context(context_system::instance());
-$PAGE->set_title('User Details');
+$PAGE->add_body_classes(['limitedwidth', 'page-myuserdetails']);
+$PAGE->set_pagelayout('mycourses');
+
+$PAGE->set_pagetype('userdetails-index');
+$PAGE->blocks->add_region('content');
+$PAGE->set_title('User Details - Riyada Trainings');
 $PAGE->set_heading('User Details');
-$PAGE->set_pagelayout('standard');
+
+// Force the add block out of the default area.
+$PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
 
 // Handle AJAX request for search suggestions
 if (isset($_GET['action']) && $_GET['action'] === 'search_suggestions') {
@@ -142,6 +164,9 @@ $users = $DB->get_records_select('user', $where_clause, $params, $order_by, 'id,
 // Calculate pagination
 $total_pages = ceil($total_users / $perpage);
 
+// Include full width CSS - MUST be before header output
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
+
 echo $OUTPUT->header();
 
 // Add user details JavaScript
@@ -150,10 +175,10 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
 
 <style>
 .user-details-container {
-    max-width: 1400px;
-    margin: 0 auto;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
     padding: 20px;
-    background: #f8f9fa;
     min-height: 100vh;
 }
 
