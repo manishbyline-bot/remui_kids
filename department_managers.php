@@ -888,7 +888,7 @@ $PAGE->requires->js('/theme/remui_kids/js/department_managers.js');
         </div>
     <?php else: ?>
         <div class="results-info">
-            📊 Showing all department managers - Total: <?php echo $total_managers; ?> manager(s)
+            ● Showing all department managers - Total: <?php echo $total_managers; ?> manager(s)
         </div>
     <?php endif; ?>
 
@@ -971,7 +971,7 @@ $PAGE->requires->js('/theme/remui_kids/js/department_managers.js');
                 </table>
             <?php else: ?>
                 <div style="padding: 40px; text-align: center; color: #6c757d;">
-                    <div style="font-size: 48px; margin-bottom: 20px;">👥</div>
+                    <div style="font-size: 48px; margin-bottom: 20px;">●</div>
                     <h3 style="margin: 0 0 10px 0; color: #495057;">No Department Managers Found</h3>
                     <p style="margin: 0;">No users with manager roles found in the system.</p>
                 </div>

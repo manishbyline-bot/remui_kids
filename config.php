@@ -93,12 +93,12 @@ $THEME->layouts = array(
         'regions' => array('side-pre'),
         'defaultregion' => 'side-pre',
     ),
-    // My dashboard page.
+    // My dashboard page - Custom kids dashboard.
     'mydashboard' => array(
-        'file' => 'drawers.php',
-        'regions' => array('side-pre'),
+        'file' => 'dashboard.php',
+        'regions' => array('side-pre', 'side-top', 'side-bottom', 'full-width-top', 'full-bottom'),
         'defaultregion' => 'side-pre',
-        'options' => array('nonavbar' => true),
+        'options' => array('nonavbar' => true, 'langmenu' => true),
     ),
     // My public page.
     'mypublic' => array(

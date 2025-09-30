@@ -214,7 +214,7 @@ $PAGE->requires->js('/theme/remui_kids/js/active_users.js');
         </div>
     <?php else: ?>
         <div class="results-info">
-            📊 Showing users active in the last 30 days - Total: <?php echo $total_users; ?> user(s)
+            ● Showing users active in the last 30 days - Total: <?php echo $total_users; ?> user(s)
         </div>
     <?php endif; ?>
 

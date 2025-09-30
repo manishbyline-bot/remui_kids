@@ -326,3 +326,267 @@ function theme_remui_kids_get_activity_image($modname) {
     
     return $activity_images[$modname] ?? $activity_images['page']; // Default to page image
 }
+
+/**
+ * Get course progress percentage for a user
+ *
+ * @param int $courseid Course ID
+ * @param int $userid User ID
+ * @return int Progress percentage
+ */
+function theme_remui_kids_get_course_progress($courseid, $userid) {
+    global $DB;
+    
+    // Simple progress calculation based on completed activities
+    $total_activities = $DB->count_records('course_modules', array('course' => $courseid, 'visible' => 1));
+    
+    if ($total_activities == 0) {
+        return 0;
+    }
+    
+    // Count completed activities (this is a simplified version)
+    $completed = $DB->count_records_sql(
+        "SELECT COUNT(DISTINCT cm.id) 
+         FROM {course_modules} cm 
+         JOIN {course_modules_completion} cmc ON cm.id = cmc.coursemoduleid 
+         WHERE cm.course = ? AND cmc.userid = ? AND cmc.completionstate > 0",
+        array($courseid, $userid)
+    );
+    
+    return round(($completed / $total_activities) * 100);
+}
+
+/**
+ * Get count of completed courses for a user
+ *
+ * @param int $userid User ID
+ * @return int Number of completed courses
+ */
+function theme_remui_kids_get_completed_courses_count($userid) {
+    global $DB;
+    
+    return $DB->count_records_sql(
+        "SELECT COUNT(DISTINCT c.id) 
+         FROM {course} c 
+         JOIN {course_completions} cc ON c.id = cc.course 
+         WHERE cc.userid = ? AND cc.timecompleted > 0",
+        array($userid)
+    );
+}
+
+/**
+ * Get count of in-progress courses for a user
+ *
+ * @param int $userid User ID
+ * @return int Number of in-progress courses
+ */
+function theme_remui_kids_get_in_progress_courses_count($userid) {
+    global $DB;
+    
+    return $DB->count_records_sql(
+        "SELECT COUNT(DISTINCT c.id) 
+         FROM {course} c 
+         JOIN {course_completions} cc ON c.id = cc.course 
+         WHERE cc.userid = ? AND cc.timecompleted IS NULL AND cc.timestarted > 0",
+        array($userid)
+    );
+}
+
+/**
+ * Get count of user badges
+ *
+ * @param int $userid User ID
+ * @return int Number of badges
+ */
+function theme_remui_kids_get_user_badges_count($userid) {
+    global $DB;
+    
+    // Check if badges table exists
+    if (!$DB->get_manager()->table_exists('badge_issued')) {
+        return 0;
+    }
+    
+    return $DB->count_records('badge_issued', array('userid' => $userid));
+}
+
+/**
+ * Get overall completion rate across all courses
+ *
+ * @return float Completion rate percentage
+ */
+function theme_remui_kids_get_completion_rate() {
+    global $DB;
+    
+    try {
+        $total_enrollments = $DB->count_records('user_enrolments');
+        if ($total_enrollments == 0) {
+            return 0;
+        }
+        
+        $completed = $DB->count_records_sql(
+            "SELECT COUNT(DISTINCT cc.id) FROM {course_completions} cc 
+             WHERE cc.timecompleted > 0"
+        );
+        
+        return round(($completed / $total_enrollments) * 100, 1);
+    } catch (Exception $e) {
+        error_log("Completion rate calculation error: " . $e->getMessage());
+        return 0;
+    }
+}
+
+/**
+ * Get completion trends over time
+ *
+ * @return array Completion trends data
+ */
+function theme_remui_kids_get_completion_trends() {
+    global $DB;
+    
+    try {
+        $trends = array();
+        
+        // Get completions for last 6 months
+        for ($i = 5; $i >= 0; $i--) {
+            $start_time = strtotime("-$i months first day of this month");
+            $end_time = strtotime("-$i months last day of this month");
+            
+            $completions = $DB->count_records_sql(
+                "SELECT COUNT(*) FROM {course_completions} 
+                 WHERE timecompleted >= ? AND timecompleted <= ?",
+                array($start_time, $end_time)
+            );
+            
+            $trends[] = array(
+                'month' => date('M Y', $start_time),
+                'completions' => $completions
+            );
+        }
+        
+        return $trends;
+    } catch (Exception $e) {
+        error_log("Completion trends error: " . $e->getMessage());
+        return array();
+    }
+}
+
+/**
+ * Get top performing courses
+ *
+ * @return array Top courses data
+ */
+function theme_remui_kids_get_top_courses() {
+    global $DB;
+    
+    try {
+        $top_courses = $DB->get_records_sql(
+            "SELECT c.id, c.fullname, c.shortname, 
+                    COUNT(cc.id) as completions,
+                    COUNT(ue.id) as enrollments,
+                    ROUND((COUNT(cc.id) / COUNT(ue.id)) * 100, 1) as completion_rate
+             FROM {course} c
+             LEFT JOIN {user_enrolments} ue ON c.id = ue.enrolid
+             LEFT JOIN {course_completions} cc ON c.id = cc.course AND cc.timecompleted > 0
+             WHERE c.visible = 1
+             GROUP BY c.id, c.fullname, c.shortname
+             HAVING COUNT(ue.id) > 0
+             ORDER BY completion_rate DESC
+             LIMIT 5",
+            array()
+        );
+        
+        return array_values($top_courses);
+    } catch (Exception $e) {
+        error_log("Top courses error: " . $e->getMessage());
+        return array();
+    }
+}
+
+/**
+ * Get user engagement metrics
+ *
+ * @return array Engagement data
+ */
+function theme_remui_kids_get_engagement_metrics() {
+    global $DB;
+    
+    try {
+        $metrics = array();
+        
+        // Daily active users (last 7 days)
+        $metrics['daily_active'] = array();
+        for ($i = 6; $i >= 0; $i--) {
+            $date = date('Y-m-d', strtotime("-$i days"));
+            $start_time = strtotime($date . ' 00:00:00');
+            $end_time = strtotime($date . ' 23:59:59');
+            
+            $active_users = $DB->count_records_sql(
+                "SELECT COUNT(DISTINCT userid) FROM {log} 
+                 WHERE timecreated >= ? AND timecreated <= ?",
+                array($start_time, $end_time)
+            );
+            
+            $metrics['daily_active'][] = array(
+                'date' => date('M j', $start_time),
+                'users' => $active_users
+            );
+        }
+        
+        // User activity by role
+        $metrics['by_role'] = $DB->get_records_sql(
+            "SELECT r.shortname as role, COUNT(DISTINCT u.id) as count
+             FROM {user} u
+             JOIN {role_assignments} ra ON u.id = ra.userid
+             JOIN {role} r ON ra.roleid = r.id
+             WHERE u.deleted = 0 AND u.lastaccess > (UNIX_TIMESTAMP() - (30 * 24 * 60 * 60))
+             GROUP BY r.shortname
+             ORDER BY count DESC",
+            array()
+        );
+        
+        return $metrics;
+    } catch (Exception $e) {
+        error_log("Engagement metrics error: " . $e->getMessage());
+        return array('daily_active' => array(), 'by_role' => array());
+    }
+}
+
+/**
+ * Get system performance metrics
+ *
+ * @return array System metrics
+ */
+function theme_remui_kids_get_system_metrics() {
+    global $DB, $CFG;
+    
+    try {
+        $metrics = array();
+        
+        // Database size
+        $db_size = $DB->get_field_sql("SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS 'DB Size in MB' FROM information_schema.tables WHERE table_schema = DATABASE()");
+        $metrics['database_size'] = $db_size ? $db_size : 0;
+        
+        // Total files
+        $metrics['total_files'] = $DB->count_records('files');
+        
+        // Storage usage
+        $metrics['storage_used'] = $DB->get_field_sql(
+            "SELECT ROUND(SUM(filesize) / 1024 / 1024, 1) FROM {files} WHERE filesize > 0"
+        ) ?: 0;
+        
+        // Recent activity
+        $metrics['recent_logins'] = $DB->count_records_sql(
+            "SELECT COUNT(*) FROM {user} WHERE lastaccess > (UNIX_TIMESTAMP() - (24 * 60 * 60))"
+        );
+        
+        return $metrics;
+    } catch (Exception $e) {
+        error_log("System metrics error: " . $e->getMessage());
+        return array(
+            'database_size' => 0,
+            'total_files' => 0,
+            'storage_used' => 0,
+            'recent_logins' => 0
+        );
+    }
+}
