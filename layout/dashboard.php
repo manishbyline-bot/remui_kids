@@ -50,41 +50,105 @@ try {
          WHERE cc.timecompleted > 0"
     );
 
-    // Get department/company statistics (IOMAD specific)
+    // Get school/company statistics (IOMAD specific) - Real data
     $dashboarddata->total_companies = 0;
     $dashboarddata->total_departments = 0;
     if ($DB->get_manager()->table_exists('company')) {
-        $dashboarddata->total_companies = $DB->count_records('company');
+        $dashboarddata->total_companies = $DB->count_records('company', array('suspended' => 0));
     }
     if ($DB->get_manager()->table_exists('department')) {
         $dashboarddata->total_departments = $DB->count_records('department');
     }
 
-    // Get user role statistics
+    // Get user role statistics - Check actual role assignments for Teachers and Trainers separately
     $dashboarddata->teachers = $DB->count_records_sql(
         "SELECT COUNT(DISTINCT u.id) FROM {user} u 
          JOIN {role_assignments} ra ON u.id = ra.userid 
          JOIN {role} r ON ra.roleid = r.id 
-         WHERE r.shortname = 'teacher' AND u.deleted = 0"
+         WHERE r.shortname = 'teacher' AND u.deleted = 0 AND u.suspended = 0"
+    );
+
+    $dashboarddata->trainers = $DB->count_records_sql(
+        "SELECT COUNT(DISTINCT u.id) FROM {user} u 
+         JOIN {role_assignments} ra ON u.id = ra.userid 
+         JOIN {role} r ON ra.roleid = r.id 
+         WHERE r.shortname = 'trainer' AND u.deleted = 0 AND u.suspended = 0"
     );
 
     $dashboarddata->students = $DB->count_records_sql(
         "SELECT COUNT(DISTINCT u.id) FROM {user} u 
          JOIN {role_assignments} ra ON u.id = ra.userid 
          JOIN {role} r ON ra.roleid = r.id 
-         WHERE r.shortname = 'student' AND u.deleted = 0"
+         WHERE r.shortname = 'student' AND u.deleted = 0 AND u.suspended = 0"
     );
 
     $dashboarddata->managers = $DB->count_records_sql(
         "SELECT COUNT(DISTINCT u.id) FROM {user} u 
          JOIN {role_assignments} ra ON u.id = ra.userid 
          JOIN {role} r ON ra.roleid = r.id 
-         WHERE r.shortname IN ('manager', 'companyadmin') AND u.deleted = 0"
+         WHERE r.shortname IN ('manager', 'companyadmin') AND u.deleted = 0 AND u.suspended = 0"
+    );
+    
+    // Get additional role statistics
+    $dashboarddata->editingteachers = $DB->count_records_sql(
+        "SELECT COUNT(DISTINCT u.id) FROM {user} u 
+         JOIN {role_assignments} ra ON u.id = ra.userid 
+         JOIN {role} r ON ra.roleid = r.id 
+         WHERE r.shortname = 'editingteacher' AND u.deleted = 0 AND u.suspended = 0"
+    );
+    
+    $dashboarddata->coursecreators = $DB->count_records_sql(
+        "SELECT COUNT(DISTINCT u.id) FROM {user} u 
+         JOIN {role_assignments} ra ON u.id = ra.userid 
+         JOIN {role} r ON ra.roleid = r.id 
+         WHERE r.shortname = 'coursecreator' AND u.deleted = 0 AND u.suspended = 0"
+    );
+    
+    $dashboarddata->siteadmins = $DB->count_records_sql(
+        "SELECT COUNT(DISTINCT u.id) FROM {user} u 
+         JOIN {role_assignments} ra ON u.id = ra.userid 
+         JOIN {role} r ON ra.roleid = r.id 
+         WHERE r.shortname = 'admin' AND u.deleted = 0 AND u.suspended = 0"
     );
 
-    // Get recent activity data
+    // Get recent activity data - Real data
     $dashboarddata->recent_logins = $DB->count_records_sql(
-        "SELECT COUNT(*) FROM {user} WHERE lastaccess > (UNIX_TIMESTAMP() - (7 * 24 * 60 * 60))"
+        "SELECT COUNT(*) FROM {user} WHERE lastaccess > (UNIX_TIMESTAMP() - (7 * 24 * 60 * 60)) AND deleted = 0"
+    );
+    
+    // Get real completion rates
+    $dashboarddata->completion_rate = 0;
+    if ($dashboarddata->total_enrollments > 0) {
+        $dashboarddata->completion_rate = round(($dashboarddata->completed_courses / $dashboarddata->total_enrollments) * 100, 1);
+    }
+    
+    // Get real active users (last 30 days)
+    $dashboarddata->active_users_30d = $DB->count_records_sql(
+        "SELECT COUNT(*) FROM {user} WHERE lastaccess > (UNIX_TIMESTAMP() - (30 * 24 * 60 * 60)) AND deleted = 0"
+    );
+    
+    // Get role-based statistics with detailed breakdown
+    $dashboarddata->role_breakdown = array();
+    
+    // Get all roles and their counts
+    $roles = $DB->get_records_sql(
+        "SELECT r.shortname, r.name, COUNT(DISTINCT u.id) as user_count 
+         FROM {role} r 
+         LEFT JOIN {role_assignments} ra ON r.id = ra.roleid 
+         LEFT JOIN {user} u ON ra.userid = u.id AND u.deleted = 0 AND u.suspended = 0
+         GROUP BY r.id, r.shortname, r.name 
+         HAVING user_count > 0 
+         ORDER BY user_count DESC"
+    );
+    
+    $dashboarddata->role_breakdown = $roles;
+    
+    // Get specific role assignments for verification
+    $dashboarddata->role_verification = array(
+        'teacher_assignments' => $DB->count_records('role_assignments', array('roleid' => $DB->get_field('role', 'id', array('shortname' => 'teacher')))),
+        'trainer_assignments' => $DB->count_records('role_assignments', array('roleid' => $DB->get_field('role', 'id', array('shortname' => 'trainer')))),
+        'student_assignments' => $DB->count_records('role_assignments', array('roleid' => $DB->get_field('role', 'id', array('shortname' => 'student')))),
+        'manager_assignments' => $DB->count_records_sql("SELECT COUNT(*) FROM {role_assignments} ra JOIN {role} r ON ra.roleid = r.id WHERE r.shortname IN ('manager', 'companyadmin')")
     );
 
     // Get course completion trends

@@ -136,6 +136,185 @@ body.has-sidebar {
     margin-left: 280px;
 }
 
+/* Make dashboard use full width */
+.dashboard-content {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove any container constraints */
+.container, .container-fluid {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Full width for main content area */
+#region-main {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove any wrapper constraints */
+.wrapper, .page-wrapper {
+    max-width: none !important;
+    width: 100% !important;
+}
+
+/* Hide footer on all pages */
+footer, .footer, #page-footer, .page-footer {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Remove footer space */
+body {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Hide Custom Pages footer section */
+.custom-pages, .custom-pages-footer, .footer-custom-pages,
+.footer-section, .footer-menu, .footer-navigation,
+.footer-links-section, .footer-menu-section {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Hide specific footer content */
+.footer-about, .footer-faq, .footer-privacy,
+.footer-university, .footer-custom-content {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Hide any element containing "Custom Pages" text */
+*:contains("Custom Pages"), *:contains("About Us"), *:contains("FAQ"), *:contains("Privacy Policy") {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Hide any dark blue footer sections */
+[style*="background-color: #1e3a8a"], [style*="background: #1e3a8a"],
+[style*="background-color: darkblue"], [style*="background: darkblue"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Hide any footer-like sections at bottom of page */
+.page-bottom, .bottom-section, .page-end, .content-end {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Complete footer removal for entire project */
+footer, .footer, #page-footer, .page-footer, .site-footer, .main-footer,
+.footer-content, .footer-wrapper, .page-footer-content, .footer-links,
+.footer-info, .copyright, .footer-text, .footer-bottom, .custom-pages,
+.custom-pages-footer, .footer-custom-pages, .footer-section, .footer-menu,
+.footer-navigation, .footer-links-section, .footer-menu-section,
+.footer-about, .footer-faq, .footer-privacy, .footer-university,
+.footer-custom-content, .page-bottom, .bottom-section, .page-end,
+.content-end, .footer-main, .footer-container, .footer-inner,
+.footer-top, .footer-middle, .footer-bottom-section, .footer-copyright,
+.footer-social, .footer-newsletter, .footer-contact, .footer-legal,
+.footer-disclaimer, .footer-terms, .footer-conditions, .footer-policy {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Hide any element that might contain footer content */
+div[class*="footer"], div[id*="footer"], section[class*="footer"],
+section[id*="footer"], aside[class*="footer"], aside[id*="footer"],
+nav[class*="footer"], nav[id*="footer"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Role Breakdown Section */
+.role-breakdown-section {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.role-breakdown-section h3 {
+    color: #1f2937;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.role-breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.role-item {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.role-item:hover {
+    background: #f1f5f9;
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+}
+
+.role-name {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.role-shortname {
+    color: #6b7280;
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.role-count {
+    color: #3b82f6;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
 /* Fix site administration page layout */
 .path-admin .has-sidebar {
     margin-left: 0;
@@ -308,6 +487,7 @@ body.path-admin {
 
 .stat-card.users::before { background: linear-gradient(90deg, #3b82f6, #1d4ed8); }
 .stat-card.teachers::before { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+.stat-card.trainers::before { background: linear-gradient(90deg, #10b981, #059669); }
 .stat-card.students::before { background: linear-gradient(90deg, #10b981, #059669); }
 .stat-card.courses::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
 .stat-card.companies::before { background: linear-gradient(90deg, #ef4444, #dc2626); }

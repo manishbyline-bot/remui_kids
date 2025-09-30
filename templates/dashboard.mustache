@@ -76,8 +76,8 @@
                         </div>
                         <div class="stat-value">{{dashboarddata.total_users}}</div>
                         <div class="stat-label">Total Users</div>
-                        <div class="stat-subtitle">{{dashboarddata.active_users}} active</div>
-                        <div class="stat-change positive">↑ +12% this month</div>
+                        <div class="stat-subtitle">{{dashboarddata.active_users_30d}} active (30d)</div>
+                        <div class="stat-change positive">Real user data</div>
                     </div>
 
                     <div class="stat-card teachers">
@@ -88,8 +88,20 @@
                         </div>
                         <div class="stat-value">{{dashboarddata.teachers}}</div>
                         <div class="stat-label">Teachers</div>
-                        <div class="stat-subtitle">Active instructors</div>
-                        <div class="stat-change positive">↑ +8% this month</div>
+                        <div class="stat-subtitle">Teaching staff</div>
+                        <div class="stat-change positive">Role assignments: {{dashboarddata.role_verification.teacher_assignments}}</div>
+                    </div>
+
+                    <div class="stat-card trainers">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16,4C18.21,4 20,5.79 20,8C20,10.21 18.21,12 16,12C13.79,12 12,10.21 12,8C12,5.79 13.79,4 16,4M16,14C20.42,14 24,15.79 24,18V20H8V18C8,15.79 11.58,14 16,14M8,4C10.21,4 12,5.79 12,8C12,10.21 10.21,12 8,12C5.79,12 4,10.21 4,8C4,5.79 5.79,4 8,4M8,14C12.42,14 16,15.79 16,18V20H0V18C0,15.79 3.58,14 8,14Z" />
+                            </svg>
+                        </div>
+                        <div class="stat-value">{{dashboarddata.trainers}}</div>
+                        <div class="stat-label">Trainers</div>
+                        <div class="stat-subtitle">Training staff</div>
+                        <div class="stat-change positive">Role assignments: {{dashboarddata.role_verification.trainer_assignments}}</div>
                     </div>
 
                     <div class="stat-card students">
@@ -100,8 +112,8 @@
                         </div>
                         <div class="stat-value">{{dashboarddata.students}}</div>
                         <div class="stat-label">Students</div>
-                        <div class="stat-subtitle">Enrolled learners</div>
-                        <div class="stat-change positive">↑ +15% this month</div>
+                        <div class="stat-subtitle">Active students</div>
+                        <div class="stat-change positive">Role assignments: {{dashboarddata.role_verification.student_assignments}}</div>
                     </div>
 
                     <div class="stat-card courses">
@@ -112,8 +124,8 @@
                         </div>
                         <div class="stat-value">{{dashboarddata.total_courses}}</div>
                         <div class="stat-label">Courses</div>
-                        <div class="stat-subtitle">Available courses</div>
-                        <div class="stat-change positive">↑ +5% this month</div>
+                        <div class="stat-subtitle">Active courses</div>
+                        <div class="stat-change positive">Real course count</div>
                     </div>
 
                     <div class="stat-card companies">
@@ -123,9 +135,9 @@
                             </svg>
                         </div>
                         <div class="stat-value">{{dashboarddata.total_companies}}</div>
-                        <div class="stat-label">Companies</div>
-                        <div class="stat-subtitle">IOMAD companies</div>
-                        <div class="stat-change positive">↑ +3% this month</div>
+                        <div class="stat-label">Schools</div>
+                        <div class="stat-subtitle">Active schools</div>
+                        <div class="stat-change positive">Real school count</div>
                     </div>
 
                     <div class="stat-card enrollments">
@@ -136,8 +148,22 @@
                         </div>
                         <div class="stat-value">{{dashboarddata.total_enrollments}}</div>
                         <div class="stat-label">Enrollments</div>
-                        <div class="stat-subtitle">Total enrollments</div>
-                        <div class="stat-change positive">↑ +18% this month</div>
+                        <div class="stat-subtitle">Active enrollments</div>
+                        <div class="stat-change positive">Real enrollment data</div>
+                    </div>
+                </div>
+
+                <!-- Role Breakdown Section -->
+                <div class="role-breakdown-section">
+                    <h3>Role Assignments Breakdown</h3>
+                    <div class="role-breakdown-grid">
+                        {{#dashboarddata.role_breakdown}}
+                        <div class="role-item">
+                            <div class="role-name">{{name}}</div>
+                            <div class="role-shortname">{{shortname}}</div>
+                            <div class="role-count">{{user_count}} users</div>
+                        </div>
+                        {{/dashboarddata.role_breakdown}}
                     </div>
                 </div>
 
@@ -155,16 +181,16 @@
                                 <span class="teacher-stat-value">{{dashboarddata.teachers}}</span>
                             </div>
                             <div class="teacher-stat-item">
-                                <span class="teacher-stat-label">New This Month:</span>
-                                <span class="teacher-stat-value positive">+12</span>
+                                <span class="teacher-stat-label">Role Assignments:</span>
+                                <span class="teacher-stat-value positive">{{dashboarddata.role_verification.teacher_assignments}}</span>
                             </div>
                             <div class="teacher-stat-item">
-                                <span class="teacher-stat-label">Certified:</span>
-                                <span class="teacher-stat-value positive">85%</span>
+                                <span class="teacher-stat-label">Active Users:</span>
+                                <span class="teacher-stat-value positive">{{dashboarddata.active_users_30d}}</span>
                             </div>
                             <div class="teacher-stat-item">
-                                <span class="teacher-stat-label">Avg. Rating:</span>
-                                <span class="teacher-stat-value positive">4.7/5</span>
+                                <span class="teacher-stat-label">Completion Rate:</span>
+                                <span class="teacher-stat-value positive">{{dashboarddata.completion_rate}}%</span>
                             </div>
                         </div>
                         <div class="progress-bar">
@@ -172,6 +198,38 @@
                         </div>
                         <div style="text-align: center; margin-top: 8px; font-size: 0.75rem; color: #6b7280;">
                             Teacher Certification Progress
+                        </div>
+                    </div>
+
+                    <!-- Trainer Analytics -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Trainer Analytics</h3>
+                            <a href="{{wwwroot}}/admin/users.php" class="card-action">View All</a>
+                        </div>
+                        <div class="teacher-stats">
+                            <div class="teacher-stat-item">
+                                <span class="teacher-stat-label">Active Trainers:</span>
+                                <span class="teacher-stat-value">{{dashboarddata.trainers}}</span>
+                            </div>
+                            <div class="teacher-stat-item">
+                                <span class="teacher-stat-label">Role Assignments:</span>
+                                <span class="teacher-stat-value positive">{{dashboarddata.role_verification.trainer_assignments}}</span>
+                            </div>
+                            <div class="teacher-stat-item">
+                                <span class="teacher-stat-label">Active Users:</span>
+                                <span class="teacher-stat-value positive">{{dashboarddata.active_users_30d}}</span>
+                            </div>
+                            <div class="teacher-stat-item">
+                                <span class="teacher-stat-label">Completion Rate:</span>
+                                <span class="teacher-stat-value positive">{{dashboarddata.completion_rate}}%</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill green" style="width: 75%"></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 8px; font-size: 0.75rem; color: #6b7280;">
+                            Trainer Certification Progress
                         </div>
                     </div>
 
@@ -286,19 +344,19 @@
                                 <path d="M12,7V3H2V21H22V7H12M6,19H4V17H6V19M6,15H4V13H6V15M6,11H4V9H6V11M6,7H4V5H6V7M10,19H8V17H10V19M10,15H8V13H10V15M10,11H8V9H10V11M10,7H8V5H10V7M20,19H12V17H14V15H12V13H14V11H12V9H20V19M18,11H16V13H18V11M18,15H16V17H18V15Z" />
                             </svg>
                         </div>
-                        <div class="tool-title">Company Management</div>
-                        <div class="tool-description">Manage IOMAD companies and departments</div>
+                        <div class="tool-title">School Management</div>
+                        <div class="tool-description">Manage IOMAD schools and departments</div>
                         <div class="tool-stats">
                             <div class="tool-stat">
                                 <div class="tool-stat-value">{{dashboarddata.total_companies}}</div>
-                                <div class="tool-stat-label">Companies</div>
+                                <div class="tool-stat-label">Schools</div>
                             </div>
                             <div class="tool-stat">
                                 <div class="tool-stat-value">{{dashboarddata.total_departments}}</div>
                                 <div class="tool-stat-label">Departments</div>
                             </div>
                         </div>
-                        <a href="{{wwwroot}}/local/iomad/index.php" class="tool-link">Manage Companies</a>
+                        <a href="{{wwwroot}}/local/iomad/index.php" class="tool-link">Manage Schools</a>
                     </div>
 
                     <div class="tool-card">
@@ -521,6 +579,172 @@
     /* Adjust page content when sidebar is present */
     body.has-sidebar {
         margin-left: 280px !important;
+    }
+    
+    /* Make dashboard use full width */
+    .dashboard-content {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Remove any container constraints */
+    .container, .container-fluid {
+        max-width: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Full width for main content area */
+    #region-main {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Remove any wrapper constraints */
+    .wrapper, .page-wrapper {
+        max-width: none !important;
+        width: 100% !important;
+    }
+    
+    /* Full width for page content */
+    #page-content {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Full width for region main box */
+    #region-main-box {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Remove any grid constraints */
+    .row {
+        margin: 0 !important;
+        width: 100% !important;
+    }
+    
+    .col, .col-12, .col-md-12, .col-lg-12 {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Hide footer on all pages */
+    footer, .footer, #page-footer, .page-footer {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Remove footer space */
+    body {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    /* Hide all possible footer elements */
+    .site-footer, .main-footer, .footer-content, .footer-wrapper,
+    .page-footer-content, .footer-links, .footer-info,
+    .copyright, .footer-text, .footer-bottom {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Hide Custom Pages footer section */
+    .custom-pages, .custom-pages-footer, .footer-custom-pages,
+    .footer-section, .footer-menu, .footer-navigation,
+    .footer-links-section, .footer-menu-section {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Hide specific footer content */
+    .footer-about, .footer-faq, .footer-privacy,
+    .footer-university, .footer-custom-content {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Remove any footer margins/padding from main content */
+    .main-content, .page-content, #page-content {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    
+    /* Hide any element containing "Custom Pages" text */
+    *:contains("Custom Pages"), *:contains("About Us"), *:contains("FAQ"), *:contains("Privacy Policy") {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Hide any dark blue footer sections */
+    [style*="background-color: #1e3a8a"], [style*="background: #1e3a8a"],
+    [style*="background-color: darkblue"], [style*="background: darkblue"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Hide any footer-like sections at bottom of page */
+    .page-bottom, .bottom-section, .page-end, .content-end {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Complete footer removal for entire project */
+    footer, .footer, #page-footer, .page-footer, .site-footer, .main-footer,
+    .footer-content, .footer-wrapper, .page-footer-content, .footer-links,
+    .footer-info, .copyright, .footer-text, .footer-bottom, .custom-pages,
+    .custom-pages-footer, .footer-custom-pages, .footer-section, .footer-menu,
+    .footer-navigation, .footer-links-section, .footer-menu-section,
+    .footer-about, .footer-faq, .footer-privacy, .footer-university,
+    .footer-custom-content, .page-bottom, .bottom-section, .page-end,
+    .content-end, .footer-main, .footer-container, .footer-inner,
+    .footer-top, .footer-middle, .footer-bottom-section, .footer-copyright,
+    .footer-social, .footer-newsletter, .footer-contact, .footer-legal,
+    .footer-disclaimer, .footer-terms, .footer-conditions, .footer-policy {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        left: -9999px !important;
+        width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Hide any element that might contain footer content */
+    div[class*="footer"], div[id*="footer"], section[class*="footer"],
+    section[id*="footer"], aside[class*="footer"], aside[id*="footer"],
+    nav[class*="footer"], nav[id*="footer"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
     }
     
     /* Fix site administration page layout */
