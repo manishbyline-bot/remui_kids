@@ -22,21 +22,15 @@
 {{!
     @template theme_remui_kids/course
 
-    Kids-friendly course template with horizontal card-based sections.
-
-    Context variables required for this template:
-    * sitename - The name of the site
-    * output - The core renderer for the page
-    * bodyattributes - attributes for the body tag as a string of html attributes
-    * sidepreblocks - HTML for the blocks
-    * hasblocks - true if there are blocks on this page
-    * courseindexopen - true if the nav drawer should be open on page load
-    * regionmainsettingsmenu - HTML for the region main settings menu
-    * hasregionmainsettingsmenu - There is a region main settings menu on this page.
-    * custom_course_cards - true if we should show custom course cards
-    * course_sections - array of course section data
+    Kids-friendly course template with Learning Modules card layout.
 }}
 {{> theme_remui/common_start}}
+
+<!-- Learning Modules CSS -->
+<link rel="stylesheet" href="{{config.wwwroot}}/theme/remui_kids/style/learning-modules.css?v={{timestamp}}">
+
+<!-- Learning Modules JavaScript -->
+<script src="{{config.wwwroot}}/theme/remui_kids/js/learning-modules.js?v={{timestamp}}"></script>
 
 <div id="page-content" class="pb-4 d-print-block">
     <div id="region-main-box">
@@ -61,213 +55,503 @@
                 </div>
             {{/overflow}}
 
-            {{#custom_course_cards}}
-            <!-- Custom Course Sections as Cards -->
-            <div class="course-sections-cards">
-                <div class="container-fluid">
-                    <div class="row">
+            {{#custom_section_view}}
+            <!-- Professional Section Activities View -->
+            <div class="professional-section-activities">
+                <!-- Course Navigation Sidebar -->
+                <div class="course-navigation-sidebar">
+                    <div class="sidebar-header">
+                        <div class="sidebar-controls">
+                            <button class="sidebar-back-btn" onclick="goBackToCourse()">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <span>Course Home</span>
+                            </button>
+                            <h3 class="sidebar-title">COURSE PATHWAY</h3>
+                            <button class="sidebar-collapse-btn" onclick="collapseSidebar()">
+                                <i class="fa fa-compress" aria-hidden="true"></i>
+                                <span>Collapse</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="course-sections-navigation">
                         {{#course_sections}}
-                        {{#uservisible}}
-                        <div class="col-lg-6 col-md-12 mb-4">
-                            <a href="{{{url}}}" class="course-section-card d-flex">
-                                <div class="card-image-wrapper">
-                                    <img src="{{section_image}}" alt="Section Image" class="img-fluid">
-                                    <div class="course-tags">
-                                        <span class="tag">Section {{section}}</span>
-                                    </div>
-                                </div>
-                                <div class="card-details">
-                                   
-                                    <div class="course-meta">
-                                        <div class="meta-item">
-                                            <i class="icon fa fa-book" aria-hidden="true"></i>
-                                            <span>{{total_activities}} Activities</span>
-                                        </div>
-                                        <div class="meta-item">
-                                            <i class="icon fa fa-users" aria-hidden="true"></i>
-                                            <span>{{completed_activities}} Completed</span>
-                                        </div>
-                                    </div>
-                                    <h3 class="course-title">{{name}}</h3>
-                                    {{#summary}}
-                                    <p class="course-description">{{{summary}}}</p>
-                                    {{/summary}}
-                                    {{^summary}}
-                                    <p class="course-description">Explore this section to learn new concepts and complete activities.</p>
-                                    {{/summary}}
-                                    <div class="progress-section">
-                                        <div class="progress-info">
-                                            <span class="progress-label">Progress - {{progress}}%</span>
-                                        </div>
-                                        <div class="progress-bar-container">
-                                            <div class="progress-bar" style="width: {{progress}}%">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="action-buttons">
+                        <div class="section-navigation-item {{#is_current}}current{{/is_current}}">
+                            <div class="section-header" onclick="toggleSection({{section}})">
+                                <div class="section-indicator">
+                                    <div class="section-number">{{section}}</div>
+                                    <div class="section-status">
                                         {{#is_completed}}
-                                        <span class="action-button btn-completed"><i class="icon fa fa-check-circle" aria-hidden="true"></i> Completed</span>
+                                        <i class="fa fa-check-circle completed" aria-hidden="true"></i>
                                         {{/is_completed}}
                                         {{^is_completed}}
                                             {{#has_started}}
-                                            <span class="action-button btn-continue"><i class="icon fa fa-play-circle" aria-hidden="true"></i> Continue</span>
+                                            <i class="fa fa-play-circle in-progress" aria-hidden="true"></i>
                                             {{/has_started}}
                                             {{^has_started}}
-                                            <span class="action-button btn-start"><i class="icon fa fa-play-circle" aria-hidden="true"></i> Start Learning</span>
+                                            <i class="fa fa-circle-o not-started" aria-hidden="true"></i>
                                             {{/has_started}}
                                         {{/is_completed}}
                                     </div>
                                 </div>
-                            </a>
+                                
+                                <div class="section-info">
+                                    <a href="{{{url}}}" class="section-link">
+                                        <span class="section-name">{{name}}</span>
+                                        <div class="section-meta">
+                                            <span class="section-progress">{{progress}}% Complete</span>
+                                            <span class="section-activities-count">{{completed_activities}}/{{total_activities}} Activities</span>
+                                        </div>
+                                    </a>
+                                    <button class="section-expand-btn" onclick="toggleSection({{section}})">
+                                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                    </button>
+                                        </div>
+                                    </div>
+                            
+                            <div class="section-activities-list" id="section-{{section}}-activities">
+                                {{#activities}}
+                                <div class="activity-navigation-item {{#is_completed}}completed{{/is_completed}}{{^is_completed}}{{#has_started}}in-progress{{/has_started}}{{^has_started}}not-started{{/has_started}}{{/is_completed}}">
+                                    <div class="activity-status-indicator">
+                                        {{#is_completed}}
+                                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                        {{/is_completed}}
+                                        {{^is_completed}}
+                                            {{#has_started}}
+                                            <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                            {{/has_started}}
+                                            {{^has_started}}
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            {{/has_started}}
+                                        {{/is_completed}}
+                                    </div>
+                                    
+                                    <a href="{{{url}}}" class="activity-link">
+                                        <div class="activity-icon">
+                                            <i class="fa fa-file-text" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="activity-details">
+                                            <span class="activity-name">{{name}}</span>
+                                            <span class="activity-duration">{{modname}}</span>
+                                        </div>
+                                    </a>
+                                    
+                                    <div class="activity-connector-line"></div>
+                                </div>
+                                {{/activities}}
+                            </div>
                         </div>
-                        {{/uservisible}}
                         {{/course_sections}}
                     </div>
                 </div>
+                
+                <!-- Main Content Area -->
+                <div class="activities-main-content">
+                    <div class="activities-content-header">
+                        <div class="breadcrumb-navigation">
+                            <a href="{{{course_url}}}" class="breadcrumb-item">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <span>Course Home</span>
+                            </a>
+                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                            <span class="breadcrumb-current">Unit {{current_section}}: {{section_activities.section_name}}</span>
             </div>
 
-            <!-- Original RemUI Course Content (hidden when custom cards are shown) -->
-            <div class="original-course-content" {{#custom_course_cards}}style="display: none;"{{/custom_course_cards}}>
-                {{{ output.main_content }}}
-            </div>
-            {{/custom_course_cards}}
-
-            {{#custom_section_view}}
-            <!-- Custom Section Activities View -->
-            <div class="section-activities-view">
-                <div class="container-fluid">
-                    <!-- Back to Course Button -->
-                    <div class="mb-4">
-                        <a href="{{{course_url}}}" class="btn btn-outline-primary">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Course
-                        </a>
-                    </div>
-                    
-                    <!-- Section Header -->
-                    <div class="section-header mb-4">
-                        <h1 class="section-title">{{section_activities.section_name}}</h1>
-                        {{#section_activities.section_summary}}
-                        <p class="section-description">{{{section_activities.section_summary}}}</p>
-                        {{/section_activities.section_summary}}
-                    </div>
-                    
-                    <!-- Activities List -->
-                    <div class="activities-list">
-                        {{#section_activities.activities}}
-                        <div class="activity-item">
-                            <div class="activity-progress-indicator">
-                                {{#is_completed}}
-                                <div class="progress-star completed">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
+                        <div class="activities-title-section">
+                            <h1 class="activities-main-title">Unit {{current_section}}: {{section_activities.section_name}}</h1>
+                            <p class="activities-subtitle">Complete these activities to master this section</p>
+                            
+                            <div class="section-progress-overview">
+                                <div class="progress-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-number">{{section_activities.section_progress}}%</span>
+                                        <span class="stat-label">Complete</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number">{{section_activities.completed_activities}}</span>
+                                        <span class="stat-label">Completed</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number">{{section_activities.total_activities}}</span>
+                                        <span class="stat-label">Total Activities</span>
+                                    </div>
                                 </div>
-                                {{/is_completed}}
-                                {{^is_completed}}
-                                    {{#has_started}}
-                                    <div class="progress-star in-progress">
-                                        <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                <div class="section-progress-bar">
+                                    <div class="progress-track">
+                                        <div class="progress-fill" style="width: {{section_activities.section_progress}}%"></div>
                                     </div>
-                                    {{/has_started}}
-                                    {{^has_started}}
-                                    <div class="progress-star pending">
-                                        <i class="fa fa-clock" aria-hidden="true"></i>
-                                    </div>
-                                    {{/has_started}}
-                                {{/is_completed}}
+                                </div>
                             </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="activity-image">
-                                        <img src="{{{activity_image}}}" alt="{{name}}" class="activity-image-img">
-                                    </div>
-                                    <div class="activity-content">
-                                        <div class="activity-meta">
-                                            <div class="meta-item">
-                                                <i class="fa fa-calendar icon" aria-hidden="true"></i>
-                                                <span>{{start_date}}</span>
-                                            </div>
-                                            <div class="meta-item">
-                                                <i class="fa fa-clock icon" aria-hidden="true"></i>
-                                                <span>{{end_date}}</span>
-                                            </div>
-                                            <div class="meta-item">
-                                                <i class="fa fa-tag icon" aria-hidden="true"></i>
-                                                <span>{{modname}}</span>
-                                            </div>
+            </div>
+                    </div>
+                    
+                    <div class="activities-table-section">
+                        <div class="table-header">
+                            <h2>Learning Modules</h2>
+                            
+                            <div class="table-controls">
+                                <div class="view-options">
+                                    <button class="view-btn active" data-view="grid" onclick="changeActivitiesView('grid')">
+                                        <i class="fa fa-th" aria-hidden="true"></i>
+                                        <span>Grid</span>
+                                    </button>
+                                    <button class="view-btn" data-view="list" onclick="changeActivitiesView('list')">
+                                        <i class="fa fa-list" aria-hidden="true"></i>
+                                        <span>List</span>
+                                    </button>
+                                </div>
+                                
+                                <div class="filter-controls">
+                                    <div class="filter-dropdown">
+                                        <button class="filter-btn">
+                                            <i class="fa fa-filter" aria-hidden="true"></i>
+                                            <span>Filter</span>
+                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                        </button>
+                                        <div class="filter-menu">
+                                            <div class="filter-option active" data-filter="all">All Sections</div>
+                                            <div class="filter-option" data-filter="completed">Completed</div>
+                                            <div class="filter-option" data-filter="in-progress">In Progress</div>
+                                            <div class="filter-option" data-filter="not-started">Not Started</div>
                                         </div>
-                                        <h5 class="activity-title">{{name}}</h5>
-                                        <div class="activity-description">{{{description}}}</div>
                                     </div>
-                                    <div class="activity-actions">
-                                        <div class="activity-icon-right">
-                                            <img src="{{{icon}}}" alt="{{modname}}" class="activity-icon-small">
-                                        </div>
-                                        {{#is_completed}}
-                                        <span class="badge bg-success">Completed</span>
-                                        {{/is_completed}}
-                                        {{^is_completed}}
-                                            {{#has_started}}
-                                            <a href="{{{url}}}" class="btn btn-continue">
-                                                Continue <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                                            </a>
-                                            {{/has_started}}
-                                            {{^has_started}}
-                                            <a href="{{{url}}}" class="btn btn-start">
-                                                Start <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                                            </a>
-                                            {{/has_started}}
-                                        {{/is_completed}}
-                                    </div>
+                                    
+                                    <button class="sort-btn">
+                                        <i class="fa fa-sort" aria-hidden="true"></i>
+                                        <span>Sort</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        {{/section_activities.activities}}
+                        
+                        <div class="activities-table-container">
+                            <table class="professional-activities-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-activity">ACTIVITY</th>
+                                        <th class="col-difficulty">DIFFICULTY</th>
+                                        <th class="col-progress">PROGRESS</th>
+                                        <th class="col-score">SCORE</th>
+                                        <th class="col-status">STATUS</th>
+                                        <th class="col-action">ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#section_activities.activities}}
+                                    <tr class="activity-row {{#is_completed}}completed{{/is_completed}}{{^is_completed}}{{#has_started}}in-progress{{/has_started}}{{^has_started}}not-started{{/has_started}}{{/is_completed}}">
+                                        <td class="activity-cell">
+                                            <div class="activity-info">
+                                                <div class="activity-icon">
+                                                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="activity-details">
+                                                    <span class="activity-title">{{name}} {{modname}}</span>
+                                                    <span class="activity-type">{{modname}}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="difficulty-cell">
+                                            <span class="difficulty-badge beginner">Beginner</span>
+                                        </td>
+                                        <td class="progress-cell">
+                                            <div class="progress-info">
+                                                <div class="progress-bar-container">
+                                                    <div class="progress-bar">
+                                                        <div class="progress-fill" style="width: {{completion_percentage}}%"></div>
+                                                    </div>
+                                                    <span class="progress-text">{{completion_percentage}}%</span>
+                                                </div>
+                                                <span class="progress-subtitle">Latest Attempt: {{completion_percentage}}%</span>
+                                            </div>
+                                        </td>
+                                        <td class="score-cell">
+                                            <div class="score-info">
+                                                <div class="score-bar-container">
+                                                    <div class="score-bar">
+                                                        <div class="score-fill" style="width: {{completion_percentage}}%"></div>
+                                                    </div>
+                                                    <span class="score-text">{{score_display}}</span>
+                                                </div>
+                                                <span class="score-subtitle">Latest Score: {{score_display}}</span>
+                                            </div>
+                                        </td>
+                                        <td class="status-cell">
+                                            <div class="status-indicator">
+                                                {{#is_completed}}
+                                                <div class="status-dot completed"></div>
+                                                <span class="status-text">COMPLETED</span>
+                                                {{/is_completed}}
+                                                {{^is_completed}}
+                                                    {{#has_started}}
+                                                    <div class="status-dot in-progress"></div>
+                                                    <span class="status-text">IN PROGRESS</span>
+                                                    {{/has_started}}
+                                                    {{^has_started}}
+                                                    <div class="status-dot not-started"></div>
+                                                    <span class="status-text">NOT STARTED</span>
+                                                    {{/has_started}}
+                                                {{/is_completed}}
+                                            </div>
+                                        </td>
+                                        <td class="action-cell">
+                                            <a href="{{{url}}}" class="action-button">
+                                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {{/section_activities.activities}}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+            {{/custom_section_view}}
 
-            <!-- Original RemUI Course Content (hidden when custom section view is shown) -->
-            <div class="original-course-content" style="display: none;">
-                {{{ output.main_content }}}
+            {{^custom_section_view}}
+            <!-- Learning Modules Layout -->
+            <div class="learning-modules-container">
+                <!-- Header Section -->
+                <div class="modules-header">
+                    <div class="header-content">
+                        <div class="header-icon">
+                            <div class="icon-container">
+                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="header-text">
+                            <h1>Learning Modules</h1>
+                            <p>Interactive, hands-on learning experiences designed for mastery.</p>
+                            <div class="header-tabs">
+                                <span class="tab-label">MODULES</span>
+                                <div class="tab-content">
+                                    <span class="tab-main">Interactive</span>
+                                    <span class="tab-sub">LEARNING</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="header-controls">
+                        <div class="view-controls">
+                            <div class="controls-label">VIEW OPTIONS</div>
+                            <div class="view-buttons">
+                                <button class="view-btn active" data-view="grid" onclick="changeView('grid')">
+                                    <i class="fa fa-th" aria-hidden="true"></i>
+                                    <span>Grid Card Layout</span>
+                                </button>
+                                <button class="view-btn" data-view="list" onclick="changeView('list')">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                    <span>List Linear View</span>
+                                </button>
+                                <button class="view-btn" data-view="timeline" onclick="changeView('timeline')">
+                                    <i class="fa fa-timeline" aria-hidden="true"></i>
+                                    <span>Timeline Progress Flow</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-controls">
+                            <div class="controls-label">FILTER & SORT</div>
+                            <div class="filter-buttons">
+                                <div class="filter-dropdown">
+                                    <button class="filter-btn">
+                                        <i class="fa fa-filter" aria-hidden="true"></i>
+                                        <span>All Sections</span>
+                                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                    </button>
+                                    <div class="filter-menu">
+                                        <div class="filter-option active" data-filter="all">All Sections</div>
+                                        <div class="filter-option" data-filter="completed">Completed</div>
+                                        <div class="filter-option" data-filter="in-progress">In Progress</div>
+                                        <div class="filter-option" data-filter="not-started">Not Started</div>
+                                    </div>
+                                </div>
+                                
+                                <button class="sort-btn">
+                                    <i class="fa fa-sort" aria-hidden="true"></i>
+                                    <span>By Progress</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Modules Grid -->
+                <div class="learning-modules-grid" id="modules-grid">
+                    {{#course_sections}}
+                    {{#uservisible}}
+                    <div class="learning-module-card" data-status="{{#is_completed}}completed{{/is_completed}}{{^is_completed}}{{#has_started}}in-progress{{/has_started}}{{^has_started}}not-started{{/has_started}}{{/is_completed}}" data-section="{{section}}">
+                        <!-- Card Header -->
+                        <div class="module-card-header">
+                            <div class="module-number">
+                                <span class="module-num">{{section}}</span>
+                            </div>
+                            <div class="module-status">
+                                {{#is_completed}}
+                                <span class="status-badge completed">
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    Mastered
+                                </span>
+                                {{/is_completed}}
+                                {{^is_completed}}
+                                    {{#has_started}}
+                                    <span class="status-badge in-progress">
+                                        <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                        Learning
+                                    </span>
+                                    {{/has_started}}
+                                    {{^has_started}}
+                                    <span class="status-badge ready">
+                                        <i class="fa fa-rocket" aria-hidden="true"></i>
+                                        Ready
+                                    </span>
+                                    {{/has_started}}
+                                {{/is_completed}}
+                            </div>
+                        </div>
+
+                        <!-- Video/Image Section -->
+                        <div class="module-visual-section">
+                            <div class="module-image-container">
+                                <img src="{{section_image}}" alt="{{name}}" class="module-image">
+                                <div class="play-overlay">
+                                    <div class="play-button">
+                                        <i class="fa fa-play" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Bookmark and Star Icons -->
+                            <div class="module-favorites">
+                                <button class="favorite-btn bookmark" title="Bookmark">
+                                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                </button>
+                                <button class="favorite-btn star" title="Add to Favorites">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Module Content -->
+                        <div class="module-content">
+                            <h3 class="module-title">{{name}}</h3>
+                            <p class="module-description">{{#summary}}{{summary}}{{/summary}}{{^summary}}Master this section to advance your learning journey.{{/summary}}</p>
+                            
+                            <!-- Module Statistics Grid -->
+                            <div class="module-stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-icon">
+                                        <i class="fa fa-tasks" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <span class="stat-number">{{total_activities}}</span>
+                                        <span class="stat-label">ACTIVITIES</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="stat-icon">
+                                        <i class="fa fa-clock" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <span class="stat-number">2-3h</span>
+                                        <span class="stat-label">DURATION</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="stat-icon">
+                                        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <span class="stat-number">Beginner</span>
+                                        <span class="stat-label">LEVEL</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="stat-icon">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                    <div class="stat-content">
+                                        <span class="stat-number">{{progress}}%</span>
+                                        <span class="stat-label">PROGRESS</span>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                            <!-- Learning Progress Bar -->
+                            <div class="learning-progress-section">
+                                <div class="progress-header">
+                                    <span class="progress-title">Learning Progress</span>
+                                    <span class="progress-percentage">{{progress}}%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: {{progress}}%"></div>
+                                    </div>
+                                </div>
+                                        </div>
+
+                            <!-- Action Button -->
+                            <div class="module-actions">
+                                        {{#is_completed}}
+                                <a href="{{{url}}}" class="action-btn review-btn">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                    <span>Review Mastery</span>
+                                </a>
+                                        {{/is_completed}}
+                                        {{^is_completed}}
+                                            {{#has_started}}
+                                    <a href="{{{url}}}" class="action-btn continue-btn" data-section="{{section}}">
+                                        <i class="fa fa-play" aria-hidden="true"></i>
+                                        <span>Continue Learning</span>
+                                            </a>
+                                            {{/has_started}}
+                                            {{^has_started}}
+                                    <a href="{{{url}}}" class="action-btn begin-btn" data-section="{{section}}">
+                                        <i class="fa fa-rocket" aria-hidden="true"></i>
+                                        <span>Begin Journey</span>
+                                            </a>
+                                            {{/has_started}}
+                                        {{/is_completed}}
+                                    </div>
+
+                            <!-- Tags -->
+                            <div class="module-tags">
+                                <span class="tag">INTERACTIVE</span>
+                                <span class="tag">HANDS-ON</span>
+                                <span class="tag">PROJECT-BASED</span>
+                            </div>
+
+                            <!-- Rating -->
+                            <div class="module-rating">
+                                <div class="stars">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                                </div>
+                                <span class="rating-text">4.9/5</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{/uservisible}}
+                    {{/course_sections}}
+                </div>
             </div>
             {{/custom_section_view}}
 
-            {{^custom_course_cards}}
-            {{^custom_section_view}}
-            <!-- Original RemUI Course Content -->
-            {{{ output.main_content }}}
-            {{/custom_section_view}}
-            {{/custom_course_cards}}
-
             {{{ output.activity_navigation }}}
             {{{ output.course_content_footer }}}
+
+            <!-- Main Content Placeholder -->
+            {{{ main_content }}}
 
         </section>
     </div>
 </div>
 
 {{> theme_remui/common_end}}
-
-{{#js}}
-document.addEventListener('DOMContentLoaded', function() {
-    // Animate progress bars on load
-    document.querySelectorAll('.progress-bar').forEach(bar => {
-        const width = bar.style.width;
-        bar.style.width = '0%';
-        setTimeout(() => {
-            bar.style.width = width;
-        }, 100);
-    });
-
-    // Add hover effects to course section cards
-    const cards = document.querySelectorAll('.course-section-card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.querySelector('.card-image-wrapper img').style.transform = 'scale(1.05)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.querySelector('.card-image-wrapper img').style.transform = 'scale(1)';
-        });
-    });
-});
-{{/js}}

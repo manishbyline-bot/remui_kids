@@ -74,14 +74,36 @@ if ($isediting) {
     $templatecontext['section_activities'] = theme_remui_kids_get_section_activities($COURSE, $section);
     $templatecontext['course_url'] = new moodle_url('/course/view.php', ['id' => $COURSE->id]);
     
+    // Add course sections data for sidebar navigation
+    $course_sections = theme_remui_kids_get_course_sections_data($COURSE);
+    // Mark current section
+    foreach ($course_sections as &$section_data) {
+        if ($section_data['section'] == $section) {
+            $section_data['is_current'] = true;
+        }
+    }
+    $templatecontext['course_sections'] = $course_sections;
+    
+    // Add main content placeholder for section view
+    $templatecontext['main_content'] = $OUTPUT->main_content();
+    
     // Must be called before rendering the template
     require_once($CFG->dirroot . '/theme/remui/layout/common_end.php');
     
     echo $OUTPUT->render_from_template('theme_remui_kids/course', $templatecontext);
 } else {
-    // Use our custom course cards for students (course overview)
+    // Use our custom Learning Modules layout for students (course overview)
     $templatecontext['custom_course_cards'] = true;
     $templatecontext['course_sections'] = theme_remui_kids_get_course_sections_data($COURSE);
+    
+    // Add config and timestamp for cache busting
+    $templatecontext['config'] = array(
+        'wwwroot' => $CFG->wwwroot
+    );
+    $templatecontext['timestamp'] = time();
+    
+    // Add main content placeholder
+    $templatecontext['main_content'] = $OUTPUT->main_content();
     
     // Must be called before rendering the template
     require_once($CFG->dirroot . '/theme/remui/layout/common_end.php');
