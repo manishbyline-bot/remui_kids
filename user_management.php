@@ -51,7 +51,7 @@ $PAGE->set_pagelayout('mycourses');
 $PAGE->set_pagetype('users-index');
 $PAGE->blocks->add_region('content');
 $PAGE->set_title('Users Management - Riyada Trainings');
-$PAGE->set_heading('Users Management');
+$PAGE->set_heading(''); // Empty heading - using custom header instead
 
 // Force the add block out of the default area.
 $PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;

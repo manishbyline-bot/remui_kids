@@ -17,7 +17,7 @@ if (!$hassiteconfig) {
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url('/theme/remui_kids/active_users.php');
 $PAGE->set_title('Active Users');
-$PAGE->set_heading('Active Users');
+$PAGE->set_heading(''); // Empty heading - using custom header instead
 
 
 // Handle AJAX request for search suggestions
