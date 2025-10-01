@@ -23,16 +23,38 @@
  */
 
 require_once(__DIR__ . '/../../config.php');
+require_once($CFG->libdir.'/adminlib.php');
 
-// Require login only - allow all logged-in users to access
+redirect_if_major_upgrade_required();
+
 require_login();
 
-// Set up the page
+// Check if user is admin - restrict access to admins only
+$hassiteconfig = has_capability('moodle/site:config', context_system::instance());
+if (!$hassiteconfig) {
+    // User is not an admin, redirect to dashboard
+    redirect(new moodle_url('/my/'), 'Access denied. This page is only available to administrators.', null, \core\output\notification::NOTIFY_ERROR);
+}
+
+if ($hassiteconfig && moodle_needs_upgrading()) {
+    redirect(new moodle_url('/admin/index.php'));
+}
+
+$context = context_system::instance();
+
+// Set up the page exactly like schools.php
+$PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/user_management.php');
-$PAGE->set_context(context_system::instance());
-$PAGE->set_title('Users Management');
+$PAGE->add_body_classes(['limitedwidth', 'page-myusers']);
+$PAGE->set_pagelayout('mycourses');
+
+$PAGE->set_pagetype('users-index');
+$PAGE->blocks->add_region('content');
+$PAGE->set_title('Users Management - Riyada Trainings');
 $PAGE->set_heading('Users Management');
-$PAGE->set_pagelayout('standard');
+
+// Force the add block out of the default area.
+$PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
 
 // Handle AJAX request for refreshing user statistics
 if (isset($_GET['action']) && $_GET['action'] === 'refresh_stats') {
@@ -150,18 +172,24 @@ try {
 // Recent user activities (static data for now)
 $recent_activities = [];
 
+// Include full width CSS - MUST be before header output
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
+
 echo $OUTPUT->header();
 
 // Add user management JavaScript
 $PAGE->requires->js('/theme/remui_kids/js/user_management.js');
+
+// Pass wwwroot to JavaScript
+echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
 ?>
 
 <style>
 .user-management-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
     padding: 20px;
-    background: #f8f9fa;
     min-height: 100vh;
 }
 
@@ -234,12 +262,12 @@ $PAGE->requires->js('/theme/remui_kids/js/user_management.js');
 }
 
 .navigation-tabs {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: white;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     margin-bottom: 30px;
     overflow: hidden;
-    border: 1px solid #dee2e6;
+    border: 1px solid #e9ecef;
 }
 
 
@@ -533,10 +561,10 @@ $PAGE->requires->js('/theme/remui_kids/js/user_management.js');
 
 /* Navigation Tabs - Light Color Design */
 .navigation-tabs {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: white;
     padding: 20px 0;
     margin-bottom: 30px;
-    border: 1px solid #dee2e6;
+    border: 1px solid #e9ecef;
 }
 
 .tab-container {
@@ -1083,7 +1111,6 @@ $PAGE->requires->js('/theme/remui_kids/js/user_management.js');
     /* Hide sidebar on mobile and show hamburger menu */
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
     }
     
     .sidebar.open {

@@ -6,6 +6,13 @@ require_once($CFG->libdir.'/tablelib.php');
 // Require login
 require_login();
 
+// Check if user is admin - restrict access to admins only
+$hassiteconfig = has_capability('moodle/site:config', context_system::instance());
+if (!$hassiteconfig) {
+    // User is not an admin, redirect to dashboard
+    redirect(new moodle_url('/my/'), 'Access denied. This page is only available to administrators.', null, \core\output\notification::NOTIFY_ERROR);
+}
+
 // Set up the page
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url('/theme/remui_kids/active_users.php');
@@ -113,6 +120,9 @@ $users = $DB->get_records_sql($users_sql, $params);
 
 // Calculate pagination
 $total_pages = ceil($total_users / $perpage);
+
+// Include full width CSS - MUST be before header output
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 
 echo $OUTPUT->header();
 
@@ -317,7 +327,8 @@ $PAGE->requires->js('/theme/remui_kids/js/active_users.js');
 /* Active Users Page Styles */
 .user-details-container {
     max-width: 100%;
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
     padding: 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: #f8fafc;
@@ -1187,7 +1198,6 @@ $PAGE->requires->js('/theme/remui_kids/js/active_users.js');
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
     }
     
     .sidebar.open {

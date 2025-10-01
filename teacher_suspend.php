@@ -24,19 +24,35 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 
-// Require login
+redirect_if_major_upgrade_required();
+
 require_login();
+
+$hassiteconfig = has_capability('moodle/site:config', context_system::instance());
+if ($hassiteconfig && moodle_needs_upgrading()) {
+    redirect(new moodle_url('/admin/index.php'));
+}
+
+$context = context_system::instance();
 
 // Get teacher ID from URL parameter
 $teacherid = required_param('id', PARAM_INT);
 $action = optional_param('action', 'suspend', PARAM_ALPHA);
 $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
-// Set up the page
-$PAGE->set_context(context_system::instance());
+// Set up the page exactly like schools.php
+$PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/teacher_suspend.php', array('id' => $teacherid));
+$PAGE->add_body_classes(['limitedwidth', 'page-myteachersuspend']);
+$PAGE->set_pagelayout('mycourses');
+
+$PAGE->set_pagetype('teachersuspend-index');
+$PAGE->blocks->add_region('content');
 $PAGE->set_title('Teacher Status Management - Riyada Trainings');
 $PAGE->set_heading('Teacher Status Management');
+
+// Force the add block out of the default area.
+$PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
 
 $success_message = '';
 $error_message = '';

@@ -32,9 +32,93 @@
     }
 }}
 
-<div id="riyada-sidebar" class="riyada-sidebar-container">
+<!-- Include sidebar CSS -->
+<link rel="stylesheet" href="{{config.wwwroot}}/theme/remui_kids/style/riyada_sidebar.css">
+
+<style>
+/* Inline styles to ensure scroll works */
+.riyada-sidebar-container {
+    position: fixed !important;
+    left: 0 !important;
+    top: 60px !important;
+    height: calc(100vh - 60px) !important;
+    width: 280px !important;
+    background: #ffffff !important;
+    border-right: 1px solid #e5e7eb !important;
+    z-index: 999 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.riyada-sidebar-nav {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 20px 0 !important;
+    max-height: calc(100vh - 160px) !important;
+    position: relative !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: #d1d5db #f9fafb !important;
+}
+
+.riyada-sidebar-nav::-webkit-scrollbar {
+    width: 8px !important;
+    display: block !important;
+}
+
+.riyada-sidebar-nav::-webkit-scrollbar-track {
+    background: #f9fafb !important;
+    border-radius: 4px !important;
+}
+
+.riyada-sidebar-nav::-webkit-scrollbar-thumb {
+    background: #d1d5db !important;
+    border-radius: 4px !important;
+}
+
+.riyada-sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af !important;
+}
+
+/* Hide sidebar by default for non-admin users */
+#riyada-sidebar {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    transform: translateX(-100%) !important;
+    width: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Show sidebar only for admin users */
+body.admin-user #riyada-sidebar {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    width: 280px !important;
+    overflow: visible !important;
+}
+
+/* Ensure main content takes full width when sidebar is hidden */
+body:not(.admin-user) .main-content,
+body:not(.admin-user) #page-wrapper,
+body:not(.admin-user) .container-fluid {
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+body:not(.admin-user) {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+</style>
+
+<div id="riyada-sidebar" class="riyada-sidebar-container" style="position: fixed; left: 0; top: 60px; height: calc(100vh - 60px); width: 280px; background: #ffffff; border-right: 1px solid #e5e7eb; z-index: 999; overflow: hidden; display: flex; flex-direction: column;">
     <!-- Sidebar Navigation -->
-    <nav class="riyada-sidebar-nav">
+    <nav class="riyada-sidebar-nav" id="riyada-sidebar-nav" style="flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 0; max-height: calc(100vh - 160px); position: relative;">
         <div class="riyada-nav-section">
             <div class="riyada-nav-section-title">DASHBOARD</div>
             <ul class="riyada-nav-list">
@@ -145,7 +229,7 @@
         </div>
         
         <div class="riyada-nav-section">
-            <div class="riyada-nav-section-title">SETTINGS</div>
+            <div class="riyada-nav-section-title">ADMIN SETTINGS</div>
             <ul class="riyada-nav-list">
                 <li class="riyada-nav-item">
                     <a href="{{config.wwwroot}}/admin/index.php" class="riyada-nav-link">
@@ -163,24 +247,153 @@
         </div>
     </nav>
     
+    <!-- Scroll to Top Button -->
+    <button class="riyada-scroll-to-top" id="scroll-to-top-btn" title="Scroll to Top">
+        ↑
+    </button>
+    
+    <!-- Floating Action Button -->
+    <div class="riyada-fab">
+        <button class="riyada-fab-btn" id="sidebar-toggle-btn" title="Toggle Sidebar">
+            <span class="riyada-fab-icon">→</span>
+        </button>
+    </div>
 </div>
 
 <script>
-// Dynamic sidebar highlighting based on current page
+// Check if user is admin and show/hide sidebar accordingly
 document.addEventListener('DOMContentLoaded', function() {
-    const currentPath = window.location.pathname;
-    const currentPage = getCurrentPage(currentPath);
-    
-    // Remove all active classes
-    document.querySelectorAll('.riyada-nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    
-    // Add active class to current page
-    const activeLink = document.querySelector(`[data-page="${currentPage}"]`);
-    if (activeLink) {
-        activeLink.classList.add('active');
-    }
+    // Check if user has admin capabilities by making an AJAX request
+    fetch('{{config.wwwroot}}/theme/remui_kids/check_admin.php')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.show_sidebar) {
+                // Completely hide the sidebar for non-admin users
+                const sidebar = document.getElementById('riyada-sidebar');
+                if (sidebar) {
+                    sidebar.style.display = 'none !important';
+                    sidebar.style.visibility = 'hidden';
+                    sidebar.style.opacity = '0';
+                    sidebar.style.transform = 'translateX(-100%)';
+                    sidebar.style.width = '0';
+                    sidebar.style.overflow = 'hidden';
+                }
+                
+                // Also hide any sidebar-related elements
+                const sidebarContainer = document.querySelector('.riyada-sidebar-container');
+                if (sidebarContainer) {
+                    sidebarContainer.style.display = 'none !important';
+                    sidebarContainer.style.visibility = 'hidden';
+                    sidebarContainer.style.opacity = '0';
+                    sidebarContainer.style.transform = 'translateX(-100%)';
+                    sidebarContainer.style.width = '0';
+                }
+                
+                // Hide floating action button
+                const fab = document.querySelector('.riyada-fab');
+                if (fab) {
+                    fab.style.display = 'none';
+                }
+                
+                // Adjust main content to take full width
+                const mainContent = document.querySelector('.main-content, #page-wrapper, .container-fluid, .main-content-wrapper');
+                if (mainContent) {
+                    mainContent.style.marginLeft = '0 !important';
+                    mainContent.style.width = '100% !important';
+                    mainContent.style.maxWidth = '100% !important';
+                }
+                
+                // Adjust body margin
+                document.body.style.marginLeft = '0 !important';
+                document.body.style.paddingLeft = '0 !important';
+                
+                // Add body class for sidebar hidden state
+                document.body.classList.add('sidebar-hidden');
+                
+                // Force hide with CSS
+                const style = document.createElement('style');
+                style.textContent = `
+                    #riyada-sidebar { display: none !important; visibility: hidden !important; }
+                    .riyada-sidebar-container { display: none !important; visibility: hidden !important; }
+                    .riyada-fab { display: none !important; }
+                    body { margin-left: 0 !important; }
+                    .main-content, #page-wrapper, .container-fluid { margin-left: 0 !important; width: 100% !important; }
+                `;
+                document.head.appendChild(style);
+            } else {
+                // For admin users, show the complete sidebar and apply highlighting
+                const sidebar = document.getElementById('riyada-sidebar');
+                if (sidebar) {
+                    sidebar.style.display = 'block';
+                    sidebar.style.visibility = 'visible';
+                    sidebar.style.opacity = '1';
+                    sidebar.style.transform = 'translateX(0)';
+                    sidebar.style.width = '280px';
+                }
+                
+                const sidebarContainer = document.querySelector('.riyada-sidebar-container');
+                if (sidebarContainer) {
+                    sidebarContainer.style.display = 'block';
+                    sidebarContainer.style.visibility = 'visible';
+                    sidebarContainer.style.opacity = '1';
+                    sidebarContainer.style.transform = 'translateX(0)';
+                    sidebarContainer.style.width = '280px';
+                }
+                
+                // Show floating action button for admin users
+                const fab = document.querySelector('.riyada-fab');
+                if (fab) {
+                    fab.style.display = 'block';
+                }
+                
+                // Add admin-user class to body
+                document.body.classList.add('admin-user');
+                document.body.classList.remove('sidebar-hidden');
+                
+                // Apply active page highlighting
+                const currentPath = window.location.pathname;
+                const currentPage = getCurrentPage(currentPath);
+                
+                // Remove all active classes
+                document.querySelectorAll('.riyada-nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Add active class to current page
+                const activeLink = document.querySelector(`[data-page="${currentPage}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+                
+                // Initialize sidebar scroll functionality
+                initializeSidebarScroll();
+            }
+        })
+        .catch(error => {
+            console.log('Could not check admin status, hiding sidebar for security');
+            // Hide sidebar by default if we can't check admin status
+            const sidebar = document.getElementById('riyada-sidebar');
+            if (sidebar) {
+                sidebar.style.display = 'none !important';
+                sidebar.style.visibility = 'hidden';
+                sidebar.style.opacity = '0';
+            }
+            
+            // Hide floating action button
+            const fab = document.querySelector('.riyada-fab');
+            if (fab) {
+                fab.style.display = 'none';
+            }
+            
+            // Adjust main content
+            const mainContent = document.querySelector('.main-content, #page-wrapper, .container-fluid');
+            if (mainContent) {
+                mainContent.style.marginLeft = '0 !important';
+                mainContent.style.width = '100% !important';
+            }
+            
+            document.body.style.marginLeft = '0 !important';
+        });
 });
 
 function getCurrentPage(path) {
@@ -194,7 +407,126 @@ function getCurrentPage(path) {
         return 'user-management';
     } else if (path.includes('/teachers.php')) {
         return 'teachers';
+    } else if (path.includes('/user_details.php')) {
+        return 'user-management';
     }
     return null;
+}
+
+// Initialize sidebar scroll functionality
+function initializeSidebarScroll() {
+    const sidebarNav = document.getElementById('riyada-sidebar-nav');
+    const toggleBtn = document.getElementById('sidebar-toggle-btn');
+    
+    if (!sidebarNav || !toggleBtn) return;
+    
+    // Force scroll properties
+    sidebarNav.style.overflowY = 'auto';
+    sidebarNav.style.overflowX = 'hidden';
+    sidebarNav.style.maxHeight = 'calc(100vh - 160px)';
+    sidebarNav.style.scrollBehavior = 'smooth';
+    
+    // Ensure scrollbar is visible
+    sidebarNav.style.scrollbarWidth = 'thin';
+    sidebarNav.style.scrollbarColor = '#d1d5db #f9fafb';
+    
+    // Toggle button functionality
+    toggleBtn.addEventListener('click', function() {
+        const sidebar = document.getElementById('riyada-sidebar');
+        const isCollapsed = sidebar.style.transform === 'translateX(-100%)';
+        
+        if (isCollapsed) {
+            // Show sidebar
+            sidebar.style.transform = 'translateX(0)';
+            sidebar.style.transition = 'transform 0.3s ease';
+            document.body.classList.remove('sidebar-hidden');
+            toggleBtn.innerHTML = '<span class="riyada-fab-icon">→</span>';
+        } else {
+            // Hide sidebar
+            sidebar.style.transform = 'translateX(-100%)';
+            sidebar.style.transition = 'transform 0.3s ease';
+            document.body.classList.add('sidebar-hidden');
+            toggleBtn.innerHTML = '<span class="riyada-fab-icon">←</span>';
+        }
+    });
+    
+    // Auto-scroll to active item
+    const activeLink = document.querySelector('.riyada-nav-link.active');
+    if (activeLink) {
+        setTimeout(() => {
+            activeLink.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }, 100);
+    }
+    
+    // Add scroll indicators
+    updateScrollIndicators();
+    sidebarNav.addEventListener('scroll', updateScrollIndicators);
+    
+    // Initialize scroll to top button
+    initializeScrollToTop();
+    
+    // Debug: Check if scroll is working
+    console.log('Sidebar scroll initialized:', {
+        element: sidebarNav,
+        scrollHeight: sidebarNav.scrollHeight,
+        clientHeight: sidebarNav.clientHeight,
+        canScroll: sidebarNav.scrollHeight > sidebarNav.clientHeight
+    });
+}
+
+// Update scroll indicators
+function updateScrollIndicators() {
+    const sidebarNav = document.getElementById('riyada-sidebar-nav');
+    if (!sidebarNav) return;
+    
+    const { scrollTop, scrollHeight, clientHeight } = sidebarNav;
+    const isAtTop = scrollTop === 0;
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
+    
+    // Add visual indicators for scroll state
+    if (!isAtTop && !isAtBottom) {
+        sidebarNav.style.boxShadow = 'inset 0 10px 10px -10px rgba(0,0,0,0.1), inset 0 -10px 10px -10px rgba(0,0,0,0.1)';
+    } else if (!isAtTop) {
+        sidebarNav.style.boxShadow = 'inset 0 10px 10px -10px rgba(0,0,0,0.1)';
+    } else if (!isAtBottom) {
+        sidebarNav.style.boxShadow = 'inset 0 -10px 10px -10px rgba(0,0,0,0.1)';
+    } else {
+        sidebarNav.style.boxShadow = 'none';
+    }
+}
+
+// Initialize scroll to top functionality
+function initializeScrollToTop() {
+    const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+    const sidebarNav = document.getElementById('riyada-sidebar-nav');
+    
+    if (!scrollToTopBtn || !sidebarNav) return;
+    
+    // Show/hide scroll to top button based on scroll position
+    function toggleScrollToTop() {
+        const { scrollTop } = sidebarNav;
+        if (scrollTop > 100) {
+            scrollToTopBtn.classList.add('visible');
+        } else {
+            scrollToTopBtn.classList.remove('visible');
+        }
+    }
+    
+    // Add scroll listener
+    sidebarNav.addEventListener('scroll', toggleScrollToTop);
+    
+    // Scroll to top functionality
+    scrollToTopBtn.addEventListener('click', function() {
+        sidebarNav.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Initial check
+    toggleScrollToTop();
 }
 </script>

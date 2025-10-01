@@ -1,22 +1,52 @@
 <?php
 require_once(__DIR__ . '/../../config.php');
+require_once($CFG->libdir.'/adminlib.php');
 
-// Initialize Moodle page
-$PAGE->set_context(context_system::instance());
+redirect_if_major_upgrade_required();
+
+require_login();
+
+// Check if user is admin - restrict access to admins only
+$hassiteconfig = has_capability('moodle/site:config', context_system::instance());
+if (!$hassiteconfig) {
+    // User is not an admin, redirect to dashboard
+    redirect(new moodle_url('/my/'), 'Access denied. This page is only available to administrators.', null, \core\output\notification::NOTIFY_ERROR);
+}
+
+if ($hassiteconfig && moodle_needs_upgrading()) {
+    redirect(new moodle_url('/admin/index.php'));
+}
+
+$context = context_system::instance();
+
+// Set up the page exactly like schools.php
+$PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/teachers.php');
-$PAGE->set_title('Teachers Management');
+$PAGE->add_body_classes(['limitedwidth', 'page-myteachers']);
+$PAGE->set_pagelayout('mycourses');
+
+$PAGE->set_pagetype('teachers-index');
+$PAGE->blocks->add_region('content');
+$PAGE->set_title('Teachers Management - Riyada Trainings');
 $PAGE->set_heading('Teachers Management');
 
-// Include JavaScript file
-$PAGE->requires->js('/theme/remui_kids/js/teachers.js');
+// Force the add block out of the default area.
+$PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
+
+// Include full width CSS - MUST be before header output
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
+
+$PAGE->requires->js('/theme/remui_kids/js/teachers.js', true);
 
 echo $OUTPUT->header();
 ?>
 
 <style>
 .teachers-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
     padding: 24px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -24,10 +54,9 @@ echo $OUTPUT->header();
 .teachers-card {
     background: white;
     padding: 32px;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
 }
 
 .teachers-header {
@@ -61,11 +90,11 @@ echo $OUTPUT->header();
 }
 
 .stat-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    background: white;
     padding: 24px;
-    border-radius: 16px;
+    border-radius: 15px;
     border: 1px solid #e9ecef;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -132,10 +161,10 @@ echo $OUTPUT->header();
 
 .search-section {
     background: white;
-    padding: 24px;
-    border-radius: 16px;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     border: 1px solid #e9ecef;
 }
 
@@ -184,20 +213,21 @@ echo $OUTPUT->header();
 
 .teachers-table-container {
     background: white;
-    border-radius: 16px;
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     border: 1px solid #e9ecef;
     min-height: 200px;
 }
 
 .table-header {
-    background: linear-gradient(135deg, #52C9D9 0%, #4a9fd1 100%);
-    color: white;
+    background: #f8f9fa;
+    color: #495057;
     padding: 20px 24px;
     font-weight: 600;
     font-size: 1.2rem;
     letter-spacing: 0.5px;
+    border: 1px solid #e9ecef;
 }
 
 .teachers-table {
@@ -300,13 +330,13 @@ echo $OUTPUT->header();
 }
 
 .status-active {
-    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    background: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
 
 .status-suspended {
-    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    background: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
@@ -345,7 +375,7 @@ echo $OUTPUT->header();
 }
 
 .back-button {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    background: #6c757d;
     color: white;
     padding: 14px 28px;
     border-radius: 25px;
@@ -353,16 +383,16 @@ echo $OUTPUT->header();
     font-weight: 600;
     font-size: 15px;
     transition: all 0.3s ease;
-    border: 1px solid #d63031;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    border: 1px solid #5a6268;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
     display: inline-block;
     margin-top: 24px;
 }
 
 .back-button:hover {
-    background: linear-gradient(135deg, #ee5a52 0%, #d63031 100%);
+    background: #5a6268;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
     color: white;
     text-decoration: none;
 }
@@ -573,9 +603,9 @@ echo $OUTPUT->header();
                                     // Actions
                                     echo '<td>';
                                     echo '<div class="action-icons">';
-                                    echo '<a href="teacher_view.php?id=' . $teacher->id . '" class="action-icon view-icon" title="View Details">👁</a>';
-                                    echo '<a href="teacher_edit.php?id=' . $teacher->id . '" class="action-icon edit-icon" title="Edit Teacher">●</a>';
-                                    echo '<a href="teacher_suspend.php?id=' . $teacher->id . '" class="action-icon suspend-icon" title="Manage Status">●</a>';
+                                    echo '<a href="' . $CFG->wwwroot . '/theme/remui_kids/teacher_view.php?id=' . $teacher->id . '" class="action-icon view-icon" title="View Details">👁</a>';
+                                    echo '<a href="teacher_edit.php?id=' . $teacher->id . '" class="action-icon edit-icon" title="Edit Teacher">✏</a>';
+                                    echo '<a href="teacher_suspend.php?id=' . $teacher->id . '" class="action-icon suspend-icon" title="Manage Status">⏸</a>';
                                     echo '</div>';
                                     echo '</td>';
                                     echo '</tr>';

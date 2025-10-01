@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Custom layout for all pages with admin restrictions
+ * Custom layout for admin pages
  *
  * @package    theme_remui_kids
  * @copyright  2024 Riyada Trainings
@@ -24,11 +24,18 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Include common layout elements
-require_once(__DIR__ . '/common.php');
+// Check if user is admin
+$isadmin = has_capability('moodle/site:config', context_system::instance());
 
-// Include the sidebar template
-echo $OUTPUT->render_from_template('theme_remui_kids/riyada_sidebar', [
+// Add admin status to template data
+$templatecontext = [
+    'isadmin' => $isadmin,
     'wwwroot' => $CFG->wwwroot,
     'sitename' => $SITE->shortname
-]);
+];
+
+// Include the sidebar CSS
+$PAGE->requires->css('/theme/remui_kids/style/sidebar.css');
+
+// Render the sidebar with admin context
+echo $OUTPUT->render_from_template('theme_remui_kids/riyada_sidebar', $templatecontext);
