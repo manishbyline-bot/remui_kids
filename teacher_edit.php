@@ -180,8 +180,16 @@ try {
         $specialization_field = null;
     }
     
-    // Get countries list
-    $countries = get_string_manager()->get_list_of_countries();
+    // Get countries list and format for template
+    $countries_raw = get_string_manager()->get_list_of_countries();
+    $countries = array();
+    foreach ($countries_raw as $code => $name) {
+        $countries[] = array(
+            'code' => $code,
+            'name' => $name,
+            'selected' => ($teacher->country == $code)
+        );
+    }
     
     // Prepare data for template
     $template_data = array(

@@ -144,7 +144,7 @@
                                     <select class="form-control" id="country" name="country">
                                         <option value="">Select Country</option>
                                         {{#countries}}
-                                        <option value="{{.}}" {{#teacher.country}}{{#is_selected}}selected{{/is_selected}}{{/teacher.country}}>{{.}}</option>
+                                        <option value="{{code}}" {{#selected}}selected{{/selected}}>{{name}}</option>
                                         {{/countries}}
                                     </select>
                                 </div>
