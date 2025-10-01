@@ -57,7 +57,7 @@ try {
     // Get basic teacher information
     $teacher = $DB->get_record('user', array('id' => $teacherid), 
         'id, username, firstname, lastname, email, phone1, phone2, city, country, 
-         lastaccess, timecreated, lastlogin, suspended, deleted, picture');
+         lastaccess, timecreated, lastlogin, suspended, deleted');
     
     if (!$teacher) {
         throw new moodle_exception('teachernotfound', 'theme_remui_kids');
@@ -174,52 +174,6 @@ echo $OUTPUT->header();
     animation: float 6s ease-in-out infinite;
 }
 
-.header-top {
-    position: relative;
-    z-index: 3;
-}
-
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.back-button:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
-    text-decoration: none;
-    color: white;
-}
-
-.back-icon {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
 @keyframes float {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
     50% { transform: translateY(-20px) rotate(180deg); }
@@ -233,47 +187,19 @@ echo $OUTPUT->header();
     z-index: 2;
 }
 
-.teacher-profile-image {
-    flex-shrink: 0;
-}
-
-.profile-img {
-    width: 120px;
-    height: 120px;
+.teacher-avatar {
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    object-fit: cover;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
 }
-
-/* Custom Scrollbar Styling */
-.content-section::-webkit-scrollbar {
-    width: 6px;
-}
-
-.content-section::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 3px;
-}
-
-.content-section::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 3px;
-}
-
-.content-section::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-}
-
-/* Remove scrollbar from Personal Information section only */
-.personal-info-section {
-    overflow: visible !important;
-}
-
-.personal-info-section::-webkit-scrollbar {
-    display: none;
-}
-
 
 .teacher-details h1 {
     font-size: 2.2rem;
@@ -333,9 +259,8 @@ echo $OUTPUT->header();
     padding: 25px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border: 1px solid #e2e8f0;
+    overflow-y: auto;
     max-height: 100%;
-    overflow-y: auto; /* Add scrollbar when content overflows */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 .section-title {
@@ -499,9 +424,7 @@ echo $OUTPUT->header();
     }
     
     .content-section {
-        max-height: 400px; /* Set a reasonable max height for mobile */
-        overflow-y: auto; /* Keep scrollbars on mobile */
-        overflow-x: hidden;
+        max-height: 400px;
     }
 }
 
@@ -510,19 +433,10 @@ echo $OUTPUT->header();
         padding: 15px;
     }
     
-    .header-content {
-        flex-direction: column;
-        gap: 20px;
-    }
-    
     .teacher-info {
         flex-direction: column;
         text-align: center;
         gap: 15px;
-    }
-    
-    .header-actions {
-        justify-content: center;
     }
     
     .info-grid {
@@ -564,32 +478,16 @@ echo $OUTPUT->header();
         
         <!-- Teacher Header -->
         <div class="teacher-header">
-            <div class="header-top">
-                <div class="header-content">
-                    <div class="teacher-info">
-                        <?php if ($teacher->picture): ?>
-                            <div class="teacher-profile-image">
-                                <?php 
-                                $usercontext = context_user::instance($teacher->id);
-                                $profileimageurl = moodle_url::make_pluginfile_url($usercontext->id, 'user', 'icon', null, '/', 'f1');
-                                echo '<img src="' . $profileimageurl . '" alt="Profile Image" class="profile-img">';
-                                ?>
-                            </div>
-                        <?php endif; ?>
-                        <div class="teacher-details">
-                            <h1><?php echo htmlspecialchars($teacher->firstname . ' ' . $teacher->lastname); ?></h1>
-                            <p class="subtitle"><?php echo htmlspecialchars($teacher->email); ?></p>
-                            <div class="teacher-status status-<?php echo $template_data['status_class']; ?>">
-                                <span class="status-dot"></span>
-                                <?php echo $template_data['status_text']; ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="header-actions">
-                        <a href="<?php echo $CFG->wwwroot; ?>/theme/remui_kids/teachers.php" class="back-button">
-                            <span class="back-icon">←</span>
-                            Back to Teachers
-                        </a>
+            <div class="teacher-info">
+                <div class="teacher-avatar">
+                    <?php echo strtoupper(substr($teacher->firstname, 0, 1) . substr($teacher->lastname, 0, 1)); ?>
+                </div>
+                <div class="teacher-details">
+                    <h1><?php echo htmlspecialchars($teacher->firstname . ' ' . $teacher->lastname); ?></h1>
+                    <p class="subtitle"><?php echo htmlspecialchars($teacher->email); ?></p>
+                    <div class="teacher-status status-<?php echo $template_data['status_class']; ?>">
+                        <span class="status-dot"></span>
+                        <?php echo $template_data['status_text']; ?>
                     </div>
                 </div>
             </div>
@@ -598,7 +496,7 @@ echo $OUTPUT->header();
         <!-- Main Content -->
         <div class="teacher-content">
             <!-- Personal Information -->
-            <div class="content-section personal-info-section">
+            <div class="content-section">
                 <h2 class="section-title">
                     <span class="section-icon">👤</span>
                     Personal Information
@@ -755,3 +653,4 @@ echo $OUTPUT->header();
 <?php
 echo $OUTPUT->footer();
 ?>
+

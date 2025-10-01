@@ -1111,7 +1111,6 @@ echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
     /* Hide sidebar on mobile and show hamburger menu */
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
     }
     
     .sidebar.open {

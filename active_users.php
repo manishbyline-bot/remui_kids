@@ -1198,7 +1198,6 @@ $PAGE->requires->js('/theme/remui_kids/js/active_users.js');
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
     }
     
     .sidebar.open {

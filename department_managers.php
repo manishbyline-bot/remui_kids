@@ -760,7 +760,6 @@ $PAGE->requires->js('/theme/remui_kids/js/department_managers.js');
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
     }
     
     .sidebar.open {

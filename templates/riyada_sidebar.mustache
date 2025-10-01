@@ -40,12 +40,12 @@
 .riyada-sidebar-container {
     position: fixed !important;
     left: 0 !important;
-    top: 0 !important;
-    height: 100vh !important;
+    top: 60px !important;
+    height: calc(100vh - 60px) !important;
     width: 280px !important;
     background: #ffffff !important;
     border-right: 1px solid #e5e7eb !important;
-    z-index: 1000 !important;
+    z-index: 999 !important;
     overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
@@ -56,7 +56,7 @@
     overflow-y: auto !important;
     overflow-x: hidden !important;
     padding: 20px 0 !important;
-    max-height: calc(100vh - 100px) !important;
+    max-height: calc(100vh - 160px) !important;
     position: relative !important;
     scrollbar-width: thin !important;
     scrollbar-color: #d1d5db #f9fafb !important;
@@ -116,9 +116,9 @@ body:not(.admin-user) {
 }
 </style>
 
-<div id="riyada-sidebar" class="riyada-sidebar-container" style="position: fixed; left: 0; top: 0; height: 100vh; width: 280px; background: #ffffff; border-right: 1px solid #e5e7eb; z-index: 1000; overflow: hidden; display: flex; flex-direction: column;">
+<div id="riyada-sidebar" class="riyada-sidebar-container" style="position: fixed; left: 0; top: 60px; height: calc(100vh - 60px); width: 280px; background: #ffffff; border-right: 1px solid #e5e7eb; z-index: 999; overflow: hidden; display: flex; flex-direction: column;">
     <!-- Sidebar Navigation -->
-    <nav class="riyada-sidebar-nav" id="riyada-sidebar-nav" style="flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 0; max-height: calc(100vh - 100px); position: relative;">
+    <nav class="riyada-sidebar-nav" id="riyada-sidebar-nav" style="flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 0; max-height: calc(100vh - 160px); position: relative;">
         <div class="riyada-nav-section">
             <div class="riyada-nav-section-title">DASHBOARD</div>
             <ul class="riyada-nav-list">
@@ -425,7 +425,7 @@ function initializeSidebarScroll() {
     // Force scroll properties
     sidebarNav.style.overflowY = 'auto';
     sidebarNav.style.overflowX = 'hidden';
-    sidebarNav.style.maxHeight = 'calc(100vh - 100px)';
+    sidebarNav.style.maxHeight = 'calc(100vh - 160px)';
     sidebarNav.style.scrollBehavior = 'smooth';
     
     // Ensure scrollbar is visible

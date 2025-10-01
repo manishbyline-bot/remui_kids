@@ -432,7 +432,6 @@ $PAGE->requires->js('/theme/remui_kids/js/pending_approvals.js');
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
     }
     
     .sidebar.open {
