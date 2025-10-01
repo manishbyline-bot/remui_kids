@@ -43,7 +43,8 @@ $confirm = optional_param('confirm', 0, PARAM_BOOL);
 // Set up the page exactly like schools.php
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/teacher_suspend.php', array('id' => $teacherid));
-$PAGE->add_body_classes(['limitedwidth', 'page-myteachersuspend']);
+$PAGE->add_body_classes(['fullwidth-layout', 'page-myteachersuspend']);
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 $PAGE->set_pagelayout('mycourses');
 
 $PAGE->set_pagetype('teachersuspend-index');

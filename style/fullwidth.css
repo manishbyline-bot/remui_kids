@@ -1,36 +1,20 @@
 /**
- * Full Width Layout - Remove excessive margins and padding
- * Makes all pages use full width within main content area
+ * Full Width Layout - AGGRESSIVE - Remove ALL margins and padding
+ * Makes all pages completely full width with NO spacing
  *
  * @package    theme_remui_kids
  * @copyright  2024 Riyada Trainings
  */
 
-/* Remove default Moodle container margins and padding */
+/* ========== NUCLEAR OPTION - Remove ALL spacing ========== */
+
+/* Remove from body and all containers */
+body,
+body * {
+    box-sizing: border-box !important;
+}
+
 body {
-    margin: 0 !important;
-}
-
-body#page-enrollments-index,
-body#page-my,
-body[id*="page-"] {
-    margin: 0 !important;
-}
-
-#page-wrapper {
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-#page {
-    padding: 0 !important;
-    margin: 0 !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-}
-
-#page-content {
     margin: 0 !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -39,161 +23,430 @@ body[id*="page-"] {
     padding: 0 !important;
 }
 
-#page-content .row {
+/* CRITICAL - Fix body margin for all theme pages */
+body[id*="page-theme-remui_kids"] {
     margin: 0 !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
     padding: 0 !important;
 }
 
-#region-main-box {
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-#region-main {
-    padding: 1.5rem !important;
-    margin: 0 !important;
-    max-width: 100% !important;
-}
-
+/* Remove from all page elements */
+#page-wrapper,
+#page,
+#page-content,
+#page-content .row,
+#region-main-box,
+#region-main,
 #region-main-settings-menu {
-    padding: 0 !important;
     margin: 0 !important;
-}
-
-.container-fluid {
     padding: 0 !important;
     max-width: 100% !important;
-    margin: 0 !important;
 }
 
-/* Make content areas full width */
-.main-content,
-.main-content-wrapper {
-    padding: 0 !important;
-    margin: 0 !important;
-    max-width: 100% !important;
+/* Exception: Only add minimal padding to region-main for content */
+#region-main {
+    padding: 1rem !important;
 }
 
-/* Admin pages should also be full width */
-body.admin-user #page-wrapper {
-    padding-left: 0 !important;
+/* Force remove from all Bootstrap elements */
+.container,
+.container-fluid,
+.row,
+[class*="col-"],
+[class*="offset-"] {
+    margin: 0 !important;
     margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: 100% !important;
 }
 
-/* Remove extra spacing from course pages */
-.course-content {
+/* Force remove from content wrappers */
+.main-content,
+.main-content-wrapper,
+.content-wrapper,
+#content {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+/* Remove from all page layout types */
+.pagelayout-admin,
+.pagelayout-standard,
+.pagelayout-course,
+.pagelayout-incourse,
+.pagelayout-report,
+.pagelayout-mydashboard,
+.pagelayout-base {
+    #page,
+    #page-content,
+    #page-wrapper {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+/* Remove from specific page IDs */
+body[id*="page-"] #page,
+body[id*="page-"] #page-content {
     margin: 0 !important;
     padding: 0 !important;
 }
 
+/* Course content */
+.course-content,
 .course-content .container-fluid {
-    padding: 0 !important;
     margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* Full width for tables and content */
+/* Secondary navigation */
+.secondary-navigation,
+.edw-tabs-navigation {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Tables */
 .generaltable {
     width: 100% !important;
-}
-
-/* Remove all default Moodle page spacing */
-.pagelayout-admin #page,
-.pagelayout-standard #page,
-.pagelayout-course #page,
-.pagelayout-incourse #page,
-.pagelayout-report #page,
-.pagelayout-mydashboard #page,
-.pagelayout-base #page {
-    padding: 0 !important;
-    margin: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-}
-
-.pagelayout-admin #page-content,
-.pagelayout-standard #page-content,
-.pagelayout-course #page-content,
-.pagelayout-incourse #page-content,
-.pagelayout-report #page-content {
-    padding: 0 !important;
     margin: 0 !important;
 }
 
-/* Force remove container left padding */
-.container,
-.container-fluid {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-/* Remove row margins */
-.row {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-}
-
-/* Remove col padding */
-[class*="col-"] {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-/* Remove secondary navigation spacing */
-.secondary-navigation {
-    margin: 0 !important;
-    padding: 0 1.5rem !important;
-}
-
-/* Super aggressive margin removal for stubborn elements */
-body.admin-user #page,
-body.admin-user #page-content,
-body.admin-user #page-content .row,
-body.admin-user #region-main-box,
-body.admin-user .container-fluid,
-body.admin-user [class*="col-"] {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-/* Override any parent theme margins */
+/* Drawers */
 .drawer-open-left #page,
 .drawer-open-left #page-content {
     margin-left: 0 !important;
 }
 
-/* But keep the page-wrapper margin for sidebar space */
+/* ========== ADMIN USER WITH SIDEBAR ========== */
+
+/* Admin users get sidebar space only on page-wrapper */
 body.admin-user #page-wrapper {
     margin-left: 280px !important;
     margin-right: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
-body:not(.admin-user) #page-wrapper {
+/* But everything inside has NO margins */
+body.admin-user #page,
+body.admin-user #page-content,
+body.admin-user #page-content .row,
+body.admin-user #region-main-box,
+body.admin-user .container,
+body.admin-user .container-fluid,
+body.admin-user [class*="col-"] {
     margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
-/* Restore necessary padding for readability */
+/* Region main - ZERO left/right padding, only top/bottom */
+body.admin-user #region-main {
+    margin: 0 !important;
+    padding: 1rem 0 !important;
+}
+
+/* Specific fix for reportbuilder pages */
+body[class*="reportbuilder"] #page,
+body[class*="reportbuilder"] #page-wrapper,
+body[class*="reportbuilder"] #page-content,
+body[class*="reportbuilder"] #region-main,
+body[class*="reportbuilder"] #region-main-box,
+body[class*="reportbuilder"] .container-fluid,
+body[class*="reportbuilder"] .row,
+body[class*="reportbuilder"] [class*="col-"] {
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+body[class*="reportbuilder"] #region-main,
+body.admin-user[class*="reportbuilder"] #region-main {
+    padding: 1rem 0 !important;
+}
+
+/* Reportbuilder with admin sidebar */
+body.admin-user[class*="reportbuilder"] #page-wrapper {
+    margin-left: 280px !important;
+    padding: 0 !important;
+}
+
+/* Reportbuilder content should have minimal horizontal padding */
+body[class*="reportbuilder"] .reportbuilder-container,
+body[class*="reportbuilder"] .reportbuilder-report {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+/* ========== NON-ADMIN USERS (NO SIDEBAR) ========== */
+
+body:not(.admin-user) #page-wrapper,
+body:not(.admin-user) #page,
+body:not(.admin-user) #page-content {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body:not(.admin-user) #region-main {
+    margin: 0 !important;
+    padding: 1rem 0 !important;
+}
+
+/* For ALL users - zero left/right padding on region-main */
 #region-main {
-    padding: 1.5rem !important;
-    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
-/* Adjust for mobile */
+/* ========== SPECIFIC FIXES ========== */
+
+/* Remove padding from specific Moodle elements */
+.navbar-nav,
+.nav-tabs,
+.breadcrumb {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Activity and course pages */
+#page-mod-assign-view #page,
+#page-mod-quiz-view #page,
+#page-course-view-topics #page {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* ========== MOBILE RESPONSIVE ========== */
+
 @media (max-width: 768px) {
-    #region-main {
-        padding: 1rem !important;
-    }
-    
-    .secondary-navigation {
-        padding: 0 1rem !important;
-    }
-    
+    /* Remove sidebar margin on mobile */
     body.admin-user #page-wrapper {
         margin-left: 0 !important;
+        width: 100% !important;
+    }
+    
+    /* Reduce padding on mobile */
+    #region-main {
+        padding: 0.75rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    #region-main {
+        padding: 0.5rem !important;
+    }
+}
+
+/* ========== SPECIFIC PAGE FIXES ========== */
+
+/* Override limitedwidth class completely */
+body.limitedwidth,
+.limitedwidth {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Full width for courses and schools pages */
+body.page-mycourses,
+body.page-myschools,
+body.fullwidth-layout {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.page-mycourses #page,
+body.page-myschools #page,
+body.fullwidth-layout #page {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.page-mycourses #page-wrapper,
+body.page-myschools #page-wrapper,
+body.fullwidth-layout #page-wrapper {
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+}
+
+/* Admin users with sidebar */
+body.admin-user.page-mycourses #page-wrapper,
+body.admin-user.page-myschools #page-wrapper,
+body.admin-user.fullwidth-layout #page-wrapper {
+    margin-left: 280px !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+}
+
+body.page-mycourses #page-content,
+body.page-myschools #page-content,
+body.fullwidth-layout #page-content {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.page-mycourses .container-fluid,
+body.page-myschools .container-fluid,
+body.fullwidth-layout .container-fluid {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+/* Fix card spacing - smaller cards in rows with minimal spacing */
+body.page-mycourses .card-deck,
+body.page-myschools .card-deck,
+body.fullwidth-layout .card-deck {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    gap: 0.75rem !important;
+    margin: 0 !important;
+}
+
+body.page-mycourses .card,
+body.page-myschools .card,
+body.fullwidth-layout .card {
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+    max-height: 300px !important;
+}
+
+/* Reduce card body padding */
+body.page-mycourses .card-body,
+body.page-myschools .card-body,
+body.fullwidth-layout .card-body {
+    padding: 1rem !important;
+}
+
+/* Fix for block regions and content areas */
+body.page-mycourses #region-main > *,
+body.page-myschools #region-main > *,
+body.fullwidth-layout #region-main > * {
+    margin-bottom: 0.75rem !important;
+}
+
+/* Add minimal spacing for rows */
+body.page-mycourses .row,
+body.page-myschools .row,
+body.fullwidth-layout .row {
+    margin: 0 !important;
+    margin-right: -0.375rem !important;
+    margin-left: -0.375rem !important;
+    margin-bottom: 0.75rem !important;
+}
+
+/* Add minimal spacing for columns */
+body.page-mycourses [class*="col-"],
+body.page-myschools [class*="col-"],
+body.fullwidth-layout [class*="col-"] {
+    padding-left: 0.375rem !important;
+    padding-right: 0.375rem !important;
+    margin-bottom: 0.75rem !important;
+}
+
+/* ========== LAST RESORT - UNIVERSAL ========== */
+
+/* Nuclear option for any remaining spacing */
+*:not(.card):not([class*="col-"]):not(.row) {
+    max-width: 100% !important;
+}
+
+/* But exclude specific elements that need their width */
+img,
+svg,
+video,
+iframe,
+input,
+button,
+select,
+textarea,
+.card,
+.card-deck,
+[class*="col-"],
+.row {
+    max-width: none !important;
+}
+
+/* Restore proper Bootstrap grid behavior for cards - minimal spacing */
+.card-deck > .card {
+    flex: 1 0 0%;
+    margin-right: 0.375rem;
+    margin-bottom: 0.75rem;
+    margin-left: 0.375rem;
+}
+
+.card-deck {
+    display: flex;
+    flex-flow: row wrap;
+    margin-right: -0.375rem;
+    margin-left: -0.375rem;
+}
+
+/* For Bootstrap grid columns - minimal spacing */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -0.375rem;
+    margin-left: -0.375rem;
+}
+
+[class*="col-"] {
+    position: relative;
+    width: 100%;
+    padding-right: 0.375rem;
+    padding-left: 0.375rem;
+}
+
+/* Make cards fit 4 per row on large screens */
+@media (min-width: 1200px) {
+    body.page-mycourses .card-deck,
+    body.page-myschools .card-deck,
+    body.fullwidth-layout .card-deck {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+
+/* 3 cards per row on medium screens */
+@media (min-width: 768px) and (max-width: 1199px) {
+    body.page-mycourses .card-deck,
+    body.page-myschools .card-deck,
+    body.fullwidth-layout .card-deck {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+/* 2 cards per row on small screens */
+@media (min-width: 576px) and (max-width: 767px) {
+    body.page-mycourses .card-deck,
+    body.page-myschools .card-deck,
+    body.fullwidth-layout .card-deck {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* 1 card per row on mobile */
+@media (max-width: 575px) {
+    body.page-mycourses .card-deck,
+    body.page-myschools .card-deck,
+    body.fullwidth-layout .card-deck {
+        grid-template-columns: 1fr !important;
     }
 }

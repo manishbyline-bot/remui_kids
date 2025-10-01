@@ -23,7 +23,8 @@ $context = context_system::instance();
 // Set up the page exactly like schools.php
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/recent_uploads.php');
-$PAGE->add_body_classes(['limitedwidth', 'page-myrecentuploads']);
+$PAGE->add_body_classes(['fullwidth-layout', 'page-myrecentuploads']);
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 $PAGE->set_pagelayout('mycourses');
 
 $PAGE->set_pagetype('recentuploads-index');

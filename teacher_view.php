@@ -40,7 +40,8 @@ $teacherid = required_param('id', PARAM_INT);
 // Set up the page
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/teacher_view_professional.php', array('id' => $teacherid));
-$PAGE->add_body_classes(['limitedwidth', 'page-myteacherview']);
+$PAGE->add_body_classes(['fullwidth-layout', 'page-myteacherview']);
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 $PAGE->set_pagelayout('mycourses');
 $PAGE->set_pagetype('teacherview-index');
 $PAGE->blocks->add_region('content');
