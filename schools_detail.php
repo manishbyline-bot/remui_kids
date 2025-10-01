@@ -44,7 +44,7 @@ $PAGE->set_pagelayout('mycourses');
 $PAGE->set_pagetype('schoolsdetail-index');
 $PAGE->blocks->add_region('content');
 $PAGE->set_title('Schools Detail - Riyada Trainings');
-$PAGE->set_heading('Schools Detail');
+$PAGE->set_heading(''); // Empty heading - using custom header instead
 
 // Force the add block out of the default area.
 $PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
