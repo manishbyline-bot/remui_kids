@@ -424,7 +424,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_management.js');
 }
 
 .quick-actions h3::before {
-    content: "⚙️";
+    content: "●";
     font-size: 1rem;
     color: #2196F3;
     margin-right: 8px;
@@ -1197,7 +1197,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_management.js');
         <a href="<?php echo $CFG->wwwroot; ?>/theme/remui_kids/user_details.php" class="stat-card-link">
             <div class="stat-card">
                 <div class="stat-icon">
-                    👥
+                    ●
                 </div>
                 <div class="stat-number"><?php echo $total_users; ?></div>
                 <div class="stat-label">Total Users</div>
@@ -1219,7 +1219,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_management.js');
         <a href="<?php echo $CFG->wwwroot; ?>/theme/remui_kids/pending_approvals.php" class="stat-card-link">
             <div class="stat-card">
                 <div class="stat-icon">
-                    ⏱️
+                    ●
                 </div>
                 <div class="stat-number"><?php echo $pending_approvals; ?></div>
                 <div class="stat-label">Pending Approvals</div>
@@ -1230,7 +1230,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_management.js');
         <a href="<?php echo $CFG->wwwroot; ?>/theme/remui_kids/department_managers.php" class="stat-card-link">
             <div class="stat-card">
                 <div class="stat-icon">
-                    🏛️
+                    ●
                 </div>
                 <div class="stat-number"><?php echo $department_managers; ?></div>
                 <div class="stat-label">Department Managers</div>

@@ -50,9 +50,18 @@ function initializeEnrollmentsSearch() {
             params.set('status', statusFilter.value);
         }
         
-        fetch(`/Kodeit-Iomad-local/Kodeit-Iomad-local/iomad-test/theme/remui_kids/enrollments.php?${params.toString()}`)
-            .then(response => response.json())
+        console.log('Fetching enrollments with params:', params.toString());
+        
+        fetch(`/Kodeit-Iomad-local/iomad-test/theme/remui_kids/enrollments.php?${params.toString()}`)
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Received data:', data);
                 hideLoading();
                 if (data.error) {
                     console.error('Error:', data.error);
@@ -235,10 +244,15 @@ function initializeEnrollmentsSearch() {
         }, 500); // 500ms delay for auto-search
     }
     
-    searchInput.addEventListener('input', function() {
-        // Trigger auto-search
-        performAutoSearch();
-    });
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            console.log('Search input changed:', this.value);
+            // Trigger auto-search
+            performAutoSearch();
+        });
+    } else {
+        console.error('Search input element not found');
+    }
     
     // Add event listeners for filter changes
     if (courseFilter) {

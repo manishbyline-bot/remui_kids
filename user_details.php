@@ -1234,7 +1234,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
         </div>
     <?php else: ?>
         <div class="results-info">
-            📊 Showing all users - Total: <?php echo $total_users; ?> user(s)
+            ● Showing all users - Total: <?php echo $total_users; ?> user(s)
         </div>
     <?php endif; ?>
 
@@ -1348,7 +1348,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
             </table>
         <?php else: ?>
             <div class="no-results">
-                <div class="no-results-icon">👥</div>
+                <div class="no-results-icon">●</div>
                 <h3>No Users Found</h3>
                 <p>
                     <?php if (!empty($search)): ?>
