@@ -1,66 +1,199 @@
-/* Global Full Width Override for All Main Content Pages */
+/**
+ * Full Width Layout - Remove excessive margins and padding
+ * Makes all pages use full width within main content area
+ *
+ * @package    theme_remui_kids
+ * @copyright  2024 Riyada Trainings
+ */
 
-/* Override any container max-width constraints */
-.enrollments-container,
-.user-management-container,
-.teachers-container,
-.user-details-container,
-.active-schools-container,
-.suspended-schools-container,
-.schools-detail-container {
+/* Remove default Moodle container margins and padding */
+body {
+    margin: 0 !important;
+}
+
+body#page-enrollments-index,
+body#page-my,
+body[id*="page-"] {
+    margin: 0 !important;
+}
+
+#page-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#page {
+    padding: 0 !important;
+    margin: 0 !important;
     max-width: 100% !important;
-    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+#page-content {
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+}
+
+#page-content .row {
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+}
+
+#region-main-box {
+    padding: 0 !important;
     margin: 0 !important;
 }
 
-/* Ensure main content areas use full screen width */
-#region-main,
-#region-main-box,
-.main-content-area,
-.page-content {
-    width: 100% !important;
-    max-width: none !important;
+#region-main {
+    padding: 1.5rem !important;
     margin: 0 !important;
-    padding: 20px !important;
-    display: block !important;
-    box-sizing: border-box !important;
+    max-width: 100% !important;
 }
 
-/* Override any parent container constraints */
+#region-main-settings-menu {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.container-fluid {
+    padding: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+/* Make content areas full width */
+.main-content,
+.main-content-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+}
+
+/* Admin pages should also be full width */
+body.admin-user #page-wrapper {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+/* Remove extra spacing from course pages */
+.course-content {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.course-content .container-fluid {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Full width for tables and content */
+.generaltable {
+    width: 100% !important;
+}
+
+/* Remove all default Moodle page spacing */
+.pagelayout-admin #page,
+.pagelayout-standard #page,
+.pagelayout-course #page,
+.pagelayout-incourse #page,
+.pagelayout-report #page,
+.pagelayout-mydashboard #page,
+.pagelayout-base #page {
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.pagelayout-admin #page-content,
+.pagelayout-standard #page-content,
+.pagelayout-course #page-content,
+.pagelayout-incourse #page-content,
+.pagelayout-report #page-content {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Force remove container left padding */
 .container,
-.container-fluid,
-.row,
-.col,
-.col-12 {
-    max-width: 100% !important;
-    width: 100% !important;
+.container-fluid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
-/* Ensure tables and content areas expand to full width */
-.table-responsive,
-.table,
-.content-area {
-    width: 100% !important;
-    max-width: none !important;
+/* Remove row margins */
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
-/* Override any Bootstrap or framework constraints */
-@media (min-width: 1200px) {
-    .container {
-        max-width: 100% !important;
-        width: 100% !important;
-    }
+/* Remove col padding */
+[class*="col-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
-/* Ensure responsive behavior is maintained */
+/* Remove secondary navigation spacing */
+.secondary-navigation {
+    margin: 0 !important;
+    padding: 0 1.5rem !important;
+}
+
+/* Super aggressive margin removal for stubborn elements */
+body.admin-user #page,
+body.admin-user #page-content,
+body.admin-user #page-content .row,
+body.admin-user #region-main-box,
+body.admin-user .container-fluid,
+body.admin-user [class*="col-"] {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Override any parent theme margins */
+.drawer-open-left #page,
+.drawer-open-left #page-content {
+    margin-left: 0 !important;
+}
+
+/* But keep the page-wrapper margin for sidebar space */
+body.admin-user #page-wrapper {
+    margin-left: 280px !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+body:not(.admin-user) #page-wrapper {
+    margin: 0 !important;
+}
+
+/* Restore necessary padding for readability */
+#region-main {
+    padding: 1.5rem !important;
+    margin: 0 !important;
+}
+
+/* Adjust for mobile */
 @media (max-width: 768px) {
-    .enrollments-container,
-    .user-management-container,
-    .teachers-container,
-    .user-details-container,
-    .active-schools-container,
-    .suspended-schools-container,
-    .schools-detail-container {
-        padding: 10px !important;
+    #region-main {
+        padding: 1rem !important;
+    }
+    
+    .secondary-navigation {
+        padding: 0 1rem !important;
+    }
+    
+    body.admin-user #page-wrapper {
+        margin-left: 0 !important;
     }
 }

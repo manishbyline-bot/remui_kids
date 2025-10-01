@@ -24,26 +24,17 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Include common layout elements - sets up $templatecontext
+// Include common layout elements - sets up $templatecontext with all navbar, user menu, etc.
 require_once(__DIR__ . '/common.php');
 
-// Include common_end - finalizes $templatecontext
+// Include common_end - finalizes $templatecontext with body attributes, blocks, etc.
 require_once(__DIR__ . '/common_end.php');
 
 // Add custom sidebar data to template context
-$templatecontext['custom_sidebar'] = true;
-$templatecontext['sidebar_data'] = [
-    'wwwroot' => $CFG->wwwroot,
-    'sitename' => $SITE->shortname
+$templatecontext['config'] = [
+    'wwwroot' => $CFG->wwwroot
 ];
+$templatecontext['sitename'] = $SITE->shortname;
 
-// Render the parent theme's columns2 template (which includes topbar)
-// Then add our custom sidebar on top
-echo $OUTPUT->render_from_template('theme_remui/columns2', $templatecontext);
-
-// Add our custom sidebar overlay
-echo $OUTPUT->render_from_template('theme_remui_kids/riyada_sidebar', [
-    'wwwroot' => $CFG->wwwroot,
-    'sitename' => $SITE->shortname,
-    'config' => ['wwwroot' => $CFG->wwwroot]
-]);
+// Render our custom columns2 template (which extends parent and adds Riyada sidebar)
+echo $OUTPUT->render_from_template('theme_remui_kids/columns2', $templatecontext);
