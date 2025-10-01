@@ -1,0 +1,347 @@
+{{!
+    Trainee Dashboard Template
+    
+    @template theme_remui_kids/trainee_dashboard
+    
+    Dynamic trainee dashboard with real data from database
+}}
+
+<!-- Include dashboard CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/trainee_dashboard.css">
+
+<div class="trainee-dashboard-container">
+    <!-- Quick Links -->
+    <div class="quick-links-section">
+        <a href="{{wwwroot}}/theme/remui_kids/trainee_assessment.php" class="quick-link-card assessment-link">
+            <i class="fas fa-clipboard-check"></i>
+            <span>My Assessments</span>
+        </a>
+        <a href="{{wwwroot}}/my/" class="quick-link-card learning-link">
+            <i class="fas fa-book-reader"></i>
+            <span>My Learning</span>
+        </a>
+        <a href="{{wwwroot}}/grade/report/overview/index.php" class="quick-link-card grades-link">
+            <i class="fas fa-chart-bar"></i>
+            <span>My Grades</span>
+        </a>
+    </div>
+    
+    <!-- Metric Cards Row -->
+    <div class="dashboard-metrics-row">
+        <div class="metric-card competency-card">
+            <div class="metric-icon">
+                <div class="competency-icon">⚙️</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-value">{{competency_score}}/100</div>
+                <div class="metric-label">Competency Score</div>
+            </div>
+        </div>
+        
+        <div class="metric-card learning-card">
+            <div class="metric-icon">
+                <div class="learning-icon">🕒</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-value">{{learning_hours}}</div>
+                <div class="metric-label">Learning Hours</div>
+            </div>
+        </div>
+        
+        <div class="metric-card certifications-card">
+            <div class="metric-icon">
+                <div class="certifications-icon">🎓</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-value">{{certifications_earned}}/{{certifications_total}}</div>
+                <div class="metric-label">Certifications</div>
+            </div>
+        </div>
+        
+        <div class="metric-card achievements-card">
+            <div class="metric-icon">
+                <div class="achievements-icon">🏆</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-value">{{achievements_earned}}/{{achievements_total}}</div>
+                <div class="metric-label">Achievements</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content Row -->
+    <div class="dashboard-content-row">
+        <!-- Left Column -->
+        <div class="dashboard-left-column">
+            <!-- Your Learning Path -->
+            <div class="dashboard-section learning-path-section">
+                <h3 class="section-title">Your Learning Path</h3>
+                <div class="learning-paths-container">
+                    {{#enrolled_courses}}
+                    <div class="learning-path-card {{status}}">
+                        <div class="path-icon">
+                            <div class="path-book-icon">📖</div>
+                        </div>
+                        <div class="path-content">
+                            <h4 class="path-title">{{fullname}}</h4>
+                            <p class="path-description">{{summary}}</p>
+                            <div class="path-meta">
+                                <span class="path-type">{{#status}}{{status}}{{/status}}</span>
+                                <span class="path-duration">52 weeks</span>
+                                <span class="path-level">Beginner</span>
+                            </div>
+                        </div>
+                        <div class="path-status-indicator {{status}}"></div>
+                    </div>
+                    {{/enrolled_courses}}
+                    {{^enrolled_courses}}
+                    <div class="no-content">
+                        <p>No learning paths enrolled yet.</p>
+                        <a href="{{wwwroot}}/course/index.php" class="enroll-button">Browse Courses</a>
+                    </div>
+                    {{/enrolled_courses}}
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="dashboard-section recent-activity-section">
+                <h3 class="section-title">Recent Activity</h3>
+                <div class="activity-container">
+                    {{#has_recent_activity}}
+                    {{#recent_activity}}
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <div class="activity-type-icon">{{action}}</div>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-description">{{action}} {{target}} in {{coursename}}</div>
+                            <div class="activity-time">{{activity_time}}</div>
+                        </div>
+                    </div>
+                    {{/recent_activity}}
+                    {{/has_recent_activity}}
+                    {{^has_recent_activity}}
+                    <div class="no-content">
+                        <p>No recent activity</p>
+                        <a href="{{wwwroot}}/user/index.php" class="view-all-link">View all activity →</a>
+                    </div>
+                    {{/has_recent_activity}}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column -->
+        <div class="dashboard-right-column">
+            <!-- Recent Achievements -->
+            <div class="dashboard-section achievements-section">
+                <h3 class="section-title">Recent Achievements</h3>
+                <div class="achievements-container">
+                    {{#badges}}
+                    <div class="achievement-badge">
+                        <div class="badge-icon">🏆</div>
+                        <div class="badge-name">{{name}}</div>
+                    </div>
+                    {{/badges}}
+                    {{^badges}}
+                    <div class="no-content">
+                        <p>No achievements yet</p>
+                    </div>
+                    {{/badges}}
+                </div>
+            </div>
+            
+            <!-- Upcoming Events -->
+            <div class="dashboard-section events-section">
+                <h3 class="section-title">Upcoming Events</h3>
+                <div class="events-container">
+                    {{#has_upcoming_events}}
+                    {{#upcoming_events}}
+                    <div class="event-item">
+                        <div class="event-date">
+                            <div class="event-day">{{timestart}}</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-title">{{name}}</div>
+                            <div class="event-time">{{timestart}}</div>
+                        </div>
+                    </div>
+                    {{/upcoming_events}}
+                    {{/has_upcoming_events}}
+                    {{^has_upcoming_events}}
+                    <div class="no-content">
+                        <p>No upcoming events</p>
+                    </div>
+                    {{/has_upcoming_events}}
+                </div>
+            </div>
+            
+            <!-- Available Mentors -->
+            <div class="dashboard-section mentors-section">
+                <h3 class="section-title">Available Mentors</h3>
+                <div class="mentors-container">
+                    {{#has_mentors}}
+                    {{#mentors}}
+                    <div class="mentor-item">
+                        <div class="mentor-avatar">
+                            <div class="avatar-icon">👤</div>
+                            <div class="mentor-status {{status}}"></div>
+                        </div>
+                        <div class="mentor-info">
+                            <div class="mentor-name">{{firstname}} {{lastname}}</div>
+                            <div class="mentor-role">Teacher</div>
+                            <div class="mentor-availability">{{status}}</div>
+                        </div>
+                    </div>
+                    {{/mentors}}
+                    {{/has_mentors}}
+                    {{^has_mentors}}
+                    <div class="no-content">
+                        <p>No mentors available</p>
+                    </div>
+                    {{/has_mentors}}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Competency Map Section -->
+    <div class="dashboard-bottom-row">
+        <!-- Competency Map -->
+        <div class="dashboard-section competency-map-section">
+            <h3 class="section-title">Competency Map</h3>
+            <div class="competency-map-container">
+                <div class="competency-chart">
+                    <canvas id="competencyRadarChart" width="300" height="300"></canvas>
+                </div>
+                <div class="competency-breakdown">
+                    {{#competency_data}}
+                    <div class="competency-item">
+                        <div class="competency-color" style="background-color: {{color}}"></div>
+                        <div class="competency-name">{{name}}</div>
+                        <div class="competency-score">{{score}}%</div>
+                    </div>
+                    {{/competency_data}}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Action Button -->
+    <div class="dashboard-fab">
+        <button class="fab-button" id="chatbot-fab" title="AI Assistant">
+            <div class="fab-icon">🤖</div>
+        </button>
+    </div>
+</div>
+
+<!-- Chart.js for competency radar chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize competency radar chart
+    const ctx = document.getElementById('competencyRadarChart');
+    if (!ctx) {
+        console.error('Competency chart canvas not found');
+        return;
+    }
+    
+    let competencyData = [];
+    try {
+        competencyData = JSON.parse('{{{competency_data_json}}}');
+    } catch (e) {
+        console.error('Error parsing competency data:', e);
+        competencyData = [
+            {name: 'Pedagogy', score: 20, color: '#3b82f6'},
+            {name: 'Assessment', score: 20, color: '#10b981'},
+            {name: 'Technology', score: 20, color: '#ef4444'},
+            {name: 'Management', score: 20, color: '#8b5cf6'},
+            {name: 'Content', score: 20, color: '#f59e0b'}
+        ];
+    }
+    
+    if (!Array.isArray(competencyData) || competencyData.length === 0) {
+        console.warn('No competency data available, using defaults');
+        competencyData = [
+            {name: 'Pedagogy', score: 20, color: '#3b82f6'},
+            {name: 'Assessment', score: 20, color: '#10b981'},
+            {name: 'Technology', score: 20, color: '#ef4444'},
+            {name: 'Management', score: 20, color: '#8b5cf6'},
+            {name: 'Content', score: 20, color: '#f59e0b'}
+        ];
+    }
+    
+    const labels = competencyData.map(item => item.name);
+    const scores = competencyData.map(item => item.score);
+    const colors = competencyData.map(item => item.color);
+    
+    new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Competency Score',
+                data: scores,
+                backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                borderColor: 'rgba(139, 92, 246, 0.8)',
+                borderWidth: 2,
+                pointBackgroundColor: colors,
+                pointBorderColor: colors,
+                pointBorderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        stepSize: 25
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+    
+    // Add animations to metric cards
+    const metricCards = document.querySelectorAll('.metric-card');
+    metricCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Add hover effects to learning path cards
+    const pathCards = document.querySelectorAll('.learning-path-card');
+    pathCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        });
+    });
+    
+    // Chatbot FAB functionality
+    const chatbotFab = document.getElementById('chatbot-fab');
+    chatbotFab.addEventListener('click', function() {
+        alert('AI Assistant feature coming soon!');
+    });
+    
+    // Add loading animation
+    setTimeout(() => {
+        document.querySelector('.trainee-dashboard-container').classList.add('loaded');
+    }, 500);
+});
+</script>

@@ -131,14 +131,19 @@ function theme_remui_kids_pluginfile($course, $cm, $context, $filearea, $args, $
  * @return array Array of section data
  */
 function theme_remui_kids_get_course_sections_data($course) {
-    global $CFG, $USER;
+    global $CFG, $USER, $DB;
     
-    require_once($CFG->dirroot . '/course/lib.php');
-    require_once($CFG->dirroot . '/completion/criteria/completion_criteria.php');
-    
-    $modinfo = get_fast_modinfo($course);
-    $sections = $modinfo->get_section_info_all();
-    $completion = new \completion_info($course);
+    try {
+        require_once($CFG->dirroot . '/course/lib.php');
+        require_once($CFG->dirroot . '/completion/criteria/completion_criteria.php');
+        
+        $modinfo = get_fast_modinfo($course);
+        $sections = $modinfo->get_section_info_all();
+        $completion = new \completion_info($course);
+    } catch (Exception $e) {
+        error_log("Course sections data error: " . $e->getMessage());
+        return array();
+    }
     
     $sections_data = [];
     
@@ -172,27 +177,44 @@ function theme_remui_kids_get_course_sections_data($course) {
                     $section_data['total_activities']++;
                     
                     // Check completion if enabled
-                    if ($completion->is_enabled($cm)) {
-                        $completiondata = $completion->get_data($cm, false, $USER->id);
-                        if ($completiondata->completionstate == COMPLETION_COMPLETE || 
-                            $completiondata->completionstate == COMPLETION_COMPLETE_PASS) {
-                            $section_data['completed_activities']++;
+                    try {
+                        if ($completion->is_enabled($cm)) {
+                            $completiondata = $completion->get_data($cm, false, $USER->id);
+                            if ($completiondata->completionstate == COMPLETION_COMPLETE || 
+                                $completiondata->completionstate == COMPLETION_COMPLETE_PASS) {
+                                $section_data['completed_activities']++;
+                            }
+                            
+                            // Check if user has started this activity
+                            if ($completiondata->timestarted > 0) {
+                                $section_data['has_started'] = true;
+                            }
                         }
-                        
-                        // Check if user has started this activity
-                        if ($completiondata->timestarted > 0) {
-                            $section_data['has_started'] = true;
-                        }
+                    } catch (Exception $e) {
+                        error_log("Completion data error for activity {$cm->id}: " . $e->getMessage());
                     }
                     
-                    $section_data['activities'][] = [
-                        'id' => $cm->id,
-                        'name' => $cm->name,
-                        'modname' => $cm->modname,
-                        'url' => $cm->url,
-                        'icon' => $cm->get_icon_url(),
-                        'completion' => $completion->is_enabled($cm) ? $completion->get_data($cm, false, $USER->id)->completionstate : null
-                    ];
+                    try {
+                        $section_data['activities'][] = [
+                            'id' => $cm->id,
+                            'name' => $cm->name,
+                            'modname' => $cm->modname,
+                            'url' => $cm->url,
+                            'icon' => $cm->get_icon_url(),
+                            'completion' => $completion->is_enabled($cm) ? $completion->get_data($cm, false, $USER->id)->completionstate : null
+                        ];
+                    } catch (Exception $e) {
+                        error_log("Activity data error for {$cm->id}: " . $e->getMessage());
+                        // Add basic activity data without completion info
+                        $section_data['activities'][] = [
+                            'id' => $cm->id,
+                            'name' => $cm->name,
+                            'modname' => $cm->modname,
+                            'url' => $cm->url,
+                            'icon' => $cm->get_icon_url(),
+                            'completion' => null
+                        ];
+                    }
                 }
             }
         }

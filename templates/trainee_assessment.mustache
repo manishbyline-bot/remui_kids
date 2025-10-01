@@ -1,0 +1,265 @@
+{{!
+    Trainee Assessment Template
+    
+    @template theme_remui_kids/trainee_assessment
+    
+    Comprehensive assessment page showing all assignments, quizzes, and grades
+}}
+
+<!-- Include assessment CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/trainee_assessment.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="trainee-assessment-container">
+    <!-- Header Section -->
+    <div class="assessment-header">
+        <div class="header-content">
+            <a href="{{back_url}}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+            <h1 class="page-title">
+                <i class="fas fa-clipboard-check"></i>
+                My Assessments
+            </h1>
+            <p class="page-subtitle">Track your progress and grades across all courses</p>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="assessment-stats-row">
+        <div class="stat-card total-card">
+            <div class="stat-icon">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{total_assessments}}</div>
+                <div class="stat-label">Total Assessments</div>
+            </div>
+        </div>
+        
+        <div class="stat-card completed-card">
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{completed_assessments}}</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+        
+        <div class="stat-card pending-card">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{pending_assessments}}</div>
+                <div class="stat-label">Pending</div>
+            </div>
+        </div>
+        
+        <div class="stat-card overdue-card">
+            <div class="stat-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{overdue_assessments}}</div>
+                <div class="stat-label">Overdue</div>
+            </div>
+        </div>
+        
+        <div class="stat-card average-card">
+            <div class="stat-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{average_grade}}%</div>
+                <div class="stat-label">Average Grade</div>
+            </div>
+        </div>
+        
+        <div class="stat-card completion-card">
+            <div class="stat-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{completion_rate}}%</div>
+                <div class="stat-label">Completion Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assessments List -->
+    <div class="assessments-section">
+        <div class="section-header">
+            <h2><i class="fas fa-list"></i> All Assessments</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="pending">Pending</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+                <button class="filter-btn" data-filter="overdue">Overdue</button>
+            </div>
+        </div>
+
+        {{#has_assessments}}
+        <div class="assessments-grid">
+            {{#assessments}}
+            <div class="assessment-card {{status}}" data-status="{{status}}">
+                <div class="assessment-header">
+                    <div class="assessment-title-section">
+                        <h3 class="assessment-title">{{name}}</h3>
+                        <p class="course-name">
+                            <i class="fas fa-book"></i>
+                            {{course_name}}
+                        </p>
+                    </div>
+                    <div class="status-badge {{status}}">
+                        {{#is_overdue}}
+                            <i class="fas fa-exclamation-circle"></i>
+                        {{/is_overdue}}
+                        {{#is_completed}}
+                            <i class="fas fa-check-circle"></i>
+                        {{/is_completed}}
+                        {{#is_pending}}
+                            <i class="fas fa-clock"></i>
+                        {{/is_pending}}
+                        {{status_text}}
+                    </div>
+                </div>
+
+                <div class="assessment-body">
+                    {{#intro}}
+                    <p class="assessment-intro">{{intro}}</p>
+                    {{/intro}}
+                    
+                    <div class="assessment-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Due: {{due_date}}</span>
+                        </div>
+                        {{#time_remaining}}
+                        <div class="meta-item time-remaining">
+                            <i class="fas fa-hourglass-half"></i>
+                            <span>{{time_remaining}}</span>
+                        </div>
+                        {{/time_remaining}}
+                        {{#submission_date}}
+                        <div class="meta-item">
+                            <i class="fas fa-check"></i>
+                            <span>Submitted: {{submission_date}}</span>
+                        </div>
+                        {{/submission_date}}
+                        {{#attempts_count}}
+                        <div class="meta-item">
+                            <i class="fas fa-redo"></i>
+                            <span>{{attempts_count}} attempt(s)</span>
+                        </div>
+                        {{/attempts_count}}
+                    </div>
+
+                    {{#grade_percentage}}
+                    <div class="grade-section">
+                        <div class="grade-label">Grade</div>
+                        <div class="grade-display">
+                            <div class="grade-value {{#is_completed}}grade-{{grade_percentage}}{{/is_completed}}">
+                                {{grade_text}}
+                            </div>
+                            <div class="grade-bar">
+                                <div class="grade-bar-fill" style="width: {{grade_percentage}}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/grade_percentage}}
+                </div>
+
+                <div class="assessment-footer">
+                    <a href="{{url}}" class="btn-view-assessment">
+                        {{#is_pending}}
+                            <i class="fas fa-play"></i>
+                            Start Assessment
+                        {{/is_pending}}
+                        {{#is_completed}}
+                            <i class="fas fa-eye"></i>
+                            View Details
+                        {{/is_completed}}
+                        {{#is_overdue}}
+                            <i class="fas fa-exclamation-circle"></i>
+                            View Assessment
+                        {{/is_overdue}}
+                    </a>
+                </div>
+            </div>
+            {{/assessments}}
+        </div>
+        {{/has_assessments}}
+
+        {{^has_assessments}}
+        <div class="no-assessments">
+            <div class="no-assessments-icon">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <h3>No Assessments Found</h3>
+            <p>You don't have any assessments yet. Check back later or enroll in courses to see your assessments.</p>
+            <a href="{{wwwroot}}/course/index.php" class="btn-browse-courses">
+                <i class="fas fa-search"></i>
+                Browse Courses
+            </a>
+        </div>
+        {{/has_assessments}}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const assessmentCards = document.querySelectorAll('.assessment-card');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter cards
+            assessmentCards.forEach(card => {
+                if (filter === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    const status = card.getAttribute('data-status');
+                    if (status === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        });
+    });
+    
+    // Add entrance animations
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Add hover effects
+    assessmentCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        });
+    });
+});
+</script>
+

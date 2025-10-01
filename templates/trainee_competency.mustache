@@ -1,0 +1,281 @@
+{{!
+    Trainee Competency Template
+    
+    @template theme_remui_kids/trainee_competency
+    
+    Display user competencies with visual progress
+}}
+
+<!-- Include competency CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/trainee_competency.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="competency-container">
+    <!-- Header Section -->
+    <div class="competency-header">
+        <div class="header-content">
+            <a href="{{back_url}}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+            <h1 class="page-title">
+                <i class="fas fa-chart-line"></i>
+                My Competency Map
+            </h1>
+            <p class="page-subtitle">Track your skills and professional development</p>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="comp-stats-row">
+        <div class="comp-stat-card total-card">
+            <div class="stat-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{total_competencies}}</div>
+                <div class="stat-label">Total Competencies</div>
+            </div>
+        </div>
+        
+        <div class="comp-stat-card proficient-card">
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{proficient_competencies}}</div>
+                <div class="stat-label">Proficient</div>
+            </div>
+        </div>
+        
+        <div class="comp-stat-card progress-card">
+            <div class="stat-icon">
+                <i class="fas fa-spinner"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{in_progress_competencies}}</div>
+                <div class="stat-label">In Progress</div>
+            </div>
+        </div>
+        
+        <div class="comp-stat-card pending-card">
+            <div class="stat-icon">
+                <i class="fas fa-hourglass-start"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{not_started_competencies}}</div>
+                <div class="stat-label">Not Started</div>
+            </div>
+        </div>
+        
+        <div class="comp-stat-card proficiency-card">
+            <div class="stat-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{proficiency_percentage}}%</div>
+                <div class="stat-label">Proficiency Level</div>
+            </div>
+        </div>
+    </div>
+
+    {{#has_chart_data}}
+    <!-- Radar Chart Visualization -->
+    <div class="chart-section">
+        <div class="section-header">
+            <h2><i class="fas fa-radar"></i> Competency Overview</h2>
+            <p class="section-subtitle">Visual representation of your skill levels</p>
+        </div>
+        <div class="chart-container">
+            <canvas id="competencyRadarChart"></canvas>
+        </div>
+    </div>
+    {{/has_chart_data}}
+
+    <!-- Competencies by Framework -->
+    {{#has_competencies}}
+    <div class="competencies-section">
+        {{#competencies_by_framework}}
+        <div class="framework-group">
+            <div class="framework-header">
+                <h2><i class="fas fa-layer-group"></i> {{framework_name}}</h2>
+                {{#framework_description}}
+                <p class="framework-description">{{framework_description}}</p>
+                {{/framework_description}}
+            </div>
+
+            <div class="competencies-grid">
+                {{#competencies}}
+                <div class="competency-card {{#is_proficient}}proficient{{/is_proficient}} {{#is_in_progress}}in-progress{{/is_in_progress}} {{#is_not_started}}not-started{{/is_not_started}}">
+                    <div class="competency-header">
+                        <div class="competency-status-icon">
+                            {{#is_proficient}}
+                                <i class="fas fa-check-circle"></i>
+                            {{/is_proficient}}
+                            {{#is_in_progress}}
+                                <i class="fas fa-spinner"></i>
+                            {{/is_in_progress}}
+                            {{#is_not_started}}
+                                <i class="fas fa-circle"></i>
+                            {{/is_not_started}}
+                        </div>
+                        <h3 class="competency-name">{{name}}</h3>
+                    </div>
+
+                    {{#description}}
+                    <p class="competency-description">{{description}}</p>
+                    {{/description}}
+
+                    <div class="competency-progress">
+                        <div class="progress-info">
+                            <span class="progress-label">Progress</span>
+                            <span class="progress-percentage">{{progress_percentage}}%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: {{progress_percentage}}%;"></div>
+                        </div>
+                    </div>
+
+                    {{#has_rating}}
+                    <div class="competency-rating">
+                        <div class="rating-badge {{#is_proficient}}proficient{{/is_proficient}}">
+                            <i class="fas fa-award"></i>
+                            <span>{{rating_name}}</span>
+                        </div>
+                    </div>
+                    {{/has_rating}}
+
+                    {{#has_courses}}
+                    <div class="related-courses">
+                        <div class="courses-label">
+                            <i class="fas fa-book"></i>
+                            <span>Related Courses:</span>
+                        </div>
+                        <div class="courses-list">
+                            {{#related_courses}}
+                            <a href="{{wwwroot}}/course/view.php?id={{id}}" class="course-tag">
+                                {{name}}
+                            </a>
+                            {{/related_courses}}
+                        </div>
+                    </div>
+                    {{/has_courses}}
+                </div>
+                {{/competencies}}
+            </div>
+        </div>
+        {{/competencies_by_framework}}
+    </div>
+    {{/has_competencies}}
+
+    {{^has_competencies}}
+    <div class="no-competencies">
+        <div class="no-competencies-icon">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <h3>No Competencies Found</h3>
+        <p>You don't have any competencies assigned yet. Contact your instructor or administrator to get started with competency-based learning.</p>
+        <div class="action-buttons">
+            <a href="{{wwwroot}}/course/index.php" class="btn-browse">
+                <i class="fas fa-search"></i>
+                Browse Courses
+            </a>
+            <a href="{{wwwroot}}/admin/tool/lp/plans.php" class="btn-plans">
+                <i class="fas fa-clipboard-list"></i>
+                View Learning Plans
+            </a>
+        </div>
+    </div>
+    {{/has_competencies}}
+</div>
+
+<!-- Chart.js for radar chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize radar chart if data exists
+    {{#has_chart_data}}
+    const ctx = document.getElementById('competencyRadarChart');
+    if (ctx) {
+        const labels = {{{chart_labels}}};
+        const data = {{{chart_data}}};
+        
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Competency Level',
+                    data: data,
+                    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                    borderColor: 'rgba(139, 92, 246, 0.8)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(139, 92, 246, 1)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 25,
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        angleLines: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed.r + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    {{/has_chart_data}}
+    
+    // Add entrance animations
+    const statCards = document.querySelectorAll('.comp-stat-card');
+    statCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Add hover effects
+    const competencyCards = document.querySelectorAll('.competency-card');
+    competencyCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+

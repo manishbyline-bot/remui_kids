@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Check if current user is admin
+ * Check current user role and permissions
  *
  * @package    theme_remui_kids
  * @copyright  2024 Riyada Trainings
@@ -29,16 +29,31 @@ header('Content-Type: application/json');
 
 // Check if user is logged in
 if (!isloggedin()) {
-    echo json_encode(['isadmin' => false]);
+    echo json_encode(['user_role' => 'guest', 'show_sidebar' => false]);
     exit;
 }
 
-// Check if user has admin capabilities
-$isadmin = has_capability('moodle/site:config', context_system::instance());
+global $USER;
 
-// Return JSON response with admin status and user menu visibility
+// Check user role
+$isadmin = has_capability('moodle/site:config', context_system::instance());
+$isteacher = has_capability('moodle/course:manageactivities', context_system::instance()) && !$isadmin;
+$istrainee = !$isadmin && !$isteacher;
+
+// Determine user role
+$user_role = 'trainee'; // default
+if ($isadmin) {
+    $user_role = 'admin';
+} elseif ($isteacher) {
+    $user_role = 'teacher';
+}
+
+// Return JSON response with role information
 echo json_encode([
+    'user_role' => $user_role,
     'isadmin' => $isadmin,
-    'show_user_menu' => $isadmin, // Only show user menu for admins
-    'show_sidebar' => $isadmin    // Only show sidebar for admins
+    'isteacher' => $isteacher,
+    'istrainee' => $istrainee,
+    'show_sidebar' => true, // Show sidebar for all logged in users
+    'show_user_menu' => true // Show user menu for all logged in users
 ]);
