@@ -50,8 +50,9 @@ if (!$currentpage = my_get_page(null, MY_PAGE_PUBLIC, MY_PAGE_COURSES)) {
 // Start setting up the page.
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/courses.php');
-$PAGE->add_body_classes(['limitedwidth', 'page-mycourses']);
+$PAGE->add_body_classes(['page-mycourses', 'fullwidth-layout']);
 $PAGE->set_pagelayout('mycourses');
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 
 $PAGE->set_pagetype('my-index');
 $PAGE->blocks->add_region('content');
