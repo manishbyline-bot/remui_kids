@@ -47,7 +47,7 @@ echo $OUTPUT->header();
     max-width: 100%;
     width: 100%;
     margin: 0;
-    padding: 24px;
+    padding: 0;
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -400,7 +400,7 @@ echo $OUTPUT->header();
 
 @media (max-width: 768px) {
     .teachers-container {
-        padding: 16px;
+        padding: 0;
     }
     
     .teachers-card {
