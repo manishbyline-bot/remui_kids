@@ -52,7 +52,7 @@ body[id*="page-"] {
 }
 
 #region-main {
-    padding: 0 !important;
+    padding: 0 20px !important;
     margin: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
@@ -166,9 +166,9 @@ body.admin-user [class*="col-"] {
     margin-left: 0 !important;
 }
 
-/* But keep the page-wrapper margin for sidebar space */
+/* But keep the page-wrapper margin for sidebar space - increased for wider sidebar */
 body.admin-user #page-wrapper {
-    margin-left: 280px !important;
+    margin-left: 320px !important;
     margin-right: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -180,31 +180,55 @@ body:not(.admin-user) #page-wrapper {
 
 /* Restore necessary padding for readability */
 #region-main {
-    padding: 0 !important;
+    padding: 0 20px !important;
     margin: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
 }
 
-/* Make all custom page containers full-width with no side spacing */
+/* Make all custom page containers full-width with proper side padding */
 .enrollments-container,
 .teachers-container,
 .user-details-container,
 .schools-container {
     max-width: 100% !important;
     width: 100% !important;
-    padding: 0 !important;
+    padding: 0 20px !important;
     margin: 0 !important;
+}
+
+/* Constrain courses and schools dashboard card container width - WIDER */
+body.page-mycourses .dashboard-cards,
+body.page-myschools .dashboard-cards-container,
+body.page-mycoursesprogram .dashboard-cards-container,
+.dashboard-cards-container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20px 0 !important;
+}
+
+/* Ensure proper card spacing */
+body.page-mycourses .dashboard-cards .row,
+body.page-myschools .dashboard-cards-container .row {
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+}
+
+body.page-mycourses .dashboard-cards [class*="col-"],
+body.page-myschools .dashboard-cards-container [class*="col-"] {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-bottom: 30px !important;
 }
 
 /* Adjust for mobile */
 @media (max-width: 768px) {
     #region-main {
-        padding: 0 !important;
+        padding: 0 15px !important;
     }
     
     .secondary-navigation {
-        padding: 0 !important;
+        padding: 0 15px !important;
     }
     
     body.admin-user #page-wrapper {
@@ -215,6 +239,14 @@ body:not(.admin-user) #page-wrapper {
     .teachers-container,
     .user-details-container,
     .schools-container {
-        padding: 0 !important;
+        padding: 0 15px !important;
+    }
+    
+    /* On mobile, dashboard containers use full width with padding */
+    body.page-mycourses .dashboard-cards,
+    body.page-myschools .dashboard-cards-container,
+    .dashboard-cards-container {
+        max-width: 100% !important;
+        padding: 15px !important;
     }
 }

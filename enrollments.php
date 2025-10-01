@@ -375,7 +375,7 @@ echo $OUTPUT->header();
     max-width: 100%;
     width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 0 20px;
     min-height: 100vh;
 }
 
@@ -663,72 +663,83 @@ echo $OUTPUT->header();
 
 .enrollments-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: 14px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .enrollments-table th {
-    background: linear-gradient(135deg, #52C9D9 0%, #4AB3C4 100%);
-    padding: 18px 20px;
+    background: #fafbfc;
+    padding: 16px 20px;
     text-align: left;
-    font-weight: 700;
-    color: #ffffff;
-    border-bottom: 3px solid #3A9BA8;
+    font-weight: 600;
+    color: #6c757d;
+    border-bottom: 1px solid #e1e4e8;
     position: sticky;
     top: 0;
     z-index: 10;
-    font-size: 14px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .enrollments-table td {
     padding: 16px 20px;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid #f1f3f5;
     vertical-align: middle;
     background: #ffffff;
-    transition: all 0.3s ease;
+    transition: background 0.2s ease;
 }
 
 .enrollments-table tbody tr {
-    transition: all 0.3s ease;
+    background: white;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    border-bottom: 1px solid #f1f3f5;
 }
 
 .enrollments-table tbody tr:hover {
-    background: #f8f9fa;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transform: scale(1.001);
+    background: #f6f8fa;
+    box-shadow: inset 0 0 0 1px #e1e4e8;
 }
 
 .enrollments-table tbody tr:hover td {
-    background: #f8f9fa;
+    background: #f6f8fa;
+}
+
+.enrollments-table tbody tr:last-child {
+    border-bottom: none;
 }
 
 .enrollments-table th:first-child,
 .enrollments-table td:first-child {
     padding-left: 24px;
-    font-weight: 600;
 }
 
 .enrollments-table th:last-child,
 .enrollments-table td:last-child {
     padding-right: 24px;
-    text-align: center;
 }
 
 .user-avatar {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #52C9D9, #4AB3C4);
+    background: #17a2b8;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border: 2px solid #e9ecef;
 }
 
 .user-info {
@@ -738,43 +749,48 @@ echo $OUTPUT->header();
 }
 
 .user-details h4 {
-    margin: 0;
-    font-size: 14px;
+    margin: 0 0 3px 0;
+    font-size: 15px;
     font-weight: 600;
-    color: #2c3e50;
+    color: #24292e;
 }
 
 .user-details p {
     margin: 0;
     font-size: 12px;
-    color: #6c757d;
+    color: #586069;
 }
 
 .status-badge {
-    padding: 4px 8px;
-    border-radius: 6px;
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 4px;
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
 .status-active {
     background: #d4edda;
     color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
 .status-suspended {
     background: #f8d7da;
     color: #721c24;
+    border: 1px solid #f5c6cb;
 }
 
 .course-count {
-    background: #e3f2fd;
-    color: #1565c0;
-    padding: 4px 8px;
-    border-radius: 6px;
+    display: inline-block;
+    background: #e7f3ff;
+    color: #0056b3;
+    padding: 4px 10px;
+    border-radius: 4px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .pagination {
@@ -816,7 +832,7 @@ echo $OUTPUT->header();
 /* Responsive Design */
 @media (max-width: 768px) {
     .enrollments-container {
-        padding: 0;
+        padding: 0 15px;
     }
     
     .header-section {
@@ -876,93 +892,104 @@ echo $OUTPUT->header();
     }
 }
 
-/* User Detail Modal/Panel Styles - Left Sidebar Design */
+/* User Detail Modal/Panel Styles - Centered Modal */
 .user-detail-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
     z-index: 9998;
     display: none;
+    align-items: center;
+    justify-content: center;
     animation: fadeIn 0.3s ease;
 }
 
 .user-detail-overlay.show {
-    display: block;
+    display: flex !important;
 }
 
 .user-detail-panel {
-    position: fixed;
-    top: 0;
-    left: -400px;
-    width: 380px;
-    height: 100vh;
+    position: relative;
+    width: 500px;
+    max-width: 90%;
+    max-height: 85vh;
     background: #ffffff;
-    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     z-index: 9999;
-    overflow-y: auto;
-    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid #e1e4e8;
 }
 
 .user-detail-panel.show {
-    left: 0;
+    transform: scale(1);
+    opacity: 1;
 }
 
 .user-detail-header {
-    background: linear-gradient(180deg, rgba(99, 176, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
-    padding: 40px 24px 30px;
+    background: #fafbfc;
+    padding: 20px 24px;
     position: relative;
-    border-bottom: 1px solid #f1f3f5;
+    color: #24292e;
+    text-align: center;
+    border-bottom: 1px solid #e1e4e8;
 }
 
 .user-detail-close {
     position: absolute;
-    top: 16px;
-    right: 16px;
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    color: #495057;
-    font-size: 20px;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: #6c757d;
+    font-size: 24px;
     cursor: pointer;
     width: 32px;
     height: 32px;
-    border-radius: 8px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
+    line-height: 1;
+    padding: 0;
 }
 
 .user-detail-close:hover {
-    background: #e9ecef;
-    color: #212529;
+    background: #f1f3f4;
+    color: #24292e;
+    transform: scale(1.1);
 }
 
 .user-detail-avatar-large {
-    width: 88px;
-    height: 88px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: #17a2b8;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 600;
-    margin: 0 auto 16px;
-    border: 3px solid #ffffff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin: 0 auto 12px;
+    border: 2px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .user-detail-name {
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
-    margin-bottom: 4px;
-    color: #212529;
+    color: #24292e;
+    margin-bottom: 5px;
 }
 
 .user-detail-role {
@@ -970,33 +997,38 @@ echo $OUTPUT->header();
     font-size: 14px;
     color: #6c757d;
     margin-bottom: 0;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .user-detail-body {
     padding: 24px;
+    overflow-y: auto;
+    max-height: calc(85vh - 200px);
 }
 
 .user-detail-section {
-    background: transparent;
-    padding: 0;
-    margin-bottom: 24px;
+    background: #f8f9fa;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
 }
 
 .user-detail-section-title {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     color: #6c757d;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 16px;
-    padding-left: 4px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e1e4e8;
 }
 
 .user-detail-item {
     display: flex;
-    align-items: flex-start;
-    padding: 14px 0;
+    align-items: center;
+    padding: 8px 0;
     border-bottom: 1px solid #f1f3f5;
 }
 
@@ -1005,16 +1037,17 @@ echo $OUTPUT->header();
 }
 
 .user-detail-item-icon {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
+    background: #f1f3f4;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #6c757d;
-    font-size: 16px;
+    font-size: 14px;
     margin-right: 12px;
     flex-shrink: 0;
-    margin-top: 2px;
 }
 
 .user-detail-item-content {
@@ -1022,94 +1055,81 @@ echo $OUTPUT->header();
 }
 
 .user-detail-item-label {
-    font-size: 13px;
-    color: #868e96;
-    font-weight: 400;
-    margin-bottom: 4px;
+    font-size: 11px;
+    color: #6c757d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 3px;
 }
 
 .user-detail-item-value {
     font-size: 14px;
-    color: #212529;
+    color: #24292e;
     font-weight: 500;
-    word-break: break-word;
 }
 
 .user-detail-badge {
     display: inline-block;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: capitalize;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
 .user-detail-badge.customer {
-    background: #e7f5ff;
-    color: #1971c2;
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
 .user-detail-badge.employee {
-    background: #d3f9d8;
-    color: #2f9e44;
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
 .user-detail-badge.personal {
-    background: #fff3bf;
-    color: #e67700;
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
 }
 
 .user-detail-courses {
-    margin-top: 12px;
+    margin-top: 0;
 }
 
 .user-detail-course-item {
     background: #f8f9fa;
-    border-radius: 8px;
-    padding: 12px 14px;
+    border-radius: 6px;
+    padding: 10px;
     margin-bottom: 8px;
-    border: 1px solid #e9ecef;
+    border-left: 3px solid #17a2b8;
     transition: all 0.2s ease;
 }
 
 .user-detail-course-item:hover {
     background: #e9ecef;
-    border-color: #dee2e6;
+    border-left-color: #138496;
 }
 
 .user-detail-course-name {
     font-weight: 500;
-    color: #212529;
-    margin-bottom: 4px;
+    color: #24292e;
+    margin-bottom: 3px;
     font-size: 14px;
 }
 
 .user-detail-course-date {
-    font-size: 12px;
-    color: #868e96;
+    font-size: 11px;
+    color: #586069;
 }
 
 .enrollments-table tbody tr {
     cursor: pointer;
     position: relative;
-}
-
-.enrollments-table tbody tr::after {
-    content: '→';
-    position: absolute;
-    right: 24px;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0;
-    transition: all 0.3s ease;
-    color: #52C9D9;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.enrollments-table tbody tr:hover::after {
-    opacity: 1;
-    right: 20px;
 }
 
 @keyframes fadeIn {
@@ -1119,12 +1139,22 @@ echo $OUTPUT->header();
 
 @media (max-width: 768px) {
     .user-detail-panel {
-        width: 100%;
-        left: -100%;
+        width: 95%;
+        max-height: 90vh;
     }
     
-    .user-detail-panel.show {
-        left: 0;
+    .user-detail-body {
+        max-height: calc(90vh - 180px);
+    }
+    
+    .user-detail-avatar-large {
+        width: 70px;
+        height: 70px;
+        font-size: 28px;
+    }
+    
+    .user-detail-name {
+        font-size: 20px;
     }
 }
 </style>
@@ -1330,76 +1360,61 @@ echo $OUTPUT->header();
     </div>
 </div>
 
-<!-- User Detail Panel - Left Sidebar -->
-<div class="user-detail-overlay" id="userDetailOverlay" onclick="closeUserDetail()"></div>
-<div class="user-detail-panel" id="userDetailPanel">
-    <div class="user-detail-header">
-        <button class="user-detail-close" onclick="closeUserDetail()">✕</button>
-        <div class="user-detail-avatar-large" id="userDetailAvatarLarge"></div>
-        <h2 class="user-detail-name" id="userDetailName"></h2>
-        <p class="user-detail-role" id="userDetailRole">Enrolled Student</p>
-    </div>
-    
-    <div class="user-detail-body">
-        <!-- Details Section -->
-        <div class="user-detail-section">
-            <h3 class="user-detail-section-title">DETAILS</h3>
-            
-            <div class="user-detail-item">
-                <div class="user-detail-item-icon">🏢</div>
-                <div class="user-detail-item-content">
-                    <div class="user-detail-item-label">Company</div>
-                    <div class="user-detail-item-value" id="userDetailCompany">-</div>
+<!-- User Detail Panel - Centered Modal -->
+<div class="user-detail-overlay" id="userDetailOverlay" onclick="closeUserDetail()">
+    <div class="user-detail-panel" id="userDetailPanel" onclick="event.stopPropagation()">
+        <div class="user-detail-header">
+            <button class="user-detail-close" onclick="closeUserDetail()">×</button>
+            <div class="user-detail-avatar-large" id="userDetailAvatarLarge"></div>
+            <h2 class="user-detail-name" id="userDetailName"></h2>
+            <p class="user-detail-role" id="userDetailRole">Enrolled Student</p>
+        </div>
+        
+        <div class="user-detail-body">
+            <!-- Details Section -->
+            <div class="user-detail-section">
+                <h3 class="user-detail-section-title">Details</h3>
+                
+                <div class="user-detail-item">
+                    <div class="user-detail-item-icon">👤</div>
+                    <div class="user-detail-item-content">
+                        <div class="user-detail-item-label">Username</div>
+                        <div class="user-detail-item-value" id="userDetailUsername"></div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="user-detail-item">
-                <div class="user-detail-item-icon">💼</div>
-                <div class="user-detail-item-content">
-                    <div class="user-detail-item-label">Role</div>
-                    <div class="user-detail-item-value" id="userDetailRoleType">Student</div>
+                
+                <div class="user-detail-item">
+                    <div class="user-detail-item-icon">✉</div>
+                    <div class="user-detail-item-content">
+                        <div class="user-detail-item-label">Email</div>
+                        <div class="user-detail-item-value" id="userDetailEmail"></div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="user-detail-item">
-                <div class="user-detail-item-icon">📱</div>
-                <div class="user-detail-item-content">
-                    <div class="user-detail-item-label">Phone</div>
-                    <div class="user-detail-item-value" id="userDetailPhone">-</div>
+                
+                <div class="user-detail-item">
+                    <div class="user-detail-item-icon">●</div>
+                    <div class="user-detail-item-content">
+                        <div class="user-detail-item-label">Status</div>
+                        <div class="user-detail-item-value">
+                            <span class="user-detail-badge customer" id="userDetailStatus"></span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="user-detail-item">
-                <div class="user-detail-item-icon">✉️</div>
-                <div class="user-detail-item-content">
-                    <div class="user-detail-item-label">Email</div>
-                    <div class="user-detail-item-value" id="userDetailEmail"></div>
-                </div>
-            </div>
-            
-            <div class="user-detail-item">
-                <div class="user-detail-item-icon">🌐</div>
-                <div class="user-detail-item-content">
-                    <div class="user-detail-item-label">Website</div>
-                    <div class="user-detail-item-value" id="userDetailWebsite">-</div>
-                </div>
-            </div>
-            
-            <div class="user-detail-item">
-                <div class="user-detail-item-icon">📊</div>
-                <div class="user-detail-item-content">
-                    <div class="user-detail-item-label">Status</div>
-                    <div class="user-detail-item-value">
-                        <span class="user-detail-badge customer" id="userDetailStatus"></span>
+                
+                <div class="user-detail-item">
+                    <div class="user-detail-item-icon">📅</div>
+                    <div class="user-detail-item-content">
+                        <div class="user-detail-item-label">Enrolled Date</div>
+                        <div class="user-detail-item-value" id="userDetailEnrolledDate"></div>
                     </div>
                 </div>
             </div>
             
-            <div class="user-detail-item">
-                <div class="user-detail-item-icon">🔓</div>
-                <div class="user-detail-item-content">
-                    <div class="user-detail-item-label">Access</div>
-                    <div class="user-detail-item-value" id="userDetailAccess">Everyone</div>
+            <!-- Enrolled Courses Section -->
+            <div class="user-detail-section">
+                <h3 class="user-detail-section-title">Enrolled Courses</h3>
+                <div class="user-detail-courses" id="userDetailCourses">
+                    <!-- Courses will be populated here -->
                 </div>
             </div>
         </div>
@@ -1482,6 +1497,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     </td>
                 </tr>
             `;
+            // Still call addRowClickHandlers to clean up any existing handlers
+            addRowClickHandlers();
             return;
         }
         
@@ -1685,26 +1702,36 @@ function openUserDetail(userData) {
     const initials = userData.firstname.charAt(0).toUpperCase() + userData.lastname.charAt(0).toUpperCase();
     document.getElementById('userDetailAvatarLarge').textContent = initials;
     document.getElementById('userDetailName').textContent = userData.firstname + ' ' + userData.lastname;
-    document.getElementById('userDetailRole').textContent = 'Enrolled Student';
-    
-    // Populate detail fields
-    document.getElementById('userDetailCompany').textContent = userData.company || '-';
-    document.getElementById('userDetailRoleType').textContent = userData.role || 'Student';
-    document.getElementById('userDetailPhone').textContent = userData.phone || '-';
+    document.getElementById('userDetailUsername').textContent = '@' + userData.username;
     document.getElementById('userDetailEmail').textContent = userData.email;
-    document.getElementById('userDetailWebsite').textContent = userData.website || '-';
-    document.getElementById('userDetailAccess').textContent = 'Everyone';
+    document.getElementById('userDetailStatus').textContent = userData.status === 'suspended' ? 'Suspended' : 'Active';
+    document.getElementById('userDetailEnrolledDate').textContent = userData.enrolledDate;
     
-    // Update status
+    // Update status badge style
     const statusBadge = document.getElementById('userDetailStatus');
-    statusBadge.textContent = userData.status === 'suspended' ? 'Suspended' : 'Active';
     statusBadge.className = 'user-detail-badge ' + (userData.status === 'suspended' ? 'personal' : 'customer');
     
-    // Show panel with smooth animation
+    // Populate courses
+    const coursesContainer = document.getElementById('userDetailCourses');
+    if (userData.courses && userData.courses.length > 0) {
+        coursesContainer.innerHTML = userData.courses.map(course => `
+            <div class="user-detail-course-item">
+                <div class="user-detail-course-name">${course}</div>
+                <div class="user-detail-course-date">Enrolled: ${userData.enrolledDate}</div>
+            </div>
+        `).join('');
+    } else {
+        coursesContainer.innerHTML = '<p style="color: #6c757d; text-align: center; padding: 15px; font-size: 13px;">No courses enrolled</p>';
+    }
+    
+    // Show modal with animation
     overlay.classList.add('show');
     setTimeout(() => {
         panel.classList.add('show');
-    }, 10);
+    }, 50);
+    
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
 }
 
 function closeUserDetail() {
@@ -1714,16 +1741,28 @@ function closeUserDetail() {
     panel.classList.remove('show');
     setTimeout(() => {
         overlay.classList.remove('show');
-    }, 400);
+        // Restore body scroll
+        document.body.style.overflow = 'auto';
+    }, 300);
 }
 
 function addRowClickHandlers() {
     const tableBody = document.getElementById('enrollmentsTableBody');
     if (!tableBody) return;
     
-    const rows = tableBody.getElementsByTagName('tr');
+    // Remove existing event listeners by cloning and replacing the table body
+    const newTableBody = tableBody.cloneNode(true);
+    tableBody.parentNode.replaceChild(newTableBody, tableBody);
+    
+    const rows = newTableBody.getElementsByTagName('tr');
     for (let row of rows) {
-        row.addEventListener('click', function() {
+        // Skip if this is the "no results" row
+        if (row.cells.length === 1) continue;
+        
+        row.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             const cells = this.cells;
             if (!cells || cells.length < 6) return;
             
@@ -1741,6 +1780,9 @@ function addRowClickHandlers() {
             
             openUserDetail(userData);
         });
+        
+        // Add hover effect
+        row.style.cursor = 'pointer';
     }
 }
 

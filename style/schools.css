@@ -1,6 +1,45 @@
 /* Schools Management Styles - Matching Courses Dashboard */
 /* @package theme_remui_kids */
 
+/* Dashboard Cards Container with proper spacing - FULL WIDTH */
+body .dashboard-cards-container {
+    padding: 30px 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+body .dashboard-cards-container .row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    margin-left: -20px !important;
+    margin-right: -20px !important;
+    margin-bottom: 0 !important;
+    gap: 0 !important;
+}
+
+body .dashboard-cards-container .col-lg-3,
+body .dashboard-cards-container .col-md-6,
+body .dashboard-cards-container [class*="col-"] {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    margin-bottom: 40px !important;
+    display: flex !important;
+    box-sizing: border-box !important;
+}
+
+body .dashboard-cards-container .card-link {
+    width: 100% !important;
+    display: flex !important;
+    flex: 1 !important;
+}
+
+body .dashboard-cards-container .management-card,
+body .dashboard-cards-container .summary-card {
+    width: 100% !important;
+    margin: 0 !important;
+    flex: 1 !important;
+}
+
 /* Dashboard Cards Styling - Reduced height with gradient colors */
 .dashboard-cards-container .summary-card {
     border: none;
@@ -9,6 +48,7 @@
     transition: transform 0.2s ease-in-out;
     overflow: hidden;
     height: 120px; /* Reduced height */
+    margin: 0;
 }
 
 .dashboard-cards-container .summary-card:hover {
@@ -84,6 +124,8 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
+    margin: 0;
+    height: 100%;
 }
 
 .dashboard-cards-container .management-card:hover {
@@ -166,6 +208,11 @@
 }
 
 /* Help Section Styling */
+.help-section {
+    max-width: 100%;
+    margin: 0;
+}
+
 .help-section .card {
     border: none;
     border-radius: 12px;

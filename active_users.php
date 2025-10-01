@@ -329,7 +329,7 @@ $PAGE->requires->js('/theme/remui_kids/js/active_users.js');
     max-width: 100%;
     width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 0 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: #f8fafc;
     min-height: 100vh;
