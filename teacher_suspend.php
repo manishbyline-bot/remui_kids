@@ -82,43 +82,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && confirm_sesskey()) {
             $teacher->suspended = 1;
             $message = 'Teacher has been suspended successfully!';
             
-            // Log the suspension
-            $log_data = new stdClass();
-            $log_data->userid = $teacherid;
-            $log_data->action = 'suspended';
-            $log_data->reason = $reason;
-            $log_data->suspended_by = $USER->id;
-            $log_data->timecreated = time();
-            
-            // Insert into custom suspension log table if it exists
-            if ($DB->record_exists('user_suspension_log', array())) {
-                $DB->insert_record('user_suspension_log', $log_data);
-            }
-            
         } elseif ($action_type === 'activate') {
             // Activate teacher
             $teacher->suspended = 0;
             $message = 'Teacher has been activated successfully!';
-            
-            // Log the activation
-            $log_data = new stdClass();
-            $log_data->userid = $teacherid;
-            $log_data->action = 'activated';
-            $log_data->reason = $reason;
-            $log_data->activated_by = $USER->id;
-            $log_data->timecreated = time();
-            
-            // Insert into custom activation log table if it exists
-            if ($DB->record_exists('user_activation_log', array())) {
-                $DB->insert_record('user_activation_log', $log_data);
-            }
         }
         
         $DB->update_record('user', $teacher);
         $success_message = $message;
         
+        // Redirect to refresh the page and show success message
+        redirect(new moodle_url('/theme/remui_kids/teacher_suspend.php', array('id' => $teacherid)), 
+                 $message, null, \core\output\notification::NOTIFY_SUCCESS);
+        
     } catch (Exception $e) {
-        $error_message = $e->getMessage();
+        $error_message = 'Error: ' . $e->getMessage();
+        debugging('Teacher suspend error: ' . $e->getMessage(), DEBUG_DEVELOPER);
     }
 }
 
@@ -158,9 +137,10 @@ try {
              FROM {logstore_standard_log} log
              LEFT JOIN {course} c ON log.courseid = c.id
              WHERE log.userid = ? AND log.timecreated > ?
-             ORDER BY log.timecreated DESC
-             LIMIT 5",
-            array($teacherid, time() - (30 * 24 * 60 * 60)) // Last 30 days
+             ORDER BY log.timecreated DESC",
+            array($teacherid, time() - (30 * 24 * 60 * 60)), // Last 30 days
+            0, // Starting from first record
+            5  // Limit to 5 records
         );
     } catch (Exception $e) {
         // Recent activity is optional
@@ -184,8 +164,9 @@ try {
     );
     
 } catch (Exception $e) {
+    debugging('Error loading teacher data: ' . $e->getMessage(), DEBUG_DEVELOPER);
     $template_data = array(
-        'error' => $e->getMessage(),
+        'error' => 'Unable to load teacher information. Please check if the teacher ID is valid. Error: ' . $e->getMessage(),
         'wwwroot' => $CFG->wwwroot
     );
 }

@@ -74,9 +74,10 @@ try {
             "SELECT ra.id, r.shortname, r.name
              FROM {role_assignments} ra
              JOIN {role} r ON ra.roleid = r.id
-             WHERE ra.userid = ? AND ra.component = ''
-             LIMIT 10",
-            array($teacherid)
+             WHERE ra.userid = ? AND ra.component = ''",
+            array($teacherid),
+            0,
+            10
         );
     } catch (Exception $e) {
         $role_assignments = array();
@@ -89,9 +90,10 @@ try {
              FROM {course} c
              JOIN {context} ctx ON c.id = ctx.instanceid
              JOIN {role_assignments} ra ON ctx.id = ra.contextid
-             WHERE ra.userid = ? AND ctx.contextlevel = 50
-             LIMIT 10",
-            array($teacherid)
+             WHERE ra.userid = ? AND ctx.contextlevel = 50",
+            array($teacherid),
+            0,
+            10
         );
     } catch (Exception $e) {
         $courses = array();
