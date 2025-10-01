@@ -1,291 +1,643 @@
 {{!
-    This file is part of Moodle - http://moodle.org/
-
-    Admin Dashboard Template - IOMAD Style
+    Admin Dashboard - Professional Management UI with IOMAD Cards
     @package theme_remui_kids
-    @copyright 2024 Riyada Trainings
 }}
 
-<div class="iomad-admin-dashboard">
+<div class="management-dashboard">
     
-    <!-- Header -->
-    <div class="dashboard-header">
-        <div class="header-content">
-            <h1 class="dashboard-main-title">Admin Dashboard</h1>
-            <p class="dashboard-subtitle">Comprehensive system management and analytics</p>
+    <!-- Top Header -->
+    <div class="dashboard-top-header">
+        <div>
+            <h1 class="main-dashboard-title">Management Dashboard</h1>
+            <p class="dashboard-description">Comprehensive analytics for Maarif Teacher Training Academy</p>
         </div>
         <div class="header-actions">
-            <button class="btn btn-secondary">
+            <button class="action-btn secondary">
                 <i class="fa fa-sliders-h"></i> Settings
             </button>
-            <button class="btn btn-primary">
+            <button class="action-btn primary">
                 <i class="fa fa-bell"></i> Alerts
             </button>
         </div>
     </div>
 
-    <!-- Top Statistics Cards -->
-    <div class="stats-row">
-        <div class="stat-card stat-primary">
-            <div class="stat-icon">
+    <!-- IOMAD Style - Top 6 Statistics Cards -->
+    <div class="stats-grid-six">
+        <div class="stat-card-modern stat-blue">
+            <div class="stat-icon-modern">
                 <i class="fa fa-users"></i>
             </div>
-            <div class="stat-content">
-                <div class="stat-value">{{dashboard.total_users}}</div>
-                <div class="stat-label">Total Users</div>
-                <div class="stat-badge success">{{dashboard.active_users}} Active</div>
+            <div class="stat-info">
+                <div class="stat-number-large">{{dashboard.total_users}}</div>
+                <div class="stat-label-modern">Total Users</div>
+                <div class="stat-badge-small success">{{dashboard.active_users}} Active</div>
             </div>
         </div>
 
-        <div class="stat-card stat-info">
-            <div class="stat-icon">
+        <div class="stat-card-modern stat-cyan">
+            <div class="stat-icon-modern">
                 <i class="fa fa-user-tag"></i>
             </div>
-            <div class="stat-content">
-                <div class="stat-value">{{dashboard.role_assignments}}</div>
-                <div class="stat-label">Role Assignments</div>
-                <div class="stat-badge info">View roles</div>
+            <div class="stat-info">
+                <div class="stat-number-large">{{dashboard.role_assignments}}</div>
+                <div class="stat-label-modern">Role Assignments</div>
+                <div class="stat-badge-small info">View roles</div>
             </div>
         </div>
 
-        <div class="stat-card stat-success">
-            <div class="stat-icon">
+        <div class="stat-card-modern stat-green">
+            <div class="stat-icon-modern">
                 <i class="fa fa-user-check"></i>
             </div>
-            <div class="stat-content">
-                <div class="stat-value">{{dashboard.enrollments}}</div>
-                <div class="stat-label">Enrollments</div>
-                <div class="stat-badge success">Active</div>
+            <div class="stat-info">
+                <div class="stat-number-large">{{dashboard.enrollments}}</div>
+                <div class="stat-label-modern">Enrollments</div>
+                <div class="stat-badge-small success">Active</div>
             </div>
         </div>
 
-        <div class="stat-card stat-warning">
-            <div class="stat-icon">
+        <div class="stat-card-modern stat-orange">
+            <div class="stat-icon-modern">
                 <i class="fa fa-tasks"></i>
             </div>
-            <div class="stat-content">
-                <div class="stat-value">{{dashboard.assignments}}</div>
-                <div class="stat-label">Assignments</div>
-                <div class="stat-badge warning">Pending review</div>
+            <div class="stat-info">
+                <div class="stat-number-large">{{dashboard.assignments}}</div>
+                <div class="stat-label-modern">Assignments</div>
+                <div class="stat-badge-small warning">Pending review</div>
             </div>
         </div>
 
-        <div class="stat-card stat-purple">
-            <div class="stat-icon">
+        <div class="stat-card-modern stat-purple">
+            <div class="stat-icon-modern">
                 <i class="fa fa-check-circle"></i>
             </div>
-            <div class="stat-content">
-                <div class="stat-value">{{dashboard.completed_activities}}</div>
-                <div class="stat-label">Completions</div>
-                <div class="stat-badge purple">Total completed</div>
+            <div class="stat-info">
+                <div class="stat-number-large">{{dashboard.completions}}</div>
+                <div class="stat-label-modern">Completions</div>
+                <div class="stat-badge-small purple">Total completed</div>
             </div>
         </div>
 
-        <div class="stat-card stat-danger">
-            <div class="stat-icon">
+        <div class="stat-card-modern stat-red">
+            <div class="stat-icon-modern">
                 <i class="fa fa-book"></i>
             </div>
-            <div class="stat-content">
-                <div class="stat-value">{{dashboard.total_courses}}</div>
-                <div class="stat-label">Courses</div>
-                <div class="stat-badge danger">See all courses</div>
+            <div class="stat-info">
+                <div class="stat-number-large">{{dashboard.total_courses}}</div>
+                <div class="stat-label-modern">Courses</div>
+                <div class="stat-badge-small danger">See all courses</div>
             </div>
         </div>
     </div>
 
-    <!-- Role Assignments Breakdown -->
-    <div class="section-container">
-        <div class="section-header">
-            <h2 class="section-title">Role Assignments Breakdown</h2>
-            <a href="{{wwwroot}}/admin/roles/manage.php" class="view-all-link">Manage Roles</a>
-        </div>
-        <div class="role-breakdown-table">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Role</th>
-                        <th>Count</th>
-                        <th>Percentage</th>
-                        <th>Progress</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#dashboard.role_breakdown}}
-                    <tr>
-                        <td><strong>{{name}}</strong></td>
-                        <td>{{count}}</td>
-                        <td>{{percentage}}%</td>
-                        <td>
-                            <div class="progress-bar-wrapper">
-                                <div class="progress-bar-fill" style="width: {{percentage}}%"></div>
-                            </div>
-                        </td>
-                    </tr>
-                    {{/dashboard.role_breakdown}}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Analytics Grid -->
-    <div class="analytics-grid">
+    <!-- IOMAD Style - 4 Analytics Cards -->
+    <div class="analytics-row">
         
-        <!-- Teacher Analytics -->
-        <div class="analytics-card">
-            <div class="analytics-header">
-                <h3 class="analytics-title">
+        <div class="analytics-card-iomad">
+            <div class="analytics-card-header">
+                <div class="analytics-icon blue">
                     <i class="fa fa-chalkboard-teacher"></i>
-                    Teacher Analytics
-                </h3>
-                <a href="{{wwwroot}}/admin/roles/assign.php" class="view-all-small">View All</a>
+                </div>
+                <h3 class="analytics-card-title">Teacher Analytics</h3>
+                <a href="{{wwwroot}}/admin/roles/assign.php" class="view-link-small">View All</a>
             </div>
-            <div class="analytics-body">
-                <div class="analytics-stat">
-                    <span class="analytics-label">Active Teachers</span>
-                    <span class="analytics-value">{{dashboard.teacher_analytics.active_teachers}}</span>
+            <div class="analytics-stats">
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Active Teachers</span>
+                    <span class="stat-value-small">{{dashboard.teacher_analytics.active_teachers}}</span>
                 </div>
-                <div class="analytics-stat">
-                    <span class="analytics-label">Total Assignments</span>
-                    <span class="analytics-value">{{dashboard.teacher_analytics.total_assignments}}</span>
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Total Assignments</span>
+                    <span class="stat-value-small">{{dashboard.teacher_analytics.total_assignments}}</span>
                 </div>
-                <div class="analytics-stat">
-                    <span class="analytics-label">Completion Rate</span>
-                    <span class="analytics-value">{{dashboard.teacher_analytics.completion_rate}}</span>
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Completion Rate</span>
+                    <span class="stat-value-small">{{dashboard.teacher_analytics.completion_rate}}</span>
                 </div>
             </div>
-            <div class="analytics-progress">
-                <div class="progress-bar-modern">
-                    <div class="progress-fill-modern blue" style="width: 85%"></div>
-                </div>
+            <div class="analytics-progress-bar">
+                <div class="analytics-bar-fill blue" style="width: {{dashboard.teacher_analytics.completion_rate}}%"></div>
             </div>
         </div>
 
-        <!-- Trainee Analytics -->
-        <div class="analytics-card">
-            <div class="analytics-header">
-                <h3 class="analytics-title">
+        <div class="analytics-card-iomad">
+            <div class="analytics-card-header">
+                <div class="analytics-icon green">
                     <i class="fa fa-user-graduate"></i>
-                    Trainee Analytics
-                </h3>
-                <a href="{{wwwroot}}/admin/roles/assign.php" class="view-all-small">View All</a>
+                </div>
+                <h3 class="analytics-card-title">Trainee Analytics</h3>
+                <a href="{{wwwroot}}/admin/user.php" class="view-link-small">View All</a>
             </div>
-            <div class="analytics-body">
-                <div class="analytics-stat">
-                    <span class="analytics-label">Active Trainees</span>
-                    <span class="analytics-value">{{dashboard.trainee_analytics.active_trainees}}</span>
+            <div class="analytics-stats">
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Active Trainees</span>
+                    <span class="stat-value-small">{{dashboard.trainee_analytics.active_trainees}}</span>
                 </div>
-                <div class="analytics-stat">
-                    <span class="analytics-label">Total Assignments</span>
-                    <span class="analytics-value">{{dashboard.trainee_analytics.total_assignments}}</span>
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Total Assignments</span>
+                    <span class="stat-value-small">{{dashboard.trainee_analytics.total_assignments}}</span>
                 </div>
-                <div class="analytics-stat">
-                    <span class="analytics-label">Active Time</span>
-                    <span class="analytics-value">{{dashboard.trainee_analytics.active_time}}</span>
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Active Time</span>
+                    <span class="stat-value-small">{{dashboard.trainee_analytics.active_time}}</span>
                 </div>
             </div>
-            <div class="analytics-progress">
-                <div class="progress-bar-modern">
-                    <div class="progress-fill-modern green" style="width: 75%"></div>
-                </div>
+            <div class="analytics-progress-bar">
+                <div class="analytics-bar-fill green" style="width: {{dashboard.trainee_analytics.active_time}}%"></div>
             </div>
         </div>
 
-        <!-- Course Analytics -->
-        <div class="analytics-card">
-            <div class="analytics-header">
-                <h3 class="analytics-title">
+        <div class="analytics-card-iomad">
+            <div class="analytics-card-header">
+                <div class="analytics-icon purple">
                     <i class="fa fa-book-open"></i>
-                    Course Analytics
-                </h3>
-                <a href="{{wwwroot}}/course/management.php" class="view-all-small">Manage</a>
+                </div>
+                <h3 class="analytics-card-title">Course Analytics</h3>
+                <a href="{{wwwroot}}/course/management.php" class="view-link-small">Manage</a>
             </div>
-            <div class="analytics-body">
-                <div class="analytics-stat">
-                    <span class="analytics-label">Solo Assignments</span>
-                    <span class="analytics-value">{{dashboard.course_analytics.solo_assignments}}</span>
+            <div class="analytics-stats">
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Solo Assignments</span>
+                    <span class="stat-value-small">{{dashboard.course_analytics.solo_assignments}}</span>
                 </div>
-                <div class="analytics-stat">
-                    <span class="analytics-label">Completion Rate</span>
-                    <span class="analytics-value">{{dashboard.course_analytics.completion_rate}}</span>
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Completion Rate</span>
+                    <span class="stat-value-small">{{dashboard.course_analytics.completion_rate}}</span>
                 </div>
             </div>
-            <div class="analytics-progress">
-                <div class="progress-bar-modern">
-                    <div class="progress-fill-modern purple" style="width: 60%"></div>
-                </div>
+            <div class="analytics-progress-bar">
+                <div class="analytics-bar-fill purple" style="width: {{dashboard.course_analytics.completion_rate}}%"></div>
             </div>
         </div>
 
-        <!-- Student Analytics -->
-        <div class="analytics-card">
-            <div class="analytics-header">
-                <h3 class="analytics-title">
+        <div class="analytics-card-iomad">
+            <div class="analytics-card-header">
+                <div class="analytics-icon orange">
                     <i class="fa fa-users"></i>
-                    Student Analytics
-                </h3>
-                <a href="{{wwwroot}}/admin/user.php" class="view-all-small">View All</a>
+                </div>
+                <h3 class="analytics-card-title">Student Analytics</h3>
+                <a href="{{wwwroot}}/admin/user.php" class="view-link-small">View All</a>
             </div>
-            <div class="analytics-body">
-                <div class="analytics-stat">
-                    <span class="analytics-label">Total Students</span>
-                    <span class="analytics-value">{{dashboard.student_analytics.total_students}}</span>
+            <div class="analytics-stats">
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Total Students</span>
+                    <span class="stat-value-small">{{dashboard.student_analytics.total_students}}</span>
                 </div>
-                <div class="analytics-stat">
-                    <span class="analytics-label">Active This Month</span>
-                    <span class="analytics-value">{{dashboard.student_analytics.active_this_month}}</span>
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Active This Month</span>
+                    <span class="stat-value-small">{{dashboard.student_analytics.active_this_month}}</span>
                 </div>
-                <div class="analytics-stat">
-                    <span class="analytics-label">Avg. Progress</span>
-                    <span class="analytics-value">{{dashboard.student_analytics.avg_progress}}</span>
+                <div class="analytics-stat-row">
+                    <span class="stat-label-small">Avg. Progress</span>
+                    <span class="stat-value-small">{{dashboard.student_analytics.avg_progress}}</span>
                 </div>
             </div>
-            <div class="analytics-progress">
-                <div class="progress-bar-modern">
-                    <div class="progress-fill-modern orange" style="width: 70%"></div>
-                </div>
+            <div class="analytics-progress-bar">
+                <div class="analytics-bar-fill orange" style="width: {{dashboard.student_analytics.avg_progress}}%"></div>
             </div>
         </div>
 
     </div>
 
-    <!-- Management Cards -->
-    <div class="management-grid">
-        {{#dashboard.management_cards}}
-        <div class="management-card card-{{color}}">
-            <div class="management-icon">
-                <i class="fa {{icon}}"></i>
-            </div>
-            <div class="management-content">
-                <h3 class="management-title">{{title}}</h3>
-                <p class="management-description">{{description}}</p>
-                <div class="management-stats">
-                    {{#stats}}
-                    <div class="mini-stat">
-                        <div class="mini-stat-label">{{label}}</div>
-                        <div class="mini-stat-value">{{value}}</div>
+    <!-- Main Dashboard Grid - Original Professional Layout -->
+    <div class="dashboard-grid">
+        
+        <!-- Left Column -->
+        <div class="grid-left">
+            
+            <!-- Teacher Performance Improvement -->
+            <div class="dashboard-section">
+                <div class="section-header-with-tabs">
+                    <h2 class="section-title">Teacher Performance Improvement</h2>
+                    <div class="tab-group">
+                        <button class="tab-btn active">By Subject</button>
+                        <button class="tab-btn">By School</button>
+                        <button class="tab-btn">By Experience</button>
                     </div>
-                    {{/stats}}
                 </div>
-                <a href="{{{url}}}" class="management-button">
-                    <i class="fa fa-arrow-right"></i> {{button_text}}
+                
+                <div class="chart-placeholder">
+                    <i class="fa fa-chart-line" style="font-size: 3rem; color: #cbd5e0;"></i>
+                    <p class="chart-description">Performance improvement chart showing teacher effectiveness scores across different subjects</p>
+                </div>
+                
+                <div class="subject-stats">
+                    {{#dashboard.subject_stats}}
+                    <div class="subject-item">
+                        <span class="subject-name">{{name}}</span>
+                        <span class="subject-change green">{{growth}}</span>
+                    </div>
+                    {{/dashboard.subject_stats}}
+                </div>
+            </div>
+
+            <!-- Competency Development -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Competency Development</h2>
+                    <a href="#" class="view-link">View detailed competency report →</a>
+                </div>
+                
+                {{#dashboard.competencies}}
+                <div class="competency-item">
+                    <span class="competency-label">{{label}}</span>
+                    <div class="competency-bar-wrapper">
+                        <div class="competency-bar {{color}}" style="width: {{percentage}}%"></div>
+                    </div>
+                    <span class="competency-value">{{percentage}}%</span>
+                </div>
+                {{/dashboard.competencies}}
+            </div>
+
+            <!-- Training ROI Analysis -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Training ROI Analysis</h2>
+                    <div class="tab-group small">
+                        <button class="tab-btn-small active">Weekly</button>
+                        <button class="tab-btn-small">Monthly</button>
+                        <button class="tab-btn-small">Quarterly</button>
+                    </div>
+                </div>
+                
+                {{#dashboard.roi_metrics}}
+                <div class="roi-item">
+                    <span class="roi-label">{{label}}</span>
+                    <div class="roi-bar-wrapper">
+                        <div class="roi-bar blue" style="width: {{percentage}}%"></div>
+                    </div>
+                    <span class="roi-value">{{value}}</span>
+                </div>
+                {{/dashboard.roi_metrics}}
+            </div>
+
+            <!-- Training Activity -->
+            <div class="dashboard-section">
+                <div class="section-header-with-tabs">
+                    <h2 class="section-title">Training Activity</h2>
+                    <div class="tab-group small">
+                        <button class="tab-btn-small active">Weekly</button>
+                        <button class="tab-btn-small">Monthly</button>
+                        <button class="tab-btn-small">Quarterly</button>
+                    </div>
+                </div>
+                
+                <div class="chart-placeholder medium">
+                    <i class="fa fa-chart-bar" style="font-size: 2.5rem; color: #cbd5e0;"></i>
+                    <p class="chart-description">Training activity across different formats and delivery methods</p>
+                </div>
+                
+                <div class="activity-stats">
+                    <div class="activity-stat">
+                        <div class="stat-number blue">{{dashboard.ilt_sessions}}</div>
+                        <div class="stat-label">ILT Sessions</div>
+                    </div>
+                    <div class="activity-stat">
+                        <div class="stat-number purple">{{dashboard.vilt_sessions}}</div>
+                        <div class="stat-label">VILT Sessions</div>
+                    </div>
+                    <div class="activity-stat">
+                        <div class="stat-number orange">{{dashboard.self_paced}}</div>
+                        <div class="stat-label">Self-Paced Modules</div>
+                    </div>
+                    <div class="activity-stat">
+                        <div class="stat-number green">{{dashboard.assessments}}</div>
+                        <div class="stat-label">Assessments</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Master Trainer Development -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Master Trainer Development</h2>
+                    <a href="{{wwwroot}}/theme/remui_kids/teachers.php" class="view-link">View all trainers →</a>
+                </div>
+                
+                <table class="professional-table">
+                    <thead>
+                        <tr>
+                            <th>TEACHER</th>
+                            <th>SPECIALIZATION</th>
+                            <th>PROGRESS</th>
+                            <th>CERTIFICATION</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#dashboard.master_trainers}}
+                        <tr>
+                            <td>
+                                <div class="teacher-cell">
+                                    <div class="avatar">{{initials}}</div>
+                                    <div>
+                                        <div class="teacher-name">{{name}}</div>
+                                        <div class="teacher-subject">{{subject}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{specialization}}</td>
+                            <td>
+                                <div class="progress-bar-cell">
+                                    <div class="progress-bar-mini {{color}}" style="width: {{progress}}%"></div>
+                                    <span>{{progress}}% Complete</span>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-{{cert_class}}">{{certification}}</span></td>
+                            <td><span class="status-badge {{status_class}}">{{status}}</span></td>
+                        </tr>
+                        {{/dashboard.master_trainers}}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="grid-right">
+            
+            <!-- Teacher Engagement -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Teacher Engagement</h2>
+                </div>
+                
+                <div class="chart-placeholder small">
+                    <i class="fa fa-chart-pie" style="font-size: 2.5rem; color: #cbd5e0;"></i>
+                    <p class="chart-description">Engagement metrics by training format</p>
+                </div>
+                
+                <div class="engagement-metrics">
+                    <div class="metric-badge blue">
+                        {{dashboard.engagement_metrics.ilt}}%
+                        <span>ILT</span>
+                    </div>
+                    <div class="metric-badge purple">
+                        {{dashboard.engagement_metrics.vilt}}%
+                        <span>VILT</span>
+                    </div>
+                    <div class="metric-badge yellow">
+                        {{dashboard.engagement_metrics.self_paced}}%
+                        <span>Self-Paced</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Predictive Insights -->
+            <div class="dashboard-section ai-powered">
+                <div class="section-header">
+                    <h2 class="section-title">Predictive Insights</h2>
+                    <span class="ai-badge">AI-Powered</span>
+                </div>
+                
+                <div class="insight-card red">
+                    <div class="insight-header">
+                        <i class="fa fa-exclamation-triangle"></i> High Attrition Risk
+                    </div>
+                    <p class="insight-text">{{dashboard.attrition_risk}} teachers show patterns indicating potential resignation in next 3 months</p>
+                </div>
+                
+                <div class="insight-card green">
+                    <div class="insight-header">
+                        <i class="fa fa-star"></i> Leadership Potential
+                    </div>
+                    <p class="insight-text">{{dashboard.leadership_potential}} teachers show exceptional leadership qualities and should be considered for Master Trainer program</p>
+                </div>
+                
+                <div class="insight-card yellow">
+                    <div class="insight-header">
+                        <i class="fa fa-tools"></i> Skills Gap Alert
+                    </div>
+                    <p class="insight-text">Critical gap in advanced technology integration skills across {{dashboard.schools_with_gap}} schools</p>
+                </div>
+                
+                <div class="insight-card blue">
+                    <div class="insight-header">
+                        <i class="fa fa-lightbulb"></i> Course Recommendation
+                    </div>
+                    <p class="insight-text">Based on current trends, recommend increasing capacity for high-demand courses</p>
+                </div>
+            </div>
+
+            <!-- Behavioral Analysis -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Behavioral Analysis</h2>
+                    <span class="ai-badge green">AI-Powered</span>
+                </div>
+                
+                <div class="behavioral-grid">
+                    <div>
+                        <div class="behavioral-subtitle">Learning Preferences</div>
+                        <div class="preference-item">
+                            <span>Visual</span>
+                            <div class="pref-bar purple" style="width: {{dashboard.behavioral_data.learning.Visual}}%"></div>
+                            <strong>{{dashboard.behavioral_data.learning.Visual}}%</strong>
+                        </div>
+                        <div class="preference-item">
+                            <span>Auditory</span>
+                            <div class="pref-bar purple" style="width: {{dashboard.behavioral_data.learning.Auditory}}%"></div>
+                            <strong>{{dashboard.behavioral_data.learning.Auditory}}%</strong>
+                        </div>
+                        <div class="preference-item">
+                            <span>Kinesthetic</span>
+                            <div class="pref-bar purple" style="width: {{dashboard.behavioral_data.learning.Kinesthetic}}%"></div>
+                            <strong>{{dashboard.behavioral_data.learning.Kinesthetic}}%</strong>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="behavioral-subtitle">Time Preferences</div>
+                        <div class="preference-item">
+                            <span>Morning</span>
+                            <div class="pref-bar orange" style="width: {{dashboard.behavioral_data.time.Morning}}%"></div>
+                            <strong>{{dashboard.behavioral_data.time.Morning}}%</strong>
+                        </div>
+                        <div class="preference-item">
+                            <span>Afternoon</span>
+                            <div class="pref-bar orange" style="width: {{dashboard.behavioral_data.time.Afternoon}}%"></div>
+                            <strong>{{dashboard.behavioral_data.time.Afternoon}}%</strong>
+                        </div>
+                        <div class="preference-item">
+                            <span>Evening</span>
+                            <div class="pref-bar orange" style="width: {{dashboard.behavioral_data.time.Evening}}%"></div>
+                            <strong>{{dashboard.behavioral_data.time.Evening}}%</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="engagement-chart">
+                    <div class="behavioral-subtitle">Engagement Patterns</div>
+                    <div class="chart-placeholder small">
+                        <i class="fa fa-chart-area" style="font-size: 2rem; color: #cbd5e0;"></i>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Succession Planning -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Succession Planning</h2>
+                    <span class="ai-badge green">Leadership</span>
+                </div>
+                
+                <div class="succession-card blue">
+                    <div class="succession-title">Academic Coordinators</div>
+                    <div class="succession-progress">
+                        <div class="succ-bar blue" style="width: {{dashboard.succession_planning.coordinators.percentage}}%"></div>
+                    </div>
+                    <div class="succession-info">
+                        <span>{{dashboard.succession_planning.coordinators.current}}/{{dashboard.succession_planning.coordinators.target}}</span>
+                        <span class="succession-note">{{dashboard.succession_planning.coordinators.gap}} positions to be filled in next 6 months</span>
+                    </div>
+                </div>
+                
+                <div class="succession-card purple">
+                    <div class="succession-title">Department Heads</div>
+                    <div class="succession-progress">
+                        <div class="succ-bar purple" style="width: {{dashboard.succession_planning.department_heads.percentage}}%"></div>
+                    </div>
+                    <div class="succession-info">
+                        <span>{{dashboard.succession_planning.department_heads.current}}/{{dashboard.succession_planning.department_heads.target}}</span>
+                        <span class="succession-note">{{dashboard.succession_planning.department_heads.gap}} positions to be filled in next 12 months</span>
+                    </div>
+                </div>
+                
+
+                
+            </div>
+
+        </div>
+    </div>
+
+    <!-- IOMAD Style - 4 Management Cards -->
+    <div class="management-cards-row mt-4">
+        
+        <div class="management-card-iomad card-blue-bg ">
+            <div class="management-card-icon blue">
+                <i class="fa fa-users"></i>
+            </div>
+            <div class="management-card-body">
+                <h3 class="management-card-title">User Management</h3>
+                <p class="management-card-desc">Manage users and permissions</p>
+                <div class="management-mini-stats">
+                    <div class="mini-stat-item">
+                        <div class="mini-label">Total Users</div>
+                        <div class="mini-value">{{dashboard.total_users}}</div>
+                    </div>
+                    <div class="mini-stat-item">
+                        <div class="mini-label">Active Users</div>
+                        <div class="mini-value">{{dashboard.active_users}}</div>
+                    </div>
+                </div>
+                <a href="{{wwwroot}}/theme/remui_kids/user_management.php" class="management-action-btn">
+                    <i class="fa fa-arrow-right"></i> Manage Users
                 </a>
             </div>
         </div>
-        {{/dashboard.management_cards}}
+
+        <div class="management-card-iomad card-green-bg">
+            <div class="management-card-icon green">
+                <i class="fa fa-book"></i>
+            </div>
+            <div class="management-card-body">
+                <h3 class="management-card-title">Course Management</h3>
+                <p class="management-card-desc">Create and manage courses</p>
+                <div class="management-mini-stats">
+                    <div class="mini-stat-item">
+                        <div class="mini-label">Total Courses</div>
+                        <div class="mini-value">{{dashboard.total_courses}}</div>
+                    </div>
+                    <div class="mini-stat-item">
+                        <div class="mini-label">Enrollments</div>
+                        <div class="mini-value">{{dashboard.enrollments}}</div>
+                    </div>
+                </div>
+                <a href="{{wwwroot}}/course/management.php" class="management-action-btn">
+                    <i class="fa fa-arrow-right"></i> Manage Courses
+                </a>
+            </div>
+        </div>
+
+        <div class="management-card-iomad card-purple-bg">
+            <div class="management-card-icon purple">
+                <i class="fa fa-school"></i>
+            </div>
+            <div class="management-card-body">
+                <h3 class="management-card-title">School Management</h3>
+                <p class="management-card-desc">Manage school settings</p>
+                <div class="management-mini-stats">
+                    <div class="mini-stat-item">
+                        <div class="mini-label">Schools</div>
+                        <div class="mini-value">{{dashboard.schools_count}}</div>
+                    </div>
+                    <div class="mini-stat-item">
+                        <div class="mini-label">Departments</div>
+                        <div class="mini-value">{{dashboard.departments_count}}</div>
+                    </div>
+                </div>
+                <a href="{{wwwroot}}/theme/remui_kids/schools.php" class="management-action-btn">
+                    <i class="fa fa-arrow-right"></i> Manage Schools
+                </a>
+            </div>
+        </div>
+
+        <div class="management-card-iomad card-orange-bg">
+            <div class="management-card-icon orange">
+                <i class="fa fa-chart-bar"></i>
+            </div>
+            <div class="management-card-body">
+                <h3 class="management-card-title">Reports & Analytics</h3>
+                <p class="management-card-desc">View detailed reports</p>
+                <div class="management-mini-stats">
+                    <div class="mini-stat-item">
+                        <div class="mini-label">Completion Rate</div>
+                        <div class="mini-value">{{dashboard.overall_completion}}%</div>
+                    </div>
+                    <div class="mini-stat-item">
+                        <div class="mini-label">Active Rate</div>
+                        <div class="mini-value">{{dashboard.active_rate}}%</div>
+                    </div>
+                </div>
+                <a href="{{wwwroot}}/admin/category.php?category=reports" class="management-action-btn">
+                    <i class="fa fa-arrow-right"></i> View Reports
+                </a>
+            </div>
+        </div>
+
     </div>
 
     <!-- Quick Actions -->
-    <div class="section-container">
+    <div class="dashboard-section">
         <div class="section-header">
             <h2 class="section-title">Quick Actions</h2>
         </div>
-        <div class="quick-actions-grid">
-            {{#dashboard.quick_actions}}
-            <a href="{{{url}}}" class="quick-action-btn">
-                <i class="fa {{icon}}"></i>
-                <span>{{label}}</span>
+        <div class="quick-actions-row">
+            <a href="{{wwwroot}}/user/editadvanced.php?id=-1" class="quick-action-card">
+                <div class="qa-icon"><i class="fa fa-user-plus"></i></div>
+                <div class="qa-label">Add User</div>
             </a>
-            {{/dashboard.quick_actions}}
+            <a href="{{wwwroot}}/course/edit.php?category=1" class="quick-action-card">
+                <div class="qa-icon"><i class="fa fa-book-medical"></i></div>
+                <div class="qa-label">Create Course</div>
+            </a>
+            <a href="{{wwwroot}}/admin/plugins.php" class="quick-action-card">
+                <div class="qa-icon"><i class="fa fa-plug"></i></div>
+                <div class="qa-label">Plugins</div>
+            </a>
+            <a href="{{wwwroot}}/admin/settings.php" class="quick-action-card">
+                <div class="qa-icon"><i class="fa fa-cog"></i></div>
+                <div class="qa-label">Settings</div>
+            </a>
+            <a href="{{wwwroot}}/admin/tool/uploaduser/index.php" class="quick-action-card">
+                <div class="qa-icon"><i class="fa fa-upload"></i></div>
+                <div class="qa-label">Imports</div>
+            </a>
+            <a href="{{wwwroot}}/admin/index.php" class="quick-action-card">
+                <div class="qa-icon"><i class="fa fa-redo"></i></div>
+                <div class="qa-label">IOMAD</div>
+            </a>
         </div>
     </div>
 
