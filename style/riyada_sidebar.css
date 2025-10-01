@@ -1,29 +1,59 @@
 /* Riyada Sidebar Styles with Scroll Functionality */
 
+/* Hide main page footer */
+#page-footer,
+.footer,
+footer,
+.theme-remui-footer,
+.region-footer {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
 .riyada-sidebar-container {
     position: fixed;
     left: 0;
-    top: 60px;
-    height: calc(100vh - 60px);
+    top: 30px; /* Move admin sidebar up a little more */
+    height: calc(100vh - 30px); /* Adjust height accordingly */
     width: 280px;
     background: #ffffff;
     border-right: 1px solid #e5e7eb;
-    z-index: 999;
-    overflow: hidden;
+    z-index: 999; /* Lower than navbar */
+    overflow-y: auto; /* Allow vertical scrolling */
+    overflow-x: hidden;
+
     display: flex;
     flex-direction: column;
     transform: translateX(0);
 }
 
+/* Sidebar Header */
+.riyada-sidebar-header {
+    padding: 20px; /* Normal padding since container is below navbar */
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+}
+
+.riyada-sidebar-header h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
 .riyada-sidebar-nav {
     flex: 1;
-    overflow-y: auto !important;
+    overflow-y: visible; /* Allow content to flow naturally */
     overflow-x: hidden !important;
-    padding: 20px 0;
+    padding: 20px 0; /* Normal padding */
     scrollbar-width: thin;
     scrollbar-color: #d1d5db #f9fafb;
     max-height: calc(100vh - 160px);
     position: relative;
+    min-height: 0; /* Allow flex shrinking */
 }
 
 /* Custom scrollbar for webkit browsers */
@@ -197,13 +227,31 @@ body.sidebar-hidden {
     margin-left: 0;
 }
 
-/* Main content adjustment */
-.main-content {
+/* Main content adjustment - only for non-admin users */
+body:not(.admin-user) .main-content,
+body:not(.admin-user) #page-wrapper,
+body:not(.admin-user) .container-fluid,
+body:not(.admin-user) .main-content-wrapper {
     margin-left: 280px;
+    margin-top: 40px; /* Add top margin to account for sidebar position */
+    transition: margin-left 0.3s ease;
 }
 
-.main-content.sidebar-hidden {
+body:not(.admin-user) .main-content.sidebar-hidden,
+body:not(.admin-user) #page-wrapper.sidebar-hidden,
+body:not(.admin-user) .container-fluid.sidebar-hidden,
+body:not(.admin-user) .main-content-wrapper.sidebar-hidden {
     margin-left: 0;
+}
+
+/* Admin users - keep original layout with just top margin */
+body.admin-user .main-content,
+body.admin-user #page-wrapper,
+body.admin-user .container-fluid,
+body.admin-user .main-content-wrapper {
+    margin-left: 0;
+    margin-top: 40px; /* Move content down to match trainee interface */
+    transition: margin-left 0.3s ease;
 }
 
 /* Sidebar collapsed state */
@@ -252,4 +300,119 @@ body.sidebar-hidden .riyada-fab {
 .riyada-scroll-to-top:hover {
     background-color: #e5e7eb;
     color: #374151;
+}
+
+/* Sidebar Footer for Trainee/Teacher Users */
+.riyada-sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+    flex-shrink: 0; /* Prevent footer from shrinking */
+    margin-top: auto; /* Push footer to bottom */
+    min-height: 120px; /* Ensure minimum height for footer content */
+    padding-bottom: 40px; /* Extra bottom padding to ensure footer is fully visible */
+}
+
+.riyada-user-profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.riyada-user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    border: 2px solid #d1d5db;
+}
+
+.riyada-avatar-icon {
+    font-size: 18px;
+    color: #6b7280;
+}
+
+.riyada-user-info {
+    flex: 1;
+}
+
+.riyada-user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.2;
+    margin-bottom: 2px;
+}
+
+.riyada-user-school {
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.2;
+}
+
+.riyada-logout-section {
+    width: 100%;
+}
+
+.riyada-logout-btn {
+    width: 100%;
+    padding: 12px 16px;
+    background: #374151;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    gap: 8px;
+}
+
+.riyada-logout-btn:hover {
+    background: #1f2937;
+    transform: translateY(-1px);
+}
+
+.riyada-logout-icon {
+    font-size: 16px;
+}
+
+.riyada-logout-text {
+    font-size: 14px;
+}
+
+/* Dropdown indicator for expandable items */
+.riyada-nav-dropdown {
+    margin-left: auto;
+    font-size: 12px;
+    color: #9ca3af;
+    transition: transform 0.2s ease;
+}
+
+.riyada-nav-item:hover .riyada-nav-dropdown {
+    color: #6b7280;
+}
+
+/* Role-specific styling */
+.teacher-user .riyada-sidebar-container {
+    border-left: 4px solid #3b82f6;
+}
+
+.trainee-user .riyada-sidebar-container {
+    border-left: 4px solid #10b981;
+}
+
+.admin-user .riyada-sidebar-container {
+    border-left: 4px solid #ef4444;
 }

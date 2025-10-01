@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{course_name}} - Learning Pathway</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{wwwroot}}/theme/remui_kids/style/learning_pathway.css" rel="stylesheet">
+</head>
+<body>
+    <div class="learning-pathway-container">
+        <!-- Header -->
+        <div class="pathway-header">
+            <div class="header-content">
+                <div class="back-button">
+                    <a href="{{back_url}}" class="btn-back">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to My Learning
+                    </a>
+                </div>
+                <div class="course-title">
+                    <h1>{{course_name}}</h1>
+                    <p class="course-subtitle">Learning Pathway</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="progress-overview">
+            <div class="progress-info">
+                <div class="progress-text">
+                    <span class="progress-percentage">{{overall_progress}}%</span>
+                    <span class="progress-label">Complete</span>
+                </div>
+                <div class="progress-details">
+                    <span class="completed-count">{{completed_activities}}</span>
+                    <span class="total-count">of {{total_activities}} modules completed</span>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{overall_progress}}%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Learning Days Section -->
+        <div class="learning-days-section">
+            <div class="section-header">
+                <h2>Course Learning Days</h2>
+                <p class="section-description">Click on any day to view the detailed learning timeline</p>
+            </div>
+            
+            <div class="days-grid">
+                {{#days_data}}
+                <div class="day-card" data-day="{{day_number}}" onclick="goToDayPathway({{day_number}})">
+                    <div class="day-header">
+                        <div class="day-circle">
+                            <span class="day-number">{{day_number}}</span>
+                        </div>
+                        <div class="day-title">{{title}}</div>
+                    </div>
+                    
+                    <div class="day-stats">
+                        <div class="activity-count">
+                            <i class="fas fa-tasks"></i>
+                            <span>{{activities_count}} activities</span>
+                        </div>
+                        <div class="hours-count">
+                            <i class="fas fa-clock"></i>
+                            <span>{{hours}} hours</span>
+                        </div>
+                    </div>
+                    
+                        <div class="day-progress">
+                            <div class="progress-info">
+                                <span class="progress-percentage">
+                                    {{#activities_count}}
+                                        {{progress}}% Complete
+                                    {{/activities_count}}
+                                    {{^activities_count}}
+                                        {{#progress}}
+                                            {{progress}}% Complete
+                                        {{/progress}}
+                                        {{^progress}}
+                                            0% Complete
+                                        {{/progress}}
+                                    {{/activities_count}}
+                                </span>
+                            </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{progress}}%"></div>
+                        </div>
+                    </div>
+                    
+                    {{#activities.0}}
+                    <div class="day-activities-preview">
+                        <div class="activities-title">Activities:</div>
+                        <ul class="activities-list">
+                            {{#activities}}
+                            <li class="activity-item {{#completed}}completed{{/completed}}">
+                                <i class="fas fa-{{#completed}}check-circle{{/completed}}{{^completed}}circle{{/completed}}"></i>
+                                <span>{{name}}</span>
+                                <span class="activity-type">({{type}})</span>
+                            </li>
+                            {{/activities}}
+                        </ul>
+                    </div>
+                    {{/activities.0}}
+                </div>
+                {{/days_data}}
+            </div>
+        </div>
+
+        <!-- Day Details Modal -->
+        <div id="dayModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Day Details</h3>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="modalContent">
+                        <!-- Day details will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigate to day pathway
+        function goToDayPathway(dayNumber) {
+            const courseId = new URLSearchParams(window.location.search).get('courseid');
+            if (courseId) {
+                window.location.href = `{{wwwroot}}/theme/remui_kids/day_pathway.php?courseid=${courseId}&day=${dayNumber}`;
+            }
+        }
+        
+        // Modal functionality
+        function viewDayDetails(dayNumber) {
+            const modal = document.getElementById('dayModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalTitle.textContent = `Day ${dayNumber} - Detailed Timeline`;
+            
+            // Get day data from the day cards
+            const dayCard = document.querySelector(`[data-day="${dayNumber}"]`);
+            const currentDay = {
+                title: `Day ${dayNumber}`,
+                activities_count: dayCard ? parseInt(dayCard.querySelector('.activity-count span').textContent.match(/\d+/)[0]) : 0,
+                hours: 8,
+                progress: dayCard ? parseInt(dayCard.querySelector('.progress-percentage').textContent) || 0 : 0,
+                activities: []
+            };
+            
+            // Get activities from the day card
+            const activitiesList = dayCard ? dayCard.querySelectorAll('.activity-item') : [];
+            activitiesList.forEach(activityItem => {
+                const nameElement = activityItem.querySelector('span:first-of-type');
+                const typeElement = activityItem.querySelector('.activity-type');
+                const isCompleted = activityItem.classList.contains('completed');
+                
+                if (nameElement && typeElement) {
+                    currentDay.activities.push({
+                        name: nameElement.textContent.trim(),
+                        type: typeElement.textContent.replace(/[()]/g, '').trim(),
+                        completed: isCompleted
+                    });
+                }
+            });
+            
+            if (currentDay) {
+                let content = `
+                    <div class="day-details">
+                        <div class="day-summary">
+                            <h4>${currentDay.title}</h4>
+                            <div class="day-stats">
+                                <span><i class="fas fa-tasks"></i> ${currentDay.activities_count} Activities</span>
+                                <span><i class="fas fa-clock"></i> ${currentDay.hours} Hours</span>
+                                <span><i class="fas fa-percentage"></i> ${currentDay.progress}% Complete</span>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline">
+                            <h5>Learning Timeline</h5>
+                            <div class="timeline-items">
+                `;
+                
+                if (currentDay.activities.length > 0) {
+                    currentDay.activities.forEach((activity, index) => {
+                        content += `
+                            <div class="timeline-item ${activity.completed ? 'completed' : ''}">
+                                <div class="timeline-marker">
+                                    <i class="fas fa-${activity.completed ? 'check' : 'clock'}"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6>${activity.name}</h6>
+                                    <p class="activity-type">${activity.type}</p>
+                                    <span class="completion-status">
+                                        ${activity.completed ? 'Completed' : 'Pending'}
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    content += `
+                        <div class="no-activities">
+                            <i class="fas fa-info-circle"></i>
+                            <p>No activities scheduled for this day.</p>
+                        </div>
+                    `;
+                }
+                
+                content += `
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                modalContent.innerHTML = content;
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('dayModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('dayModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // Add animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const dayCards = document.querySelectorAll('.day-card');
+            dayCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+            
+            // Animate progress bars
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach((bar, index) => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                
+                setTimeout(() => {
+                    bar.style.transition = 'width 1s ease-in-out';
+                    bar.style.width = width;
+                }, 500 + (index * 100));
+            });
+        });
+    </script>
+</body>
+</html>

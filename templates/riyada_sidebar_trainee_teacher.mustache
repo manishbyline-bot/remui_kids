@@ -1,0 +1,411 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    Riyada Sidebar Component for Trainees and Teachers
+    @package theme_remui_kids
+    @copyright 2024 Riyada Trainings
+    @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+}}
+
+{{!
+    @template theme_remui_kids/riyada_sidebar_trainee_teacher
+
+    Riyada custom sidebar navigation component for trainees and teachers
+
+    Example context (json):
+    {
+        "wwwroot": "http://localhost/Kodeit-Iomad-local/Kodeit-Iomad-local/iomad-test",
+        "sitename": "Riyada Trainings"
+    }
+}}
+
+<!-- Include sidebar CSS -->
+<link rel="stylesheet" href="{{config.wwwroot}}/theme/remui_kids/style/riyada_sidebar.css">
+
+<style>
+/* Inline styles to ensure scroll works */
+.riyada-sidebar-container {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    height: 100vh !important;
+    width: 280px !important;
+    background: #ffffff !important;
+    border-right: 1px solid #e5e7eb !important;
+    z-index: 1000 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.riyada-sidebar-nav {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 20px 0 !important;
+    max-height: calc(100vh - 100px) !important;
+    position: relative !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: #d1d5db #f9fafb !important;
+}
+
+.riyada-sidebar-nav::-webkit-scrollbar {
+    width: 8px !important;
+    display: block !important;
+}
+
+.riyada-sidebar-nav::-webkit-scrollbar-track {
+    background: #f9fafb !important;
+    border-radius: 4px !important;
+}
+
+.riyada-sidebar-nav::-webkit-scrollbar-thumb {
+    background: #d1d5db !important;
+    border-radius: 4px !important;
+}
+
+.riyada-sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af !important;
+}
+
+/* Show sidebar for trainee and teacher users */
+#riyada-sidebar {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    width: 280px !important;
+    overflow: visible !important;
+}
+
+/* Ensure main content has proper margin when sidebar is shown */
+.main-content,
+#page-wrapper,
+.container-fluid {
+    margin-left: 280px !important;
+    width: calc(100% - 280px) !important;
+    max-width: calc(100% - 280px) !important;
+}
+
+body {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+</style>
+
+<div id="riyada-sidebar" class="riyada-sidebar-container" style="position: fixed; left: 0; top: 0; height: 100vh; width: 280px; background: #ffffff; border-right: 1px solid #e5e7eb; z-index: 1000; overflow: hidden; display: flex; flex-direction: column;">
+    <!-- Sidebar Navigation -->
+    <nav class="riyada-sidebar-nav" id="riyada-sidebar-nav" style="flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 0; max-height: calc(100vh - 100px); position: relative;">
+        
+        <!-- Dashboard Section -->
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">MY DASHBOARD</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/my/" class="riyada-nav-link" data-page="dashboard">
+                        <span class="riyada-nav-icon">📊</span>
+                        <span class="riyada-nav-text">My Dashboard</span>
+                        <span class="riyada-nav-indicator"></span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/user/profile.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">👤</span>
+                        <span class="riyada-nav-text">My Profile</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Learning Section -->
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">MY LEARNING</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/my/courses.php" class="riyada-nav-link" data-page="courses">
+                        <span class="riyada-nav-icon">📖</span>
+                        <span class="riyada-nav-text">My Learning</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/badges/mybadges.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">🏆</span>
+                        <span class="riyada-nav-text">Achievements</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/theme/remui_kids/trainee_assessment.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">📋</span>
+                        <span class="riyada-nav-text">Assessments</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Learning Paths Section -->
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">LEARNING PATHS</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/course/index.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">📈</span>
+                        <span class="riyada-nav-text">Learning Paths</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/theme/remui_kids/trainee_certifications.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">🎓</span>
+                        <span class="riyada-nav-text">Certifications</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Competency Section -->
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">COMPETENCY</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/report/competency/index.php" class="riyada-nav-link active">
+                        <span class="riyada-nav-icon">📊</span>
+                        <span class="riyada-nav-text">Competency Map</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Community Section -->
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">COMMUNITY</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/user/index.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">👥</span>
+                        <span class="riyada-nav-text">Community</span>
+                        <span class="riyada-nav-dropdown">▼</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Settings Section -->
+        <div class="riyada-nav-section">
+            <div class="riyada-nav-section-title">SETTINGS</div>
+            <ul class="riyada-nav-list">
+                <li class="riyada-nav-item">
+                    <a href="{{config.wwwroot}}/user/preferences.php" class="riyada-nav-link">
+                        <span class="riyada-nav-icon">⚙️</span>
+                        <span class="riyada-nav-text">Settings</span>
+                        <span class="riyada-nav-dropdown">▼</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- User Profile Section -->
+    <div class="riyada-sidebar-footer">
+        <div class="riyada-user-profile">
+            <div class="riyada-user-avatar">
+                <span class="riyada-avatar-icon">👤</span>
+            </div>
+            <div class="riyada-user-info">
+                <div class="riyada-user-name">{{user.firstname}} {{user.lastname}}</div>
+                <div class="riyada-user-school">{{user.institution}}</div>
+            </div>
+        </div>
+        <div class="riyada-logout-section">
+            <button class="riyada-logout-btn" onclick="window.location.href='{{config.wwwroot}}/login/logout.php'">
+                <span class="riyada-logout-icon">🚪</span>
+                <span class="riyada-logout-text">Logout</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Scroll to Top Button -->
+    <button class="riyada-scroll-to-top" id="scroll-to-top-btn" title="Scroll to Top">
+        ↑
+    </button>
+    
+    <!-- Floating Action Button -->
+    <div class="riyada-fab">
+        <button class="riyada-fab-btn" id="sidebar-toggle-btn" title="Toggle Sidebar">
+            <span class="riyada-fab-icon">→</span>
+        </button>
+    </div>
+</div>
+
+<script>
+// Initialize sidebar for trainee and teacher users
+document.addEventListener('DOMContentLoaded', function() {
+    // Check user role and show appropriate sidebar
+    fetch('{{config.wwwroot}}/theme/remui_kids/check_admin.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.show_sidebar && (data.istrainee || data.isteacher)) {
+                // Show the sidebar for trainees and teachers
+                const sidebar = document.getElementById('riyada-sidebar');
+                if (sidebar) {
+                    sidebar.style.display = 'block';
+                    sidebar.style.visibility = 'visible';
+                    sidebar.style.opacity = '1';
+                    sidebar.style.transform = 'translateX(0)';
+                    sidebar.style.width = '280px';
+                }
+                
+                // Show floating action button
+                const fab = document.querySelector('.riyada-fab');
+                if (fab) {
+                    fab.style.display = 'block';
+                }
+                
+                // Add appropriate body class
+                if (data.isteacher) {
+                    document.body.classList.add('teacher-user');
+                } else if (data.istrainee) {
+                    document.body.classList.add('trainee-user');
+                }
+                
+                // Apply active page highlighting
+                const currentPath = window.location.pathname;
+                const currentPage = getCurrentPage(currentPath);
+                
+                // Remove all active classes
+                document.querySelectorAll('.riyada-nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Add active class to current page
+                const activeLink = document.querySelector(`[data-page="${currentPage}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+                
+                // Initialize sidebar scroll functionality
+                initializeSidebarScroll();
+            } else {
+                // Hide sidebar for admin users or if not logged in
+                const sidebar = document.getElementById('riyada-sidebar');
+                if (sidebar) {
+                    sidebar.style.display = 'none';
+                }
+                
+                const fab = document.querySelector('.riyada-fab');
+                if (fab) {
+                    fab.style.display = 'none';
+                }
+            }
+        })
+        .catch(error => {
+            console.log('Could not check user role, hiding sidebar');
+            const sidebar = document.getElementById('riyada-sidebar');
+            if (sidebar) {
+                sidebar.style.display = 'none';
+            }
+        });
+});
+
+function getCurrentPage(path) {
+    if (path.includes('/my/') && !path.includes('/courses.php')) {
+        return 'dashboard';
+    } else if (path.includes('/courses.php')) {
+        return 'courses';
+    } else if (path.includes('/profile.php')) {
+        return 'profile';
+    }
+    return null;
+}
+
+// Initialize sidebar scroll functionality
+function initializeSidebarScroll() {
+    const sidebarNav = document.getElementById('riyada-sidebar-nav');
+    const toggleBtn = document.getElementById('sidebar-toggle-btn');
+    
+    if (!sidebarNav || !toggleBtn) return;
+    
+    // Force scroll properties
+    sidebarNav.style.overflowY = 'auto';
+    sidebarNav.style.overflowX = 'hidden';
+    sidebarNav.style.maxHeight = 'calc(100vh - 100px)';
+    sidebarNav.style.scrollBehavior = 'smooth';
+    
+    // Toggle button functionality
+    toggleBtn.addEventListener('click', function() {
+        const sidebar = document.getElementById('riyada-sidebar');
+        const isCollapsed = sidebar.style.transform === 'translateX(-100%)';
+        
+        if (isCollapsed) {
+            // Show sidebar
+            sidebar.style.transform = 'translateX(0)';
+            sidebar.style.transition = 'transform 0.3s ease';
+            document.body.classList.remove('sidebar-hidden');
+            toggleBtn.innerHTML = '<span class="riyada-fab-icon">→</span>';
+        } else {
+            // Hide sidebar
+            sidebar.style.transform = 'translateX(-100%)';
+            sidebar.style.transition = 'transform 0.3s ease';
+            document.body.classList.add('sidebar-hidden');
+            toggleBtn.innerHTML = '<span class="riyada-fab-icon">←</span>';
+        }
+    });
+    
+    // Auto-scroll to active item
+    const activeLink = document.querySelector('.riyada-nav-link.active');
+    if (activeLink) {
+        setTimeout(() => {
+            activeLink.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }, 100);
+    }
+    
+    // Initialize scroll to top functionality
+    initializeScrollToTop();
+}
+
+// Initialize scroll to top functionality
+function initializeScrollToTop() {
+    const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+    const sidebarNav = document.getElementById('riyada-sidebar-nav');
+    
+    if (!scrollToTopBtn || !sidebarNav) return;
+    
+    // Show/hide scroll to top button based on scroll position
+    function toggleScrollToTop() {
+        const { scrollTop } = sidebarNav;
+        if (scrollTop > 100) {
+            scrollToTopBtn.classList.add('visible');
+        } else {
+            scrollToTopBtn.classList.remove('visible');
+        }
+    }
+    
+    // Add scroll listener
+    sidebarNav.addEventListener('scroll', toggleScrollToTop);
+    
+    // Scroll to top functionality
+    scrollToTopBtn.addEventListener('click', function() {
+        sidebarNav.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Initial check
+    toggleScrollToTop();
+}
+</script>

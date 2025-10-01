@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{course.fullname}} - Learning Path</title>
+    <link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/learning_path.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="learning-path-container">
+        {{#error}}
+        <!-- Error Section -->
+        <div class="error-container">
+            <div class="error-content">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h2>Unable to Load Learning Path</h2>
+                <p>{{error_message}}</p>
+                {{#debug_info}}
+                <p class="debug-info">{{debug_info}}</p>
+                {{/debug_info}}
+                <div class="error-actions">
+                    <a href="{{back_url}}" class="btn-back">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back to My Learning</span>
+                    </a>
+                    {{#debug_url}}
+                    <a href="{{debug_url}}" class="btn-debug" target="_blank">
+                        <i class="fas fa-bug"></i>
+                        <span>Debug Information</span>
+                    </a>
+                    {{/debug_url}}
+                </div>
+            </div>
+        </div>
+        {{/error}}
+        
+        {{^error}}
+        <!-- Header Section -->
+        <div class="learning-path-header">
+            <div class="header-content">
+                <div class="back-button">
+                    <a href="{{back_url}}" class="btn-back">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back to My Learning</span>
+                    </a>
+                </div>
+                <div class="course-info">
+                    <div class="course-image">
+                        <img src="{{course_image}}" alt="{{course.fullname}}" />
+                    </div>
+                    <div class="course-details">
+                        <h1 class="course-title">{{course.fullname}}</h1>
+                        <p class="course-shortname">{{course.shortname}}</p>
+                        <div class="course-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                {{course_duration}}
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-user"></i>
+                                {{user_name}}
+                            </span>
+                            {{#enrollment_status}}
+                            <span class="meta-item">
+                                <i class="fas fa-info-circle"></i>
+                                {{enrollment_status}}
+                            </span>
+                            {{/enrollment_status}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="progress-overview">
+            <div class="progress-stats">
+                <div class="stat-card">
+                    <div class="stat-number">{{course_progress}}%</div>
+                    <div class="stat-label">Overall Progress</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{completed_sections}}/{{total_sections}}</div>
+                    <div class="stat-label">Sections Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{completed_activities}}/{{total_activities}}</div>
+                    <div class="stat-label">Activities Completed</div>
+                </div>
+            </div>
+            
+            <div class="progress-bar-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{course_progress}}%;"></div>
+                </div>
+                <div class="progress-text">{{course_progress}}% Complete</div>
+            </div>
+        </div>
+
+        <!-- Current Focus Section -->
+        {{#current_section}}
+        <div class="current-focus">
+            <div class="focus-header">
+                <h2>
+                    {{#is_final}}
+                        <i class="fas fa-trophy"></i>
+                        Congratulations! You've completed the course!
+                    {{/is_final}}
+                    {{^is_final}}
+                        <i class="fas fa-play-circle"></i>
+                        {{#has_started}}Continue Learning{{/has_started}}
+                        {{^has_started}}Start Learning{{/has_started}}
+                    {{/is_final}}
+                </h2>
+                <p>
+                    {{#is_final}}
+                        You have successfully completed all sections of this course. Great job!
+                    {{/is_final}}
+                    {{^is_final}}
+                        {{#has_started}}
+                            You're making great progress! Continue with the current section.
+                        {{/has_started}}
+                        {{^has_started}}
+                            Ready to begin your learning journey? Start with the next section.
+                        {{/has_started}}
+                    {{/is_final}}
+                </p>
+            </div>
+            
+            <div class="current-section-card">
+                <div class="section-header">
+                    <div class="section-info">
+                        <h3>{{name}}</h3>
+                        <div class="section-progress">
+                            <div class="progress-bar-small">
+                                <div class="progress-fill-small" style="width: {{progress}}%;"></div>
+                            </div>
+                            <span class="progress-text-small">{{progress}}% Complete</span>
+                        </div>
+                    </div>
+                    <div class="section-actions">
+                        <!-- DEBUG: courseid={{courseid}}, section={{section}} -->
+                        <a href="{{wwwroot}}/theme/remui_kids/section_viewer.php?courseid={{courseid}}&section={{section}}" class="btn-primary">
+                            {{#is_final}}
+                                <i class="fas fa-eye"></i>
+                                Review Course
+                            {{/is_final}}
+                            {{^is_final}}
+                                {{#has_started}}
+                                    <i class="fas fa-play"></i>
+                                    Continue
+                                {{/has_started}}
+                                {{^has_started}}
+                                    <i class="fas fa-play"></i>
+                                    Start Section
+                                {{/has_started}}
+                            {{/is_final}}
+                        </a>
+                    </div>
+                </div>
+                <div class="section-summary">
+                    <div class="activity-count">
+                        <i class="fas fa-tasks"></i>
+                        {{completed_activities}} of {{total_activities}} activities completed
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/current_section}}
+
+        <!-- Learning Path Sections -->
+        <div class="learning-path-sections">
+            <div class="sections-header">
+                <h2><i class="fas fa-route"></i> Learning Path</h2>
+                <p>Follow the structured learning path designed by your instructors</p>
+            </div>
+            
+            <div class="sections-container">
+                {{#sections}}
+                <div class="section-card {{#is_completed}}completed{{/is_completed}} {{#has_started}}started{{/has_started}}" data-section="{{section}}">
+                    <div class="section-number">
+                        {{#is_completed}}
+                            <i class="fas fa-check-circle"></i>
+                        {{/is_completed}}
+                        {{^is_completed}}
+                            {{#has_started}}
+                                <i class="fas fa-play-circle"></i>
+                            {{/has_started}}
+                            {{^has_started}}
+                                <span class="number">{{section}}</span>
+                            {{/has_started}}
+                        {{/is_completed}}
+                    </div>
+                    
+                    <div class="section-content">
+                        <div class="section-header">
+                            <h3>{{name}}</h3>
+                            <div class="section-status">
+                                {{#is_completed}}
+                                    <span class="status completed">Completed</span>
+                                {{/is_completed}}
+                                {{^is_completed}}
+                                    {{#has_started}}
+                                        <span class="status in-progress">In Progress</span>
+                                    {{/has_started}}
+                                    {{^has_started}}
+                                        <span class="status not-started">Not Started</span>
+                                    {{/has_started}}
+                                {{/is_completed}}
+                            </div>
+                        </div>
+                        
+                        <div class="section-progress">
+                            <div class="progress-bar-small">
+                                <div class="progress-fill-small" style="width: {{progress}}%;"></div>
+                            </div>
+                            <span class="progress-text-small">{{progress}}% Complete</span>
+                        </div>
+                        
+                        <div class="section-actions">
+                            <!-- DEBUG: courseid={{courseid}}, section={{section}} -->
+                            <a href="{{wwwroot}}/theme/remui_kids/section_viewer.php?courseid={{courseid}}&section={{section}}" class="btn-section">
+                                {{#is_completed}}
+                                    <i class="fas fa-eye"></i>
+                                    Review
+                                {{/is_completed}}
+                                {{^is_completed}}
+                                    {{#has_started}}
+                                        <i class="fas fa-play"></i>
+                                        Continue
+                                    {{/has_started}}
+                                    {{^has_started}}
+                                        <i class="fas fa-play"></i>
+                                        Start
+                                    {{/has_started}}
+                                {{/is_completed}}
+                            </a>
+                        </div>
+                        
+                        <div class="section-stats">
+                            <span class="stat">
+                                <i class="fas fa-tasks"></i>
+                                {{completed_activities}}/{{total_activities}} activities
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {{/sections}}
+            </div>
+        </div>
+
+        <!-- Course Summary -->
+        <div class="course-summary">
+            <h3><i class="fas fa-info-circle"></i> Course Information</h3>
+            <div class="summary-content">
+                <div class="summary-item">
+                    <strong>Course Format:</strong> {{course.format}}
+                </div>
+                <div class="summary-item">
+                    <strong>Total Sections:</strong> {{total_sections}}
+                </div>
+                <div class="summary-item">
+                    <strong>Total Activities:</strong> {{total_activities}}
+                </div>
+                {{#course.summary}}
+                <div class="summary-item">
+                    <strong>Description:</strong> {{{course.summary}}}
+                </div>
+                {{/course.summary}}
+            </div>
+        </div>
+        {{/error}}
+    </div>
+
+    <script>
+        // Add smooth scrolling and interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click animations to section cards
+            const sectionCards = document.querySelectorAll('.section-card');
+            sectionCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('.btn-section')) {
+                        const link = this.querySelector('.btn-section');
+                        if (link) {
+                            window.location.href = link.href;
+                        }
+                    }
+                });
+            });
+
+            // Add progress animation
+            const progressBars = document.querySelectorAll('.progress-fill, .progress-fill-small');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

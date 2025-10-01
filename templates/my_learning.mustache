@@ -1,0 +1,259 @@
+{{!
+    My Learning Template
+    
+    @template theme_remui_kids/my_learning
+    
+    Dynamic My Learning page with course cards and progress tracking
+}}
+
+<!-- Include My Learning CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/my_learning.css">
+
+<div class="my-learning-container">
+    <!-- Page Header -->
+    <div class="learning-header">
+        <div class="header-content">
+            <h1 class="page-title">My Learning</h1>
+            <p class="page-subtitle">Access your enrolled courses and track your progress</p>
+        </div>
+        <div class="learning-stats">
+            <div class="stat-item">
+                <div class="stat-number">{{total_courses}}</div>
+                <div class="stat-label">Total Courses</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{completed_courses}}</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{in_progress_courses}}</div>
+                <div class="stat-label">In Progress</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{average_progress}}%</div>
+                <div class="stat-label">Avg Progress</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Course Cards Section -->
+    <div class="courses-section">
+        {{#has_courses}}
+        <div class="courses-grid">
+            {{#courses}}
+            <div class="course-card {{status}}" data-course-id="{{id}}">
+                <!-- Course Image -->
+                <div class="course-image-container">
+                    <img src="{{course_image}}" alt="{{fullname}}" class="course-image" 
+                         onerror="this.src='{{wwwroot}}/theme/remui_kids/pix/default_course.svg'">
+                    <div class="course-status-badge {{status}}">
+                        {{#status}}
+                            {{#completed}}Completed{{/completed}}
+                            {{#in_progress}}In Progress{{/in_progress}}
+                            {{#not_started}}Not Started{{/not_started}}
+                        {{/status}}
+                    </div>
+                </div>
+                
+                <!-- Course Content -->
+                <div class="course-content">
+                    <h3 class="course-title">{{fullname}}</h3>
+                    <p class="course-summary">{{summary}}</p>
+                    
+                    <!-- Course Meta Info -->
+                    <div class="course-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">📚</span>
+                            <span class="meta-text">{{course_format}}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">⏱️</span>
+                            <span class="meta-text">{{course_duration}}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">📊</span>
+                            <span class="meta-text">{{course_level}}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span class="progress-label">Progress</span>
+                            <span class="progress-percentage">{{progress_percentage}}%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" data-progress="{{progress_percentage}}">
+                                <div class="progress-fill" style="width: {{progress_percentage}}%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-details">
+                            <span class="completed-activities">{{completed_activities}}</span>
+                            <span class="progress-separator">of</span>
+                            <span class="total-activities">{{total_activities}}</span>
+                            <span class="activities-label">activities completed</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Course Actions -->
+                    <div class="course-actions">
+                        <a href="{{wwwroot}}/theme/remui_kids/learning_path_working.php?courseid={{id}}" class="view-course-btn">
+                            <span class="btn-text">View Learning Path</span>
+                            <span class="btn-icon">↗</span>
+                        </a>
+                        {{#in_progress}}
+                        <button class="continue-course-btn" data-course-id="{{id}}">
+                            <span class="btn-text">Continue Learning</span>
+                            <span class="btn-icon">▶</span>
+                        </button>
+                        {{/in_progress}}
+                    </div>
+                </div>
+            </div>
+            {{/courses}}
+        </div>
+        {{/has_courses}}
+        
+        {{^has_courses}}
+        <div class="no-courses-state">
+            <div class="no-courses-icon">📚</div>
+            <h3 class="no-courses-title">No Courses Enrolled</h3>
+            <p class="no-courses-description">You haven't enrolled in any courses yet. Start your learning journey today!</p>
+            <div class="no-courses-actions">
+                <a href="{{wwwroot}}/course/index.php" class="browse-courses-btn">
+                    <span class="btn-text">Browse Courses</span>
+                    <span class="btn-icon">🔍</span>
+                </a>
+                <a href="{{wwwroot}}/course/index.php?category=0" class="explore-btn">
+                    <span class="btn-text">Explore Learning Paths</span>
+                    <span class="btn-icon">📈</span>
+                </a>
+            </div>
+        </div>
+        {{/has_courses}}
+    </div>
+    
+    <!-- Learning Insights Section -->
+    {{#has_courses}}
+    <div class="learning-insights">
+        <h3 class="insights-title">Learning Insights</h3>
+        <div class="insights-grid">
+            <div class="insight-card">
+                <div class="insight-icon">📈</div>
+                <div class="insight-content">
+                    <div class="insight-value">{{average_progress}}%</div>
+                    <div class="insight-label">Average Progress</div>
+                </div>
+            </div>
+            <div class="insight-card">
+                <div class="insight-icon">⏱️</div>
+                <div class="insight-content">
+                    <div class="insight-value">{{total_courses}}</div>
+                    <div class="insight-label">Active Courses</div>
+                </div>
+            </div>
+            <div class="insight-card">
+                <div class="insight-icon">🏆</div>
+                <div class="insight-content">
+                    <div class="insight-value">{{completed_courses}}</div>
+                    <div class="insight-label">Completed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/has_courses}}
+    
+    <!-- Floating Action Button -->
+    <div class="learning-fab">
+        <button class="fab-button" id="learning-help-fab" title="Learning Support">
+            <div class="fab-icon">🤖</div>
+        </button>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate course cards on load
+    const courseCards = document.querySelectorAll('.course-card');
+    courseCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 150);
+    });
+    
+    // Animate progress bars
+    const progressBars = document.querySelectorAll('.progress-fill');
+    progressBars.forEach(bar => {
+        const progress = bar.style.width;
+        bar.style.width = '0%';
+        
+        setTimeout(() => {
+            bar.style.transition = 'width 1.5s ease';
+            bar.style.width = progress;
+        }, 500);
+    });
+    
+    // Add hover effects to course cards
+    courseCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px)';
+            this.style.boxShadow = '0 12px 30px rgba(0,0,0,0.15)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+        });
+    });
+    
+    // Continue Learning button functionality
+    const continueButtons = document.querySelectorAll('.continue-course-btn');
+    continueButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const courseId = this.getAttribute('data-course-id');
+            // Navigate to the last accessed activity or course start
+            window.location.href = '{{wwwroot}}/course/view.php?id=' + courseId;
+        });
+    });
+    
+    // Learning Support FAB
+    const learningFab = document.getElementById('learning-help-fab');
+    learningFab.addEventListener('click', function() {
+        // Could open a learning support modal or chat
+        alert('Learning Support: Get help with your courses and track your progress!');
+    });
+    
+    // Add loading animation
+    setTimeout(() => {
+        document.querySelector('.my-learning-container').classList.add('loaded');
+    }, 300);
+    
+    // Animate stats on load
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+        const finalValue = stat.textContent;
+        const isPercentage = finalValue.includes('%');
+        const numericValue = parseInt(finalValue.replace('%', ''));
+        
+        if (!isNaN(numericValue)) {
+            stat.textContent = '0' + (isPercentage ? '%' : '');
+            
+            let currentValue = 0;
+            const increment = numericValue / 30;
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= numericValue) {
+                    currentValue = numericValue;
+                    clearInterval(timer);
+                }
+                stat.textContent = Math.round(currentValue) + (isPercentage ? '%' : '');
+            }, 50);
+        }
+    });
+});
+</script>

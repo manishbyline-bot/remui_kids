@@ -37,29 +37,30 @@
 
 <style>
 /* Inline styles to ensure scroll works */
-.riyada-sidebar-container {
-    position: fixed !important;
-    left: 0 !important;
-    top: 60px !important;
-    height: calc(100vh - 60px) !important;
+        .riyada-sidebar-container {
+            position: fixed !important;
+            left: 0 !important;
+            top: 30px !important; /* Move admin sidebar up a little more */
+            height: calc(100vh - 30px) !important; /* Adjust height accordingly */
     width: 280px !important;
     background: #ffffff !important;
     border-right: 1px solid #e5e7eb !important;
-    z-index: 999 !important;
-    overflow: hidden !important;
+    z-index: 999 !important; /* Lower than navbar */
+    overflow-y: auto !important; /* Allow vertical scrolling */
+    overflow-x: hidden !important;
     display: flex !important;
     flex-direction: column !important;
 }
 
 .riyada-sidebar-nav {
     flex: 1 !important;
-    overflow-y: auto !important;
+    overflow-y: visible !important; /* Allow content to flow naturally */
     overflow-x: hidden !important;
-    padding: 20px 0 !important;
-    max-height: calc(100vh - 160px) !important;
+    padding: 20px 0 !important; /* Reduced padding since container now has top padding */
     position: relative !important;
     scrollbar-width: thin !important;
     scrollbar-color: #d1d5db #f9fafb !important;
+    min-height: 0 !important; /* Allow flex shrinking */
 }
 
 .riyada-sidebar-nav::-webkit-scrollbar {
@@ -101,6 +102,28 @@ body.admin-user #riyada-sidebar {
     overflow: visible !important;
 }
 
+/* Ensure main content has proper positioning when sidebar is shown - only for non-admin users */
+body:not(.admin-user) .main-content,
+body:not(.admin-user) #page-wrapper,
+body:not(.admin-user) .container-fluid,
+body:not(.admin-user) .main-content-wrapper {
+    margin-left: 280px !important;
+    margin-top: 40px !important; /* Add top margin to account for sidebar position */
+    width: calc(100% - 280px) !important;
+    max-width: calc(100% - 280px) !important;
+}
+
+/* Admin users - keep original layout with just top margin */
+body.admin-user .main-content,
+body.admin-user #page-wrapper,
+body.admin-user .container-fluid,
+body.admin-user .main-content-wrapper {
+    margin-left: 0 !important;
+    margin-top: 40px !important; /* Move content down to match trainee interface */
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
 /* Ensure main content takes full width when sidebar is hidden */
 body:not(.admin-user) .main-content,
 body:not(.admin-user) #page-wrapper,
@@ -116,7 +139,12 @@ body:not(.admin-user) {
 }
 </style>
 
-<div id="riyada-sidebar" class="riyada-sidebar-container" style="position: fixed; left: 0; top: 60px; height: calc(100vh - 60px); width: 280px; background: #ffffff; border-right: 1px solid #e5e7eb; z-index: 999; overflow: hidden; display: flex; flex-direction: column;">
+
+<div id="riyada-sidebar" class="riyada-sidebar-container" style="position: fixed; left: 0; top: 0; height: 100vh; width: 280px; background: #ffffff; border-right: 1px solid #e5e7eb; z-index: 1000; overflow: hidden; display: flex; flex-direction: column;">
+    <!-- Sidebar Header -->
+    <div class="riyada-sidebar-header">
+        <h1>Riyada Trainings</h1>
+    </div>
     <!-- Sidebar Navigation -->
     <nav class="riyada-sidebar-nav" id="riyada-sidebar-nav" style="flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 0; max-height: calc(100vh - 160px); position: relative;">
         <div class="riyada-nav-section">
@@ -130,8 +158,8 @@ body:not(.admin-user) {
                     </a>
                 </li>
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/user/index.php" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">●</span>
+                    <a href="{{config.wwwroot}}/user/index.php" class="riyada-nav-link" data-page="community">
+                        <span class="riyada-nav-icon">👥</span>
                         <span class="riyada-nav-text">Community</span>
                     </a>
                 </li>
@@ -154,8 +182,8 @@ body:not(.admin-user) {
                     </a>
                 </li>
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/user/index.php?roleid=4" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">●</span>
+                    <a href="{{config.wwwroot}}/user/index.php?roleid=4" class="riyada-nav-link" data-page="master-trainers">
+                        <span class="riyada-nav-icon">🏅</span>
                         <span class="riyada-nav-text">Master Trainers</span>
                     </a>
                 </li>
@@ -172,20 +200,20 @@ body:not(.admin-user) {
                     </a>
                 </li>
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/badges/index.php" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">●</span>
+                    <a href="{{config.wwwroot}}/badges/index.php" class="riyada-nav-link" data-page="certifications">
+                        <span class="riyada-nav-icon">📜</span>
                         <span class="riyada-nav-text">Certifications</span>
                     </a>
                 </li>
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/mod/quiz/index.php" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">●</span>
+                    <a href="{{config.wwwroot}}/mod/quiz/index.php" class="riyada-nav-link" data-page="assessments">
+                        <span class="riyada-nav-icon">🎯</span>
                         <span class="riyada-nav-text">Assessments</span>
                     </a>
                 </li>
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/theme/remui_kids/schools.php" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">●</span>
+                    <a href="{{config.wwwroot}}/theme/remui_kids/schools.php" class="riyada-nav-link" data-page="schools">
+                        <span class="riyada-nav-icon">🏫</span>
                         <span class="riyada-nav-text">Schools</span>
                     </a>
                 </li>
@@ -196,32 +224,32 @@ body:not(.admin-user) {
             <div class="riyada-nav-section-title">INSIGHTS</div>
             <ul class="riyada-nav-list">
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/reportbuilder/index.php" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">●</span>
+                    <a href="{{config.wwwroot}}/reportbuilder/index.php" class="riyada-nav-link" data-page="analytics">
+                        <span class="riyada-nav-icon">📊</span>
                         <span class="riyada-nav-text">Analytics</span>
                     </a>
                 </li>
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/admin/tool/analytics/index.php" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">●</span>
+                    <a href="{{config.wwwroot}}/admin/tool/analytics/index.php" class="riyada-nav-link" data-page="predictive-models">
+                        <span class="riyada-nav-icon">🧠</span>
                         <span class="riyada-nav-text">Predictive Models</span>
                     </a>
                 </li>
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/reportbuilder/index.php?source=users" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">●</span>
+                    <a href="{{config.wwwroot}}/reportbuilder/index.php?source=users" class="riyada-nav-link" data-page="roi-analysis">
+                        <span class="riyada-nav-icon">📈</span>
                         <span class="riyada-nav-text">ROI Analysis</span>
                     </a>
                 </li>
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/reportbuilder/index.php" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">●</span>
+                    <a href="{{config.wwwroot}}/reportbuilder/index.php" class="riyada-nav-link" data-page="reports">
+                        <span class="riyada-nav-icon">📄</span>
                         <span class="riyada-nav-text">Reports</span>
                     </a>
                 </li>
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/reportbuilder/index.php" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">●</span>
+                    <a href="{{config.wwwroot}}/reportbuilder/index.php" class="riyada-nav-link" data-page="analytics-dashboard">
+                        <span class="riyada-nav-icon">📊</span>
                         <span class="riyada-nav-text">Analytics Dashboard</span>
                     </a>
                 </li>
@@ -261,154 +289,173 @@ body:not(.admin-user) {
 </div>
 
 <script>
-// Check if user is admin and show/hide sidebar accordingly
+// Check user role and show appropriate sidebar
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if user has admin capabilities by making an AJAX request
+    // Check user role and capabilities by making an AJAX request
     fetch('{{config.wwwroot}}/theme/remui_kids/check_admin.php')
         .then(response => response.json())
         .then(data => {
-            if (!data.show_sidebar) {
-                // Completely hide the sidebar for non-admin users
-                const sidebar = document.getElementById('riyada-sidebar');
-                if (sidebar) {
-                    sidebar.style.display = 'none !important';
-                    sidebar.style.visibility = 'hidden';
-                    sidebar.style.opacity = '0';
-                    sidebar.style.transform = 'translateX(-100%)';
-                    sidebar.style.width = '0';
-                    sidebar.style.overflow = 'hidden';
+            if (data.show_sidebar) {
+                if (data.isadmin) {
+                    // Show admin sidebar
+                    showAdminSidebar();
+                    document.body.classList.add('admin-user');
+                } else if (data.isteacher || data.istrainee) {
+                    // Hide admin sidebar and load trainee/teacher sidebar
+                    hideAdminSidebar();
+                    loadTraineeTeacherSidebar();
+                    
+                    if (data.isteacher) {
+                        document.body.classList.add('teacher-user');
+                    } else if (data.istrainee) {
+                        document.body.classList.add('trainee-user');
+                    }
                 }
-                
-                // Also hide any sidebar-related elements
-                const sidebarContainer = document.querySelector('.riyada-sidebar-container');
-                if (sidebarContainer) {
-                    sidebarContainer.style.display = 'none !important';
-                    sidebarContainer.style.visibility = 'hidden';
-                    sidebarContainer.style.opacity = '0';
-                    sidebarContainer.style.transform = 'translateX(-100%)';
-                    sidebarContainer.style.width = '0';
-                }
-                
-                // Hide floating action button
-                const fab = document.querySelector('.riyada-fab');
-                if (fab) {
-                    fab.style.display = 'none';
-                }
-                
-                // Adjust main content to take full width
-                const mainContent = document.querySelector('.main-content, #page-wrapper, .container-fluid, .main-content-wrapper');
-                if (mainContent) {
-                    mainContent.style.marginLeft = '0 !important';
-                    mainContent.style.width = '100% !important';
-                    mainContent.style.maxWidth = '100% !important';
-                }
-                
-                // Adjust body margin
-                document.body.style.marginLeft = '0 !important';
-                document.body.style.paddingLeft = '0 !important';
-                
-                // Add body class for sidebar hidden state
-                document.body.classList.add('sidebar-hidden');
-                
-                // Force hide with CSS
-                const style = document.createElement('style');
-                style.textContent = `
-                    #riyada-sidebar { display: none !important; visibility: hidden !important; }
-                    .riyada-sidebar-container { display: none !important; visibility: hidden !important; }
-                    .riyada-fab { display: none !important; }
-                    body { margin-left: 0 !important; }
-                    .main-content, #page-wrapper, .container-fluid { margin-left: 0 !important; width: 100% !important; }
-                `;
-                document.head.appendChild(style);
             } else {
-                // For admin users, show the complete sidebar and apply highlighting
-                const sidebar = document.getElementById('riyada-sidebar');
-                if (sidebar) {
-                    sidebar.style.display = 'block';
-                    sidebar.style.visibility = 'visible';
-                    sidebar.style.opacity = '1';
-                    sidebar.style.transform = 'translateX(0)';
-                    sidebar.style.width = '280px';
-                }
-                
-                const sidebarContainer = document.querySelector('.riyada-sidebar-container');
-                if (sidebarContainer) {
-                    sidebarContainer.style.display = 'block';
-                    sidebarContainer.style.visibility = 'visible';
-                    sidebarContainer.style.opacity = '1';
-                    sidebarContainer.style.transform = 'translateX(0)';
-                    sidebarContainer.style.width = '280px';
-                }
-                
-                // Show floating action button for admin users
-                const fab = document.querySelector('.riyada-fab');
-                if (fab) {
-                    fab.style.display = 'block';
-                }
-                
-                // Add admin-user class to body
-                document.body.classList.add('admin-user');
-                document.body.classList.remove('sidebar-hidden');
-                
-                // Apply active page highlighting
-                const currentPath = window.location.pathname;
-                const currentPage = getCurrentPage(currentPath);
-                
-                // Remove all active classes
-                document.querySelectorAll('.riyada-nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                
-                // Add active class to current page
-                const activeLink = document.querySelector(`[data-page="${currentPage}"]`);
-                if (activeLink) {
-                    activeLink.classList.add('active');
-                }
-                
-                // Initialize sidebar scroll functionality
-                initializeSidebarScroll();
+                // Hide sidebar completely
+                hideAllSidebars();
             }
         })
         .catch(error => {
-            console.log('Could not check admin status, hiding sidebar for security');
-            // Hide sidebar by default if we can't check admin status
-            const sidebar = document.getElementById('riyada-sidebar');
-            if (sidebar) {
-                sidebar.style.display = 'none !important';
-                sidebar.style.visibility = 'hidden';
-                sidebar.style.opacity = '0';
-            }
-            
-            // Hide floating action button
-            const fab = document.querySelector('.riyada-fab');
-            if (fab) {
-                fab.style.display = 'none';
-            }
-            
-            // Adjust main content
-            const mainContent = document.querySelector('.main-content, #page-wrapper, .container-fluid');
-            if (mainContent) {
-                mainContent.style.marginLeft = '0 !important';
-                mainContent.style.width = '100% !important';
-            }
-            
-            document.body.style.marginLeft = '0 !important';
+            console.log('Could not check user role, hiding sidebar for security');
+            hideAllSidebars();
         });
 });
 
+function showAdminSidebar() {
+    const sidebar = document.getElementById('riyada-sidebar');
+    if (sidebar) {
+        sidebar.style.display = 'block';
+        sidebar.style.visibility = 'visible';
+        sidebar.style.opacity = '1';
+        sidebar.style.transform = 'translateX(0)';
+        sidebar.style.width = '280px';
+    }
+    
+    const fab = document.querySelector('.riyada-fab');
+    if (fab) {
+        fab.style.display = 'block';
+    }
+    
+    initializeSidebarScroll();
+    
+    // Apply active page highlighting for admin after a short delay
+    setTimeout(() => {
+        const currentPath = window.location.pathname;
+        const currentPage = getCurrentPage(currentPath);
+        
+        console.log('Admin - Current path:', currentPath);
+        console.log('Admin - Current page:', currentPage);
+        
+        document.querySelectorAll('.riyada-nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        
+        const activeLink = document.querySelector(`[data-page="${currentPage}"]`);
+        console.log('Admin - Active link found:', activeLink);
+        if (activeLink) {
+            activeLink.classList.add('active');
+            console.log('Admin - Added active class to:', activeLink);
+        } else {
+            console.log('Admin - No active link found for page:', currentPage);
+            // Debug: List all available data-page attributes
+            const allLinks = document.querySelectorAll('[data-page]');
+            console.log('Admin - Available data-page attributes:', Array.from(allLinks).map(link => link.getAttribute('data-page')));
+        }
+    }, 100);
+}
+
+function hideAdminSidebar() {
+    const sidebar = document.getElementById('riyada-sidebar');
+    if (sidebar) {
+        sidebar.style.display = 'none';
+        sidebar.style.visibility = 'hidden';
+        sidebar.style.opacity = '0';
+        sidebar.style.transform = 'translateX(-100%)';
+        sidebar.style.width = '0';
+    }
+}
+
+function hideAllSidebars() {
+    const sidebar = document.getElementById('riyada-sidebar');
+    if (sidebar) {
+        sidebar.style.display = 'none !important';
+        sidebar.style.visibility = 'hidden';
+        sidebar.style.opacity = '0';
+    }
+    
+    const fab = document.querySelector('.riyada-fab');
+    if (fab) {
+        fab.style.display = 'none';
+    }
+    
+    // Adjust main content
+    const mainContent = document.querySelector('.main-content, #page-wrapper, .container-fluid');
+    if (mainContent) {
+        mainContent.style.marginLeft = '0 !important';
+        mainContent.style.width = '100% !important';
+    }
+    
+    document.body.style.marginLeft = '0 !important';
+}
+
+function loadTraineeTeacherSidebar() {
+    // Load the trainee/teacher sidebar template
+    fetch('{{config.wwwroot}}/theme/remui_kids/render_trainee_sidebar.php')
+        .then(response => response.text())
+        .then(html => {
+            // Insert the new sidebar HTML
+            const sidebarContainer = document.querySelector('.riyada-sidebar-container');
+            if (sidebarContainer) {
+                sidebarContainer.innerHTML = html;
+            } else {
+                // Create new sidebar container
+                const newSidebar = document.createElement('div');
+                newSidebar.innerHTML = html;
+                document.body.appendChild(newSidebar.firstElementChild);
+            }
+        })
+        .catch(error => {
+            console.log('Could not load trainee/teacher sidebar');
+        });
+}
+
 function getCurrentPage(path) {
+    // Admin pages
     if (path.includes('/my/') && !path.includes('/courses.php')) {
         return 'dashboard';
     } else if (path.includes('/enrollments.php')) {
         return 'enrollments';
-    } else if (path.includes('/courses.php')) {
+    } else if (path.includes('/courses.php') || path.includes('/my/courses.php')) {
         return 'courses';
+    } else if (path.includes('/course/index.php')) {
+        return 'learning-paths';
     } else if (path.includes('/user_management.php')) {
         return 'user-management';
     } else if (path.includes('/teachers.php')) {
         return 'teachers';
     } else if (path.includes('/user_details.php')) {
         return 'user-management';
+    } else if (path.includes('/user/index.php?roleid=4')) {
+        return 'master-trainers';
+    } else if (path.includes('/badges/index.php')) {
+        return 'certifications';
+    } else if (path.includes('/mod/quiz/index.php')) {
+        return 'assessments';
+    } else if (path.includes('/schools.php')) {
+        return 'schools';
+    } else if (path.includes('/reportbuilder/index.php')) {
+        if (path.includes('source=users')) {
+            return 'roi-analysis';
+        } else {
+            return 'analytics';
+        }
+    } else if (path.includes('/admin/tool/analytics/index.php')) {
+        return 'predictive-models';
+    } else if (path.includes('/user/index.php')) {
+        return 'community';
+    } else if (path.includes('/competency/') && path.includes('competency_map')) {
+        return 'competency-map';
     }
     return null;
 }
@@ -421,7 +468,7 @@ function initializeSidebarScroll() {
     if (!sidebarNav || !toggleBtn) return;
     
     // Force scroll properties
-    sidebarNav.style.overflowY = 'auto';
+    sidebarNav.style.overflowY = 'visible';
     sidebarNav.style.overflowX = 'hidden';
     sidebarNav.style.maxHeight = 'calc(100vh - 160px)';
     sidebarNav.style.scrollBehavior = 'smooth';
