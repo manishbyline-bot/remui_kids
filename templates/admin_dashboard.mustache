@@ -1,0 +1,292 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Admin Dashboard Template - IOMAD Style
+    @package theme_remui_kids
+    @copyright 2024 Riyada Trainings
+}}
+
+<div class="iomad-admin-dashboard">
+    
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1 class="dashboard-main-title">Admin Dashboard</h1>
+            <p class="dashboard-subtitle">Comprehensive system management and analytics</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary">
+                <i class="fa fa-sliders-h"></i> Settings
+            </button>
+            <button class="btn btn-primary">
+                <i class="fa fa-bell"></i> Alerts
+            </button>
+        </div>
+    </div>
+
+    <!-- Top Statistics Cards -->
+    <div class="stats-row">
+        <div class="stat-card stat-primary">
+            <div class="stat-icon">
+                <i class="fa fa-users"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{dashboard.total_users}}</div>
+                <div class="stat-label">Total Users</div>
+                <div class="stat-badge success">{{dashboard.active_users}} Active</div>
+            </div>
+        </div>
+
+        <div class="stat-card stat-info">
+            <div class="stat-icon">
+                <i class="fa fa-user-tag"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{dashboard.role_assignments}}</div>
+                <div class="stat-label">Role Assignments</div>
+                <div class="stat-badge info">View roles</div>
+            </div>
+        </div>
+
+        <div class="stat-card stat-success">
+            <div class="stat-icon">
+                <i class="fa fa-user-check"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{dashboard.enrollments}}</div>
+                <div class="stat-label">Enrollments</div>
+                <div class="stat-badge success">Active</div>
+            </div>
+        </div>
+
+        <div class="stat-card stat-warning">
+            <div class="stat-icon">
+                <i class="fa fa-tasks"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{dashboard.assignments}}</div>
+                <div class="stat-label">Assignments</div>
+                <div class="stat-badge warning">Pending review</div>
+            </div>
+        </div>
+
+        <div class="stat-card stat-purple">
+            <div class="stat-icon">
+                <i class="fa fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{dashboard.completed_activities}}</div>
+                <div class="stat-label">Completions</div>
+                <div class="stat-badge purple">Total completed</div>
+            </div>
+        </div>
+
+        <div class="stat-card stat-danger">
+            <div class="stat-icon">
+                <i class="fa fa-book"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{dashboard.total_courses}}</div>
+                <div class="stat-label">Courses</div>
+                <div class="stat-badge danger">See all courses</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Assignments Breakdown -->
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Role Assignments Breakdown</h2>
+            <a href="{{wwwroot}}/admin/roles/manage.php" class="view-all-link">Manage Roles</a>
+        </div>
+        <div class="role-breakdown-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Count</th>
+                        <th>Percentage</th>
+                        <th>Progress</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#dashboard.role_breakdown}}
+                    <tr>
+                        <td><strong>{{name}}</strong></td>
+                        <td>{{count}}</td>
+                        <td>{{percentage}}%</td>
+                        <td>
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-bar-fill" style="width: {{percentage}}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    {{/dashboard.role_breakdown}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Analytics Grid -->
+    <div class="analytics-grid">
+        
+        <!-- Teacher Analytics -->
+        <div class="analytics-card">
+            <div class="analytics-header">
+                <h3 class="analytics-title">
+                    <i class="fa fa-chalkboard-teacher"></i>
+                    Teacher Analytics
+                </h3>
+                <a href="{{wwwroot}}/admin/roles/assign.php" class="view-all-small">View All</a>
+            </div>
+            <div class="analytics-body">
+                <div class="analytics-stat">
+                    <span class="analytics-label">Active Teachers</span>
+                    <span class="analytics-value">{{dashboard.teacher_analytics.active_teachers}}</span>
+                </div>
+                <div class="analytics-stat">
+                    <span class="analytics-label">Total Assignments</span>
+                    <span class="analytics-value">{{dashboard.teacher_analytics.total_assignments}}</span>
+                </div>
+                <div class="analytics-stat">
+                    <span class="analytics-label">Completion Rate</span>
+                    <span class="analytics-value">{{dashboard.teacher_analytics.completion_rate}}</span>
+                </div>
+            </div>
+            <div class="analytics-progress">
+                <div class="progress-bar-modern">
+                    <div class="progress-fill-modern blue" style="width: 85%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trainee Analytics -->
+        <div class="analytics-card">
+            <div class="analytics-header">
+                <h3 class="analytics-title">
+                    <i class="fa fa-user-graduate"></i>
+                    Trainee Analytics
+                </h3>
+                <a href="{{wwwroot}}/admin/roles/assign.php" class="view-all-small">View All</a>
+            </div>
+            <div class="analytics-body">
+                <div class="analytics-stat">
+                    <span class="analytics-label">Active Trainees</span>
+                    <span class="analytics-value">{{dashboard.trainee_analytics.active_trainees}}</span>
+                </div>
+                <div class="analytics-stat">
+                    <span class="analytics-label">Total Assignments</span>
+                    <span class="analytics-value">{{dashboard.trainee_analytics.total_assignments}}</span>
+                </div>
+                <div class="analytics-stat">
+                    <span class="analytics-label">Active Time</span>
+                    <span class="analytics-value">{{dashboard.trainee_analytics.active_time}}</span>
+                </div>
+            </div>
+            <div class="analytics-progress">
+                <div class="progress-bar-modern">
+                    <div class="progress-fill-modern green" style="width: 75%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Analytics -->
+        <div class="analytics-card">
+            <div class="analytics-header">
+                <h3 class="analytics-title">
+                    <i class="fa fa-book-open"></i>
+                    Course Analytics
+                </h3>
+                <a href="{{wwwroot}}/course/management.php" class="view-all-small">Manage</a>
+            </div>
+            <div class="analytics-body">
+                <div class="analytics-stat">
+                    <span class="analytics-label">Solo Assignments</span>
+                    <span class="analytics-value">{{dashboard.course_analytics.solo_assignments}}</span>
+                </div>
+                <div class="analytics-stat">
+                    <span class="analytics-label">Completion Rate</span>
+                    <span class="analytics-value">{{dashboard.course_analytics.completion_rate}}</span>
+                </div>
+            </div>
+            <div class="analytics-progress">
+                <div class="progress-bar-modern">
+                    <div class="progress-fill-modern purple" style="width: 60%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Analytics -->
+        <div class="analytics-card">
+            <div class="analytics-header">
+                <h3 class="analytics-title">
+                    <i class="fa fa-users"></i>
+                    Student Analytics
+                </h3>
+                <a href="{{wwwroot}}/admin/user.php" class="view-all-small">View All</a>
+            </div>
+            <div class="analytics-body">
+                <div class="analytics-stat">
+                    <span class="analytics-label">Total Students</span>
+                    <span class="analytics-value">{{dashboard.student_analytics.total_students}}</span>
+                </div>
+                <div class="analytics-stat">
+                    <span class="analytics-label">Active This Month</span>
+                    <span class="analytics-value">{{dashboard.student_analytics.active_this_month}}</span>
+                </div>
+                <div class="analytics-stat">
+                    <span class="analytics-label">Avg. Progress</span>
+                    <span class="analytics-value">{{dashboard.student_analytics.avg_progress}}</span>
+                </div>
+            </div>
+            <div class="analytics-progress">
+                <div class="progress-bar-modern">
+                    <div class="progress-fill-modern orange" style="width: 70%"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Management Cards -->
+    <div class="management-grid">
+        {{#dashboard.management_cards}}
+        <div class="management-card card-{{color}}">
+            <div class="management-icon">
+                <i class="fa {{icon}}"></i>
+            </div>
+            <div class="management-content">
+                <h3 class="management-title">{{title}}</h3>
+                <p class="management-description">{{description}}</p>
+                <div class="management-stats">
+                    {{#stats}}
+                    <div class="mini-stat">
+                        <div class="mini-stat-label">{{label}}</div>
+                        <div class="mini-stat-value">{{value}}</div>
+                    </div>
+                    {{/stats}}
+                </div>
+                <a href="{{{url}}}" class="management-button">
+                    <i class="fa fa-arrow-right"></i> {{button_text}}
+                </a>
+            </div>
+        </div>
+        {{/dashboard.management_cards}}
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Quick Actions</h2>
+        </div>
+        <div class="quick-actions-grid">
+            {{#dashboard.quick_actions}}
+            <a href="{{{url}}}" class="quick-action-btn">
+                <i class="fa {{icon}}"></i>
+                <span>{{label}}</span>
+            </a>
+            {{/dashboard.quick_actions}}
+        </div>
+    </div>
+
+</div>

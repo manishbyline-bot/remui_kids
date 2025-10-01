@@ -37,15 +37,15 @@
 
 <style>
 /* Inline styles to ensure scroll works */
-        .riyada-sidebar-container {
-            position: fixed !important;
-            left: 0 !important;
-            top: 30px !important; /* Move admin sidebar up a little more */
-            height: calc(100vh - 30px) !important; /* Adjust height accordingly */
+.riyada-sidebar-container {
+    position: fixed !important;
+    left: 0 !important;
+    top: 60px !important; /* Below the navbar */
+    height: calc(100vh - 60px) !important; /* Full height minus navbar */
     width: 280px !important;
     background: #ffffff !important;
     border-right: 1px solid #e5e7eb !important;
-    z-index: 999 !important; /* Lower than navbar */
+    z-index: 999 !important; /* Lower than navbar (navbar is typically 1030) */
     overflow-y: auto !important; /* Allow vertical scrolling */
     overflow-x: hidden !important;
     display: flex !important;
@@ -102,45 +102,51 @@ body.admin-user #riyada-sidebar {
     overflow: visible !important;
 }
 
-/* Ensure main content has proper positioning when sidebar is shown - only for non-admin users */
-body:not(.admin-user) .main-content,
-body:not(.admin-user) #page-wrapper,
-body:not(.admin-user) .container-fluid,
-body:not(.admin-user) .main-content-wrapper {
+/* Admin users - sidebar is visible, push content to the right */
+body.admin-user #page-wrapper {
     margin-left: 280px !important;
-    margin-top: 40px !important; /* Add top margin to account for sidebar position */
     width: calc(100% - 280px) !important;
-    max-width: calc(100% - 280px) !important;
 }
 
-/* Admin users - keep original layout with just top margin */
-body.admin-user .main-content,
-body.admin-user #page-wrapper,
-body.admin-user .container-fluid,
-body.admin-user .main-content-wrapper {
-    margin-left: 0 !important;
-    margin-top: 40px !important; /* Move content down to match trainee interface */
-    width: 100% !important;
+body.admin-user #page {
     max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* Ensure main content takes full width when sidebar is hidden */
-body:not(.admin-user) .main-content,
-body:not(.admin-user) #page-wrapper,
-body:not(.admin-user) .container-fluid {
+body.admin-user #page-content {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.admin-user #page-content .row {
+    margin: 0 !important;
+}
+
+body.admin-user #region-main-box {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Non-admin users - sidebar is hidden, use full width */
+body:not(.admin-user) #page-wrapper {
     margin-left: 0 !important;
     width: 100% !important;
-    max-width: 100% !important;
 }
 
-body:not(.admin-user) {
-    margin-left: 0 !important;
-    padding-left: 0 !important;
+body:not(.admin-user) #page {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body:not(.admin-user) #page-content {
+    margin: 0 !important;
+    padding: 0 !important;
 }
 </style>
 
 
-<div id="riyada-sidebar" class="riyada-sidebar-container" style="position: fixed; left: 0; top: 0; height: 100vh; width: 280px; background: #ffffff; border-right: 1px solid #e5e7eb; z-index: 1000; overflow: hidden; display: flex; flex-direction: column;">
+<div id="riyada-sidebar" class="riyada-sidebar-container">
     <!-- Sidebar Header -->
     <div class="riyada-sidebar-header">
         <h1>Riyada Trainings</h1>
@@ -151,9 +157,9 @@ body:not(.admin-user) {
             <div class="riyada-nav-section-title">DASHBOARD</div>
             <ul class="riyada-nav-list">
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/my/" class="riyada-nav-link active" data-page="dashboard">
+                    <a href="{{config.wwwroot}}/theme/remui_kids/admin_dashboard.php" class="riyada-nav-link active" data-page="admin-dashboard">
                         <span class="riyada-nav-icon">⊞</span>
-                        <span class="riyada-nav-text">Dashboard</span>
+                        <span class="riyada-nav-text">Admin Dashboard</span>
                         <span class="riyada-nav-indicator"></span>
                     </a>
                 </li>
@@ -422,7 +428,9 @@ function loadTraineeTeacherSidebar() {
 
 function getCurrentPage(path) {
     // Admin pages
-    if (path.includes('/my/') && !path.includes('/courses.php')) {
+    if (path.includes('/theme/remui_kids/admin_dashboard.php')) {
+        return 'admin-dashboard';
+    } else if (path.includes('/my/') && !path.includes('/courses.php')) {
         return 'dashboard';
     } else if (path.includes('/enrollments.php')) {
         return 'enrollments';

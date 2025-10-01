@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $THEME->name = 'remui_kids';
-$THEME->sheets = [];
+$THEME->sheets = ['fullwidth'];
 $THEME->editor_sheets = [];
 $THEME->parents = ['remui'];
 $THEME->enable_dock = false;
