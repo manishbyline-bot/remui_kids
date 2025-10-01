@@ -38,7 +38,8 @@ $context = context_system::instance();
 // Set up the page exactly like schools.php
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/suspended_schools.php');
-$PAGE->add_body_classes(['limitedwidth', 'page-mysuspendedschools']);
+$PAGE->add_body_classes(['fullwidth-layout', 'page-mysuspendedschools']);
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 $PAGE->set_pagelayout('mycourses');
 
 $PAGE->set_pagetype('suspendedschools-index');

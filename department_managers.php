@@ -23,7 +23,8 @@ $context = context_system::instance();
 // Set up the page exactly like schools.php
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/department_managers.php');
-$PAGE->add_body_classes(['limitedwidth', 'page-mydepartmentmanagers']);
+$PAGE->add_body_classes(['fullwidth-layout', 'page-mydepartmentmanagers']);
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 $PAGE->set_pagelayout('mycourses');
 
 $PAGE->set_pagetype('departmentmanagers-index');

@@ -44,8 +44,9 @@ $context = context_system::instance();
 // Start setting up the page exactly like courses.php
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/schools.php');
-$PAGE->add_body_classes(['limitedwidth', 'page-myschools']);
+$PAGE->add_body_classes(['page-myschools', 'fullwidth-layout']);
 $PAGE->set_pagelayout('mycourses');
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 
 $PAGE->set_pagetype('schools-index');
 $PAGE->blocks->add_region('content');
