@@ -154,7 +154,7 @@ $PAGE->requires->js('/theme/remui_kids/js/department_managers.js');
     max-width: 100%;
     width: 100%;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 

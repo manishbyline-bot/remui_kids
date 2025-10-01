@@ -375,7 +375,7 @@ echo $OUTPUT->header();
     max-width: 100%;
     width: 100%;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     min-height: 100vh;
 }
 
@@ -656,8 +656,9 @@ echo $OUTPUT->header();
     background: white;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     border: 1px solid #e9ecef;
+    margin-bottom: 30px;
 }
 
 .enrollments-table {
@@ -667,25 +668,54 @@ echo $OUTPUT->header();
 }
 
 .enrollments-table th {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 15px 12px;
+    background: linear-gradient(135deg, #52C9D9 0%, #4AB3C4 100%);
+    padding: 18px 20px;
     text-align: left;
-    font-weight: 600;
-    color: #2c3e50;
-    border-bottom: 2px solid #dee2e6;
+    font-weight: 700;
+    color: #ffffff;
+    border-bottom: 3px solid #3A9BA8;
     position: sticky;
     top: 0;
     z-index: 10;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .enrollments-table td {
-    padding: 12px;
-    border-bottom: 1px solid #f1f3f4;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e9ecef;
     vertical-align: middle;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.enrollments-table tbody tr {
+    transition: all 0.3s ease;
 }
 
 .enrollments-table tbody tr:hover {
     background: #f8f9fa;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transform: scale(1.001);
+}
+
+.enrollments-table tbody tr:hover td {
+    background: #f8f9fa;
+}
+
+.enrollments-table th:first-child,
+.enrollments-table td:first-child {
+    padding-left: 24px;
+    font-weight: 600;
+}
+
+.enrollments-table th:last-child,
+.enrollments-table td:last-child {
+    padding-right: 24px;
+    text-align: center;
 }
 
 .user-avatar {
@@ -786,7 +816,7 @@ echo $OUTPUT->header();
 /* Responsive Design */
 @media (max-width: 768px) {
     .enrollments-container {
-        padding: 10px;
+        padding: 0;
     }
     
     .header-section {
@@ -843,6 +873,258 @@ echo $OUTPUT->header();
     .enrollments-table th:nth-child(5),
     .enrollments-table td:nth-child(5) {
         display: none;
+    }
+}
+
+/* User Detail Modal/Panel Styles - Left Sidebar Design */
+.user-detail-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 9998;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.user-detail-overlay.show {
+    display: block;
+}
+
+.user-detail-panel {
+    position: fixed;
+    top: 0;
+    left: -400px;
+    width: 380px;
+    height: 100vh;
+    background: #ffffff;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    overflow-y: auto;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.user-detail-panel.show {
+    left: 0;
+}
+
+.user-detail-header {
+    background: linear-gradient(180deg, rgba(99, 176, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+    padding: 40px 24px 30px;
+    position: relative;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.user-detail-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    color: #495057;
+    font-size: 20px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.user-detail-close:hover {
+    background: #e9ecef;
+    color: #212529;
+}
+
+.user-detail-avatar-large {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 auto 16px;
+    border: 3px solid #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.user-detail-name {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #212529;
+}
+
+.user-detail-role {
+    text-align: center;
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+.user-detail-body {
+    padding: 24px;
+}
+
+.user-detail-section {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 24px;
+}
+
+.user-detail-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 16px;
+    padding-left: 4px;
+}
+
+.user-detail-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.user-detail-item:last-child {
+    border-bottom: none;
+}
+
+.user-detail-item-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 16px;
+    margin-right: 12px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.user-detail-item-content {
+    flex: 1;
+}
+
+.user-detail-item-label {
+    font-size: 13px;
+    color: #868e96;
+    font-weight: 400;
+    margin-bottom: 4px;
+}
+
+.user-detail-item-value {
+    font-size: 14px;
+    color: #212529;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+.user-detail-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.user-detail-badge.customer {
+    background: #e7f5ff;
+    color: #1971c2;
+}
+
+.user-detail-badge.employee {
+    background: #d3f9d8;
+    color: #2f9e44;
+}
+
+.user-detail-badge.personal {
+    background: #fff3bf;
+    color: #e67700;
+}
+
+.user-detail-courses {
+    margin-top: 12px;
+}
+
+.user-detail-course-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.user-detail-course-item:hover {
+    background: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.user-detail-course-name {
+    font-weight: 500;
+    color: #212529;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.user-detail-course-date {
+    font-size: 12px;
+    color: #868e96;
+}
+
+.enrollments-table tbody tr {
+    cursor: pointer;
+    position: relative;
+}
+
+.enrollments-table tbody tr::after {
+    content: '→';
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    color: #52C9D9;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.enrollments-table tbody tr:hover::after {
+    opacity: 1;
+    right: 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .user-detail-panel {
+        width: 100%;
+        left: -100%;
+    }
+    
+    .user-detail-panel.show {
+        left: 0;
     }
 }
 </style>
@@ -1048,6 +1330,82 @@ echo $OUTPUT->header();
     </div>
 </div>
 
+<!-- User Detail Panel - Left Sidebar -->
+<div class="user-detail-overlay" id="userDetailOverlay" onclick="closeUserDetail()"></div>
+<div class="user-detail-panel" id="userDetailPanel">
+    <div class="user-detail-header">
+        <button class="user-detail-close" onclick="closeUserDetail()">✕</button>
+        <div class="user-detail-avatar-large" id="userDetailAvatarLarge"></div>
+        <h2 class="user-detail-name" id="userDetailName"></h2>
+        <p class="user-detail-role" id="userDetailRole">Enrolled Student</p>
+    </div>
+    
+    <div class="user-detail-body">
+        <!-- Details Section -->
+        <div class="user-detail-section">
+            <h3 class="user-detail-section-title">DETAILS</h3>
+            
+            <div class="user-detail-item">
+                <div class="user-detail-item-icon">🏢</div>
+                <div class="user-detail-item-content">
+                    <div class="user-detail-item-label">Company</div>
+                    <div class="user-detail-item-value" id="userDetailCompany">-</div>
+                </div>
+            </div>
+            
+            <div class="user-detail-item">
+                <div class="user-detail-item-icon">💼</div>
+                <div class="user-detail-item-content">
+                    <div class="user-detail-item-label">Role</div>
+                    <div class="user-detail-item-value" id="userDetailRoleType">Student</div>
+                </div>
+            </div>
+            
+            <div class="user-detail-item">
+                <div class="user-detail-item-icon">📱</div>
+                <div class="user-detail-item-content">
+                    <div class="user-detail-item-label">Phone</div>
+                    <div class="user-detail-item-value" id="userDetailPhone">-</div>
+                </div>
+            </div>
+            
+            <div class="user-detail-item">
+                <div class="user-detail-item-icon">✉️</div>
+                <div class="user-detail-item-content">
+                    <div class="user-detail-item-label">Email</div>
+                    <div class="user-detail-item-value" id="userDetailEmail"></div>
+                </div>
+            </div>
+            
+            <div class="user-detail-item">
+                <div class="user-detail-item-icon">🌐</div>
+                <div class="user-detail-item-content">
+                    <div class="user-detail-item-label">Website</div>
+                    <div class="user-detail-item-value" id="userDetailWebsite">-</div>
+                </div>
+            </div>
+            
+            <div class="user-detail-item">
+                <div class="user-detail-item-icon">📊</div>
+                <div class="user-detail-item-content">
+                    <div class="user-detail-item-label">Status</div>
+                    <div class="user-detail-item-value">
+                        <span class="user-detail-badge customer" id="userDetailStatus"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="user-detail-item">
+                <div class="user-detail-item-icon">🔓</div>
+                <div class="user-detail-item-content">
+                    <div class="user-detail-item-label">Access</div>
+                    <div class="user-detail-item-value" id="userDetailAccess">Everyone</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // AJAX Search and Filter functionality
 document.addEventListener('DOMContentLoaded', function() {
@@ -1157,6 +1515,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${new Date(user.timecreated * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
             </tr>
         `).join('');
+        
+        // Re-add click handlers after updating table
+        addRowClickHandlers();
     }
     
     // Update summary cards
@@ -1310,6 +1671,83 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (mobileHeader) mobileHeader.remove();
         if (overlay) overlay.remove();
+    }    
+    // Add click handlers to table rows
+    addRowClickHandlers();
+});
+
+// User Detail Panel Functions
+function openUserDetail(userData) {
+    const panel = document.getElementById('userDetailPanel');
+    const overlay = document.getElementById('userDetailOverlay');
+    
+    // Populate user data
+    const initials = userData.firstname.charAt(0).toUpperCase() + userData.lastname.charAt(0).toUpperCase();
+    document.getElementById('userDetailAvatarLarge').textContent = initials;
+    document.getElementById('userDetailName').textContent = userData.firstname + ' ' + userData.lastname;
+    document.getElementById('userDetailRole').textContent = 'Enrolled Student';
+    
+    // Populate detail fields
+    document.getElementById('userDetailCompany').textContent = userData.company || '-';
+    document.getElementById('userDetailRoleType').textContent = userData.role || 'Student';
+    document.getElementById('userDetailPhone').textContent = userData.phone || '-';
+    document.getElementById('userDetailEmail').textContent = userData.email;
+    document.getElementById('userDetailWebsite').textContent = userData.website || '-';
+    document.getElementById('userDetailAccess').textContent = 'Everyone';
+    
+    // Update status
+    const statusBadge = document.getElementById('userDetailStatus');
+    statusBadge.textContent = userData.status === 'suspended' ? 'Suspended' : 'Active';
+    statusBadge.className = 'user-detail-badge ' + (userData.status === 'suspended' ? 'personal' : 'customer');
+    
+    // Show panel with smooth animation
+    overlay.classList.add('show');
+    setTimeout(() => {
+        panel.classList.add('show');
+    }, 10);
+}
+
+function closeUserDetail() {
+    const panel = document.getElementById('userDetailPanel');
+    const overlay = document.getElementById('userDetailOverlay');
+    
+    panel.classList.remove('show');
+    setTimeout(() => {
+        overlay.classList.remove('show');
+    }, 400);
+}
+
+function addRowClickHandlers() {
+    const tableBody = document.getElementById('enrollmentsTableBody');
+    if (!tableBody) return;
+    
+    const rows = tableBody.getElementsByTagName('tr');
+    for (let row of rows) {
+        row.addEventListener('click', function() {
+            const cells = this.cells;
+            if (!cells || cells.length < 6) return;
+            
+            // Extract user data from row
+            const userData = {
+                firstname: cells[0].textContent.trim().split(/\s+/)[0],
+                lastname: cells[0].textContent.trim().split(/\s+/)[1] || '',
+                username: cells[0].textContent.match(/@(\w+)/)?.[1] || 'unknown',
+                email: cells[1].textContent.trim(),
+                status: cells[2].textContent.trim().toLowerCase(),
+                courses: [cells[3].textContent.trim()],
+                courseCount: cells[4].textContent.trim(),
+                enrolledDate: cells[5].textContent.trim()
+            };
+            
+            openUserDetail(userData);
+        });
+    }
+}
+
+// Close panel with ESC key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeUserDetail();
     }
 });
 
