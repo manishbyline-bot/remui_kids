@@ -51,6 +51,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_enrollments') {
     $page = optional_param('page', 0, PARAM_INT);
     $perpage = 20;
     
+    // Debug logging
+    error_log("Enrollments AJAX request - Search: '$search', Course: '$course_filter', Status: '$status_filter', Page: '$page'");
+    
     try {
         // Check if enrollment tables exist
         $enrollment_table_exists = $DB->get_manager()->table_exists('user_enrolments');
@@ -96,7 +99,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_enrollments') {
                     JOIN {course} c ON e.courseid = c.id
                     WHERE $where_clause
                     AND c.visible = 1 AND e.status = 0
-                    GROUP BY u.id, u.username, u.email, u.firstname, u.lastname, u.suspended, u.deleted, u.timecreated, c.visible, e.status
+                    GROUP BY u.id, u.username, u.email, u.firstname, u.lastname, u.suspended, u.deleted, u.timecreated
                     ORDER BY u.firstname ASC, u.lastname ASC";
         } else {
             // Fallback query if enrollment tables don't exist
@@ -216,13 +219,19 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_enrollments') {
             );
         }
         
-        echo json_encode($response);
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
         
     } catch (Exception $e) {
+        error_log("Enrollments AJAX error: " . $e->getMessage());
         echo json_encode(array(
             'error' => 'Database error: ' . $e->getMessage(),
             'users' => array(),
-            'total_count' => 0
+            'total_count' => 0,
+            'debug' => array(
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            )
         ));
     }
     exit;
@@ -855,7 +864,7 @@ echo $OUTPUT->header();
     <!-- Summary Cards -->
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-icon">📊</div>
+            <div class="stat-icon">●</div>
             <div class="stat-number"><?php echo number_format($total_enrollments); ?></div>
             <div class="stat-title">Total Enrollments</div>
             <div class="stat-description">All user course enrollments</div>
@@ -869,7 +878,7 @@ echo $OUTPUT->header();
         </div>
         
         <div class="stat-card">
-            <div class="stat-icon">⏸️</div>
+            <div class="stat-icon">●</div>
             <div class="stat-number" id="suspendedCount"><?php echo number_format($suspended_enrollments); ?></div>
             <div class="stat-title">Suspended Enrollments</div>
             <div class="stat-description">Suspended and inactive user enrollments</div>

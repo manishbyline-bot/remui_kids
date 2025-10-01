@@ -749,7 +749,7 @@ $PAGE->requires->js('/theme/remui_kids/js/recent_uploads.js');
         </div>
     <?php else: ?>
         <div class="results-info">
-            📊 Showing users uploaded this month (<?php echo date('F Y'); ?>) - Total: <?php echo $total_uploads; ?> user(s)
+            ● Showing users uploaded this month (<?php echo date('F Y'); ?>) - Total: <?php echo $total_uploads; ?> user(s)
         </div>
     <?php endif; ?>
 
