@@ -432,7 +432,6 @@ $PAGE->requires->js('/theme/remui_kids/js/pending_approvals.js');
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
     }
     
     .sidebar.open {
@@ -521,7 +520,7 @@ $PAGE->requires->js('/theme/remui_kids/js/pending_approvals.js');
     <!-- Results Information -->
     <?php if (!$table_exists): ?>
         <div class="results-info" style="background: #fff3cd; border-left-color: #ffc107; color: #856404;">
-            ⚠️ Training Events module is not installed or configured. The trainingevent_users table does not exist.
+            ● Training Events module is not installed or configured. The trainingevent_users table does not exist.
         </div>
     <?php elseif (!empty($search)): ?>
         <div class="results-info">
@@ -530,7 +529,7 @@ $PAGE->requires->js('/theme/remui_kids/js/pending_approvals.js');
         </div>
     <?php else: ?>
         <div class="results-info">
-            📊 Showing all pending approvals - Total: <?php echo $total_approvals; ?> approval(s)
+            ● Showing all pending approvals - Total: <?php echo $total_approvals; ?> approval(s)
         </div>
     <?php endif; ?>
 
@@ -538,7 +537,7 @@ $PAGE->requires->js('/theme/remui_kids/js/pending_approvals.js');
     <div class="approvals-table-container">
         <?php if (!$table_exists): ?>
             <div style="padding: 40px; text-align: center; color: #6c757d;">
-                <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
+                <div style="font-size: 48px; margin-bottom: 20px;">●</div>
                 <h3 style="margin: 0 0 10px 0; color: #495057;">Training Events Module Not Available</h3>
                 <p style="margin: 0;">The training events module is not installed or configured. Please contact your administrator to set up the training events functionality.</p>
             </div>

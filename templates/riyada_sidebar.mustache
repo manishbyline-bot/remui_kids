@@ -139,21 +139,19 @@ body:not(.admin-user) {
 }
 </style>
 
+
 <div id="riyada-sidebar" class="riyada-sidebar-container" style="position: fixed; left: 0; top: 0; height: 100vh; width: 280px; background: #ffffff; border-right: 1px solid #e5e7eb; z-index: 1000; overflow: hidden; display: flex; flex-direction: column;">
     <!-- Sidebar Header -->
     <div class="riyada-sidebar-header">
         <h1>Riyada Trainings</h1>
     </div>
-    
     <!-- Sidebar Navigation -->
-    <nav class="riyada-sidebar-nav" id="riyada-sidebar-nav" style="flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 0; max-height: calc(100vh - 100px); position: relative;">
+    <nav class="riyada-sidebar-nav" id="riyada-sidebar-nav" style="flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 0; max-height: calc(100vh - 160px); position: relative;">
         <div class="riyada-nav-section">
             <div class="riyada-nav-section-title">DASHBOARD</div>
             <ul class="riyada-nav-list">
                 <li class="riyada-nav-item">
-                    <a href="{{config.wwwroot}}/my/" class="riyada-nav-link" data-page="dashboard">
-
-                    
+                    <a href="{{config.wwwroot}}/my/" class="riyada-nav-link active" data-page="dashboard">
                         <span class="riyada-nav-icon">⊞</span>
                         <span class="riyada-nav-text">Dashboard</span>
                         <span class="riyada-nav-indicator"></span>
@@ -167,7 +165,7 @@ body:not(.admin-user) {
                 </li>
                 <li class="riyada-nav-item">
                     <a href="{{config.wwwroot}}/theme/remui_kids/enrollments.php" class="riyada-nav-link" data-page="enrollments">
-                        <span class="riyada-nav-icon">🎓</span>
+                        <span class="riyada-nav-icon">●</span>
                         <span class="riyada-nav-text">Enrollments</span>
                     </a>
                 </li>
@@ -179,7 +177,7 @@ body:not(.admin-user) {
             <ul class="riyada-nav-list">
                 <li class="riyada-nav-item">
                     <a href="{{config.wwwroot}}/theme/remui_kids/teachers.php" class="riyada-nav-link" data-page="teachers">
-                        <span class="riyada-nav-icon">👥</span>
+                        <span class="riyada-nav-icon">●</span>
                         <span class="riyada-nav-text">Teachers</span>
                     </a>
                 </li>
@@ -197,7 +195,7 @@ body:not(.admin-user) {
             <ul class="riyada-nav-list">
                 <li class="riyada-nav-item">
                     <a href="{{config.wwwroot}}/theme/remui_kids/courses.php" class="riyada-nav-link" data-page="courses" target="_self">
-                        <span class="riyada-nav-icon">📖</span>
+                        <span class="riyada-nav-icon">●</span>
                         <span class="riyada-nav-text">Courses & Programs</span>
                     </a>
                 </li>
@@ -263,13 +261,13 @@ body:not(.admin-user) {
             <ul class="riyada-nav-list">
                 <li class="riyada-nav-item">
                     <a href="{{config.wwwroot}}/admin/index.php" class="riyada-nav-link">
-                        <span class="riyada-nav-icon">⚙️</span>
+                        <span class="riyada-nav-icon">●</span>
                         <span class="riyada-nav-text">System Settings</span>
                     </a>
                 </li>
                 <li class="riyada-nav-item">
                     <a href="{{config.wwwroot}}/theme/remui_kids/user_management.php" class="riyada-nav-link" data-page="user-management">
-                        <span class="riyada-nav-icon">👥</span>
+                        <span class="riyada-nav-icon">●</span>
                         <span class="riyada-nav-text">User Management</span>
                     </a>
                 </li>
@@ -472,6 +470,7 @@ function initializeSidebarScroll() {
     // Force scroll properties
     sidebarNav.style.overflowY = 'visible';
     sidebarNav.style.overflowX = 'hidden';
+    sidebarNav.style.maxHeight = 'calc(100vh - 160px)';
     sidebarNav.style.scrollBehavior = 'smooth';
     
     // Ensure scrollbar is visible

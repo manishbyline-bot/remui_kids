@@ -33,8 +33,6 @@ $PAGE->set_heading('Teachers Management');
 // Force the add block out of the default area.
 $PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
 
-// Add jQuery and JavaScript file
-$PAGE->requires->jquery();
 // Include full width CSS - MUST be before header output
 $PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 
@@ -605,7 +603,7 @@ echo $OUTPUT->header();
                                     // Actions
                                     echo '<td>';
                                     echo '<div class="action-icons">';
-                                    echo '<a href="teacher_view.php?id=' . $teacher->id . '" class="action-icon view-icon" title="View Details">👁</a>';
+                                    echo '<a href="' . $CFG->wwwroot . '/theme/remui_kids/teacher_view.php?id=' . $teacher->id . '" class="action-icon view-icon" title="View Details">👁</a>';
                                     echo '<a href="teacher_edit.php?id=' . $teacher->id . '" class="action-icon edit-icon" title="Edit Teacher">✏</a>';
                                     echo '<a href="teacher_suspend.php?id=' . $teacher->id . '" class="action-icon suspend-icon" title="Manage Status">⏸</a>';
                                     echo '</div>';
@@ -629,18 +627,8 @@ echo $OUTPUT->header();
 </div>
 
 <script>
-// Ensure DOM is loaded and jQuery is available before running scripts
+// Ensure DOM is loaded before running scripts
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if jQuery is available
-    if (typeof $ === 'undefined' && typeof jQuery === 'undefined') {
-        console.error('jQuery is not loaded');
-        return;
-    }
-    
-    // Use jQuery if available, otherwise use vanilla JS
-    const $ = window.$ || window.jQuery || function(selector) {
-        return document.querySelector(selector);
-    };
     // Function to filter teachers
     function filterTeachers() {
         const searchInput = document.getElementById('searchInput');

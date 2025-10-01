@@ -23,9 +23,9 @@ footer,
     z-index: 999; /* Lower than navbar */
     overflow-y: auto; /* Allow vertical scrolling */
     overflow-x: hidden;
+
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
     transform: translateX(0);
 }
 
@@ -51,6 +51,7 @@ footer,
     padding: 20px 0; /* Normal padding */
     scrollbar-width: thin;
     scrollbar-color: #d1d5db #f9fafb;
+    max-height: calc(100vh - 160px);
     position: relative;
     min-height: 0; /* Allow flex shrinking */
 }
@@ -218,7 +219,7 @@ footer,
 /* Ensure sidebar doesn't interfere with main content */
 body {
     margin-left: 280px;
-    transition: margin-left 0.3s ease;
+    margin-top: 60px;
 }
 
 /* When sidebar is hidden, adjust body margin */
@@ -264,7 +265,6 @@ body.admin-user .main-content-wrapper {
     bottom: 20px;
     left: 20px;
     z-index: 1001;
-    transition: left 0.3s ease;
 }
 
 body.sidebar-hidden .riyada-fab {
