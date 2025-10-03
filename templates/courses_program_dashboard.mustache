@@ -292,31 +292,35 @@ body .dashboard-cards-container .summary-card {
         </div>
         
         <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
-            <div class="card summary-card total-enrollments">
-                <div class="card-body d-flex align-items-center">
-                    <div class="summary-icon">
-                        <i class="fa fa-users"></i>
-                    </div>
-                    <div class="summary-content">
-                        <h3 class="summary-number">{{totalenrollments}}</h3>
-                        <p class="summary-label">Total Enrollments</p>
+            <a href="{{{wwwroot}}}/theme/remui_kids/enrollments.php" class="card-link">
+                <div class="card summary-card total-enrollments">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3 class="summary-number">{{totalenrollments}}</h3>
+                            <p class="summary-label">Total Enrollments</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         
         <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
-            <div class="card summary-card learning-paths">
-                <div class="card-body d-flex align-items-center">
-                    <div class="summary-icon">
-                        <i class="fa fa-link"></i>
-                    </div>
-                    <div class="summary-content">
-                        <h3 class="summary-number">{{learningpaths}}</h3>
-                        <p class="summary-label">Learning Paths</p>
+            <a href="{{{wwwroot}}}/theme/remui_kids/learning_paths.php" class="card-link">
+                <div class="card summary-card learning-paths">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon">
+                            <i class="fa fa-link"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3 class="summary-number">{{learningpaths}}</h3>
+                            <p class="summary-label">Learning Paths</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     

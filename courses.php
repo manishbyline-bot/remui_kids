@@ -96,49 +96,9 @@ if (!empty($coursemanagemenu)) {
 
 echo $OUTPUT->header();
 
-// Add courses JavaScript
-$PAGE->requires->js('/theme/remui_kids/js/courses.js');
-
 if (core_userfeedback::should_display_reminder()) {
     core_userfeedback::print_reminder_block();
 }
-
-// Add dashboard cards data
-global $DB;
-$dashboarddata = new stdClass();
-
-// Get total courses count using COUNT(fullname) query (matching the database image)
-$dashboarddata->totalcourses = $DB->count_records('course');
-
-// Get categories count - using the same logic as COUNT(*) FROM mdl_course_categories
-$dashboarddata->categories = $DB->count_records('course_categories');
-
-// Get total enrollments count
-$dashboarddata->totalenrollments = $DB->count_records('user_enrolments');
-
-// Get learning paths count from iomad_learningpath table if it exists
-try {
-    if ($DB->get_manager()->table_exists('iomad_learningpath')) {
-        $dashboarddata->learningpaths = $DB->count_records('iomad_learningpath');
-    } else {
-        // Fallback: count from local_iomad_learningpath if the table exists
-        if ($DB->get_manager()->table_exists('local_iomad_learningpath')) {
-            $dashboarddata->learningpaths = $DB->count_records('local_iomad_learningpath');
-        } else {
-            // If no learning path table exists, set to 0
-            $dashboarddata->learningpaths = 0;
-        }
-    }
-} catch (Exception $e) {
-    // If there's any error, set to 0
-    $dashboarddata->learningpaths = 0;
-}
-
-// Add wwwroot for links
-$dashboarddata->wwwroot = $CFG->wwwroot;
-
-// Render dashboard cards
-echo $OUTPUT->render_from_template('my/dashboard_cards', $dashboarddata);
 
 echo $OUTPUT->custom_block_region('content');
 
