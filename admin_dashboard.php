@@ -46,6 +46,9 @@ $PAGE->navbar->add('Admin Dashboard');
 // Add custom CSS
 $PAGE->requires->css('/theme/remui_kids/style/admin_dashboard.css');
 
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
+
 // Get dashboard data
 $dashboarddata = get_professional_dashboard_data();
 

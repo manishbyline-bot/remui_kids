@@ -48,6 +48,9 @@ $PAGE->add_body_classes(['page-myschools', 'fullwidth-layout']);
 $PAGE->set_pagelayout('mycourses');
 $PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
+
 $PAGE->set_pagetype('schools-index');
 $PAGE->blocks->add_region('content');
 $PAGE->set_title('Schools Management - Riyada Trainings');

@@ -172,6 +172,9 @@ echo $OUTPUT->header();
 
 // Add user details JavaScript
 $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
+
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
 ?>
 
 <style>
@@ -510,7 +513,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
     z-index: 10;
     font-size: 13px;
     letter-spacing: 0.025em;
-    text-transform: none;
+    text-transform: uppercase;
 }
 
 .suggestions-table td {
@@ -540,14 +543,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
 .suggestion-user-id {
     font-weight: 500;
     color: #374151;
-    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    font-size: 13px;
-    background: #f3f4f6;
-    padding: 4px 8px;
-    border-radius: 6px;
-    display: inline-block;
-    min-width: 32px;
-    text-align: center;
+    font-size: 14px;
 }
 
 .suggestion-username {
@@ -690,7 +686,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
     z-index: 10;
     font-size: 13px;
     letter-spacing: 0.025em;
-    text-transform: none;
+    text-transform: uppercase;
 }
 
 .sortable {
@@ -754,14 +750,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
 .user-id {
     font-weight: 500;
     color: #374151;
-    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    font-size: 13px;
-    background: #f3f4f6;
-    padding: 4px 8px;
-    border-radius: 6px;
-    display: inline-block;
-    min-width: 32px;
-    text-align: center;
+    font-size: 14px;
 }
 
 .username {
@@ -778,6 +767,30 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
 }
 
 .user-name {
+    font-weight: 500;
+    color: #111827;
+    font-size: 14px;
+}
+
+.first-name {
+    font-weight: 500;
+    color: #111827;
+    font-size: 14px;
+}
+
+.last-name {
+    font-weight: 500;
+    color: #111827;
+    font-size: 14px;
+}
+
+.suggestion-firstname {
+    font-weight: 500;
+    color: #111827;
+    font-size: 14px;
+}
+
+.suggestion-lastname {
     font-weight: 500;
     color: #111827;
     font-size: 14px;
@@ -802,12 +815,18 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
     background: #d1fae5;
     color: #065f46;
     border: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
 }
 
 .status-suspended {
     background: #fee2e2;
     color: #991b1b;
     border: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
 }
 
 .date-info {
@@ -1275,13 +1294,13 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
                 <table class="suggestions-table">
                     <thead>
                         <tr>
-                            <th>User ID</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Full Name</th>
-                            <th>Status</th>
-                            <th>Created</th>
-                            <th>Last Access</th>
+                            <th>USER ID</th>
+                            <th>USERNAME</th>
+                            <th>FIRST NAME</th>
+                            <th>LAST NAME</th>
+                            <th>EMAIL</th>
+                            <th>STATUS</th>
+                            <th>LAST ACCESS</th>
                         </tr>
                     </thead>
                     <tbody id="suggestionsTableBody">
@@ -1298,38 +1317,38 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
                 <thead>
                     <tr>
                         <th class="sortable" data-sort="id">
-                            User ID
+                            USER ID
                             <?php if ($sort === 'id'): ?>
                                 <span class="sort-indicator"><?php echo $order === 'ASC' ? '↑' : '↓'; ?></span>
                             <?php endif; ?>
                         </th>
                         <th class="sortable" data-sort="username">
-                            Username
+                            USERNAME
                             <?php if ($sort === 'username'): ?>
                                 <span class="sort-indicator"><?php echo $order === 'ASC' ? '↑' : '↓'; ?></span>
                             <?php endif; ?>
                         </th>
-                        <th class="sortable" data-sort="email">
-                            Email
-                            <?php if ($sort === 'email'): ?>
-                                <span class="sort-indicator"><?php echo $order === 'ASC' ? '↑' : '↓'; ?></span>
-                            <?php endif; ?>
-                        </th>
                         <th class="sortable" data-sort="firstname">
-                            Full Name
+                            FIRST NAME
                             <?php if ($sort === 'firstname'): ?>
                                 <span class="sort-indicator"><?php echo $order === 'ASC' ? '↑' : '↓'; ?></span>
                             <?php endif; ?>
                         </th>
-                        <th>Status</th>
-                        <th class="sortable" data-sort="timecreated">
-                            Created
-                            <?php if ($sort === 'timecreated'): ?>
+                        <th class="sortable" data-sort="lastname">
+                            LAST NAME
+                            <?php if ($sort === 'lastname'): ?>
                                 <span class="sort-indicator"><?php echo $order === 'ASC' ? '↑' : '↓'; ?></span>
                             <?php endif; ?>
                         </th>
+                        <th class="sortable" data-sort="email">
+                            EMAIL
+                            <?php if ($sort === 'email'): ?>
+                                <span class="sort-indicator"><?php echo $order === 'ASC' ? '↑' : '↓'; ?></span>
+                            <?php endif; ?>
+                        </th>
+                        <th>STATUS</th>
                         <th class="sortable" data-sort="lastaccess">
-                            Last Access
+                            LAST ACCESS
                             <?php if ($sort === 'lastaccess'): ?>
                                 <span class="sort-indicator"><?php echo $order === 'ASC' ? '↑' : '↓'; ?></span>
                             <?php endif; ?>
@@ -1341,22 +1360,15 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
                         <tr>
                             <td class="user-id"><?php echo $user->id; ?></td>
                             <td class="username"><?php echo htmlspecialchars($user->username); ?></td>
+                            <td class="first-name"><?php echo htmlspecialchars($user->firstname ?: 'N/A'); ?></td>
+                            <td class="last-name"><?php echo htmlspecialchars($user->lastname ?: 'N/A'); ?></td>
                             <td class="email"><?php echo htmlspecialchars($user->email); ?></td>
-                            <td class="user-name">
-                                <?php 
-                                $fullname = trim($user->firstname . ' ' . $user->lastname);
-                                echo htmlspecialchars($fullname ?: 'N/A'); 
-                                ?>
-                            </td>
                             <td>
                                 <?php if ($user->suspended): ?>
-                                    <span class="status-badge status-suspended">Suspended</span>
+                                    <span class="status-badge status-suspended">SUSPENDED</span>
                                 <?php else: ?>
-                                    <span class="status-badge status-active">Active</span>
+                                    <span class="status-badge status-active">ACTIVE</span>
                                 <?php endif; ?>
-                            </td>
-                            <td class="date-info">
-                                <?php echo date('M j, Y', $user->timecreated); ?>
                             </td>
                             <td class="date-info">
                                 <?php 
@@ -1590,10 +1602,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <tr class="suggestion-row" data-index="${index}" data-username="${suggestion.username}">
                         <td class="suggestion-user-id">${suggestion.id}</td>
                         <td class="suggestion-username">${highlightedUsername}</td>
+                        <td class="suggestion-firstname">${suggestion.firstname || 'N/A'}</td>
+                        <td class="suggestion-lastname">${suggestion.lastname || 'N/A'}</td>
                         <td class="suggestion-email">${highlightedEmail}</td>
-                        <td class="suggestion-fullname">${highlightedFullname}</td>
-                        <td><span class="status-badge ${statusClass}">${status}</span></td>
-                        <td class="suggestion-date-info">${createdDate}</td>
+                        <td><span class="status-badge ${statusClass}">${status.toUpperCase()}</span></td>
                         <td class="suggestion-date-info">${lastAccess}</td>
                     </tr>
                 `;

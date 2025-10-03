@@ -45,8 +45,12 @@ $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/courses_list.php');
 $PAGE->add_body_classes(['page-courseslist', 'fullwidth-layout']);
+$PAGE->add_body_class('data-page-coursesprogram');
 $PAGE->set_pagelayout('mycourses');
 $PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
+
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
 
 $PAGE->set_pagetype('courseslist-index');
 $PAGE->blocks->add_region('content');
@@ -58,6 +62,9 @@ $PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
 
 // Add custom CSS for courses list
 $PAGE->requires->css('/theme/remui_kids/style/courses.css');
+
+// Add custom JavaScript for courses list
+$PAGE->requires->js('/theme/remui_kids/js/courses.js');
 
 echo $OUTPUT->header();
 
@@ -82,13 +89,6 @@ try {
         ORDER BY c.fullname ASC
     ");
     
-    // Debug: Log course data
-    error_log("=== COURSE DATA DEBUG ===");
-    foreach ($courses as $course) {
-        error_log("Course ID: {$course->id}, Name: {$course->fullname}");
-        error_log("Course fields: " . print_r(array_keys((array)$course), true));
-    }
-    
     // Process courses to add image URLs
     foreach ($courses as $course) {
         $course->courseimage = null; // Initialize as null
@@ -96,9 +96,6 @@ try {
         // Get course context for file URL
         $coursecontext = context_course::instance($course->id);
         $fs = get_file_storage();
-        
-        // Debug: Log all files in course context
-        error_log("=== DEBUGGING COURSE {$course->id} ({$course->fullname}) ===");
         
         // Check all possible file areas for course images
         $file_areas = [
@@ -111,83 +108,97 @@ try {
         ];
         
         foreach ($file_areas as $area => $description) {
-            error_log("Checking {$description} ({$area})...");
             $files = $fs->get_area_files($coursecontext->id, 'course', $area, 0, 'id DESC', false);
-            error_log("Found " . count($files) . " files in {$area}");
             
             if (!empty($files)) {
                 foreach ($files as $file) {
                     if ($file && $file->get_filesize() > 0) {
                         $filename = $file->get_filename();
-                        $filesize = $file->get_filesize();
-                        error_log("File: {$filename} (Size: {$filesize} bytes)");
                         
                         // Check if it's an image file
                         $image_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
                         $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
                         
                         if (in_array($extension, $image_extensions)) {
-                            $image_url = moodle_url::make_pluginfile_url(
-                                $file->get_contextid(),
-                                $file->get_component(),
-                                $file->get_filearea(),
-                                $file->get_itemid(),
-                                $file->get_filepath(),
-                                $file->get_filename()
-                            )->out();
+                            // Try multiple URL generation methods
+                            $image_url = null;
                             
-                            error_log("Found image: {$filename} -> {$image_url}");
-                            $course->courseimage = $image_url;
-                            break 2; // Found an image, stop looking in all areas
+                            // Method 1: Standard pluginfile URL
+                            try {
+                                $image_url = moodle_url::make_pluginfile_url(
+                                    $file->get_contextid(),
+                                    $file->get_component(),
+                                    $file->get_filearea(),
+                                    $file->get_itemid(),
+                                    $file->get_filepath(),
+                                    $file->get_filename(),
+                                    false
+                                )->out();
+                                
+                                // Test if URL is accessible
+                                $headers = @get_headers($image_url);
+                                if (!$headers || strpos($headers[0], '200') === false) {
+                                    $image_url = null; // URL not accessible, try alternative
+                                }
+                            } catch (Exception $e) {
+                                $image_url = null;
+                            }
+                            
+                            // Method 2: Alternative URL generation
+                            if (empty($image_url)) {
+                                try {
+                                    $filepath = $file->get_filepath();
+                                    $itemid = $file->get_itemid();
+                                    $contextid = $file->get_contextid();
+                                    
+                                    // Build URL manually
+                                    $image_url = $CFG->wwwroot . '/pluginfile.php/' . 
+                                               $contextid . '/course/overviewfiles/' . 
+                                               $itemid . $filepath . $filename;
+                                    
+                                    // Test if this URL is accessible
+                                    $headers = @get_headers($image_url);
+                                    if (!$headers || strpos($headers[0], '200') === false) {
+                                        $image_url = null; // Still not accessible
+                                    }
+                                } catch (Exception $e) {
+                                    $image_url = null;
+                                }
+                            }
+                            
+                            // Method 3: Direct file access
+                            if (empty($image_url)) {
+                                try {
+                                    // Get the actual file path
+                                    $filepath = $file->get_filepath();
+                                    $itemid = $file->get_itemid();
+                                    
+                                    // Try to get the file content directly
+                                    $filecontent = $file->get_content();
+                                    if (!empty($filecontent)) {
+                                        // Create a data URL for the image
+                                        $mimetype = $file->get_mimetype();
+                                        $image_url = 'data:' . $mimetype . ';base64,' . base64_encode($filecontent);
+                                    }
+                                } catch (Exception $e) {
+                                    $image_url = null;
+                                }
+                            }
+                            
+                            if (!empty($image_url)) {
+                                $course->courseimage = $image_url;
+                                break 2; // Found an image, stop looking in all areas
+                            }
                         }
                     }
                 }
             }
         }
         
-        // Also check if course has a course image field in the database
-        if (empty($course->courseimage) && !empty($course->courseimage)) {
-            error_log("Course has courseimage field: {$course->courseimage}");
-            // This might be a direct URL or file path
-            if (filter_var($course->courseimage, FILTER_VALIDATE_URL)) {
-                $course->courseimage = $course->courseimage;
-            }
-        }
-        
-        // Check for course image in course settings/configuration
+        // If no image found, try alternative method
         if (empty($course->courseimage)) {
-            // Try to get course image from course settings
-            $course_image_setting = get_config('core', 'courseimage');
-            if (!empty($course_image_setting)) {
-                error_log("Found course image setting: {$course_image_setting}");
-                $course->courseimage = $course_image_setting;
-            }
+            $course->courseimage = get_course_image_alternative($course->id, $fs, $coursecontext);
         }
-        
-        // Debug: Log course image status (remove in production)
-        if (empty($course->courseimage)) {
-            error_log("Course {$course->id} ({$course->fullname}) has no image");
-        } else {
-            error_log("Course {$course->id} ({$course->fullname}) has image: {$course->courseimage}");
-        }
-        
-        // Additional debugging: Check if the image URL is accessible
-        if (!empty($course->courseimage)) {
-            // Try to access the image URL with a simple check
-            $headers = @get_headers($course->courseimage);
-            if (!$headers || strpos($headers[0], '200') === false) {
-                error_log("Course {$course->id} image URL not accessible: {$course->courseimage}");
-                error_log("Headers response: " . print_r($headers, true));
-                
-                // Don't set to null - keep the URL and let the browser handle it
-                // The issue might be with the URL generation, but the file exists
-                error_log("Keeping image URL despite accessibility check failure");
-            } else {
-                error_log("Course {$course->id} image URL is accessible: {$course->courseimage}");
-            }
-        }
-        
-        // Remove debug info - no longer needed
     }
     
     $coursesdata->courses = array_values($courses);
@@ -202,6 +213,9 @@ try {
 $coursesdata->wwwroot = $CFG->wwwroot;
 $coursesdata->sesskey = sesskey();
 
+// Pass wwwroot to JavaScript
+echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
+
 // Render courses list
 echo $OUTPUT->render_from_template('theme_remui_kids/courses_list', $coursesdata);
 
@@ -213,4 +227,50 @@ echo $OUTPUT->footer();
 $eventparams = array('context' => $context);
 $event = \core\event\course_viewed::create($eventparams);
 $event->trigger();
+
+/**
+ * Alternative method to get course image URL
+ */
+function get_course_image_alternative($courseid, $fs, $coursecontext) {
+    global $CFG;
+    
+    // Try to get files from overviewfiles area
+    $files = $fs->get_area_files($coursecontext->id, 'course', 'overviewfiles', 0, 'id DESC', false);
+    
+    foreach ($files as $file) {
+        if ($file && $file->get_filesize() > 0) {
+            $filename = $file->get_filename();
+            $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            $image_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+            
+            if (in_array($extension, $image_extensions)) {
+                // Try to get the file content directly and create a data URL
+                try {
+                    $filecontent = $file->get_content();
+                    if (!empty($filecontent)) {
+                        $mimetype = $file->get_mimetype();
+                        return 'data:' . $mimetype . ';base64,' . base64_encode($filecontent);
+                    }
+                } catch (Exception $e) {
+                    // If data URL fails, try direct file access
+                    try {
+                        $filepath = $file->get_filepath();
+                        $itemid = $file->get_itemid();
+                        
+                        // Generate URL using a different approach
+                        $url = $CFG->wwwroot . '/pluginfile.php/' . 
+                               $coursecontext->id . '/course/overviewfiles/' . 
+                               $itemid . $filepath . $filename;
+                        
+                        return $url;
+                    } catch (Exception $e2) {
+                        continue; // Try next file
+                    }
+                }
+            }
+        }
+    }
+    
+    return null;
+}
 ?>

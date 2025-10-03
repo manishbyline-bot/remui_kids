@@ -48,6 +48,9 @@ $PAGE->add_body_classes(['page-mycoursesprogram', 'fullwidth-layout']);
 $PAGE->set_pagelayout('mycourses');
 $PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
+
 $PAGE->set_pagetype('coursesprogram-index');
 $PAGE->blocks->add_region('content');
 $PAGE->set_title('Courses & Programs - Riyada Trainings');
@@ -58,6 +61,9 @@ $PAGE->theme->addblockposition = BLOCK_ADDBLOCK_POSITION_CUSTOM;
 
 // Add custom CSS for courses dashboard
 $PAGE->requires->css('/theme/remui_kids/style/schools.css');
+
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
 
 echo $OUTPUT->header();
 

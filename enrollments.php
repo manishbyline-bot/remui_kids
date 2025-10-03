@@ -20,6 +20,9 @@ if ($hassiteconfig && moodle_needs_upgrading()) {
 
 $context = context_system::instance();
 
+// Get context parameter to determine where the user came from
+$source = optional_param('source', 'enrollments', PARAM_TEXT);
+
 // Set up the page exactly like schools.php
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/enrollments.php');
@@ -40,6 +43,9 @@ $PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 
 // Include JavaScript file
 $PAGE->requires->js('/theme/remui_kids/js/enrollments.js');
+
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
 
 
 // Handle AJAX request for filtered enrollment data
@@ -1202,8 +1208,14 @@ echo $OUTPUT->header();
                 <h1 class="header-title">Enrollments Management</h1>
                 <p class="header-subtitle">Manage user enrollments and course assignments</p>
             </div>
-            <a href="<?php echo $CFG->wwwroot; ?>/theme/remui_kids/courses_program.php" class="back-btn" title="Go back to Courses & Programs">
-                ← Back to Courses & Programs
+            <?php
+            // Back button for enrollments page - always goes to admin dashboard
+            $back_url = $CFG->wwwroot . '/theme/remui_kids/admin_dashboard.php';
+            $back_title = 'Go back to Admin Dashboard';
+            $back_text = '← Back to Admin Dashboard';
+            ?>
+            <a href="<?php echo $back_url; ?>" class="back-btn" title="<?php echo $back_title; ?>">
+                <?php echo $back_text; ?>
             </a>
         </div>
     </div>

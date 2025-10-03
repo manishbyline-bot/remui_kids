@@ -147,6 +147,9 @@ echo $OUTPUT->header();
 
 // Add department managers JavaScript
 $PAGE->requires->js('/theme/remui_kids/js/department_managers.js');
+
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
 ?>
 
 <style>

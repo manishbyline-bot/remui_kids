@@ -40,6 +40,9 @@ $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/suspended_schools.php');
 $PAGE->add_body_classes(['fullwidth-layout', 'page-mysuspendedschools']);
 $PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
+
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
 $PAGE->set_pagelayout('mycourses');
 
 $PAGE->set_pagetype('suspendedschools-index');

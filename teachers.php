@@ -39,6 +39,9 @@ $PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 
 $PAGE->requires->js('/theme/remui_kids/js/teachers.js', true);
 
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
+
 echo $OUTPUT->header();
 ?>
 
@@ -444,6 +447,270 @@ echo $OUTPUT->header();
         font-size: 18px;
     }
 }
+
+/* Teacher Profile Modal Styles */
+.teacher-profile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.teacher-profile-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.teacher-profile-content {
+    position: relative;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    max-width: 350px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.teacher-profile-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.teacher-profile-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.teacher-profile-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.teacher-profile-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.teacher-profile-body {
+    padding: 20px;
+}
+
+.teacher-profile-image {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.teacher-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.teacher-avatar i {
+    font-size: 2rem;
+    color: white;
+}
+
+.teacher-profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-section h3 {
+    color: #2c3e50;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e9ecef;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+}
+
+.info-item label {
+    font-weight: 600;
+    color: #6c757d;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 70px;
+    flex-shrink: 0;
+}
+
+.info-item span {
+    color: #2c3e50;
+    font-size: 0.85rem;
+    font-weight: 500;
+    flex: 1;
+}
+
+.teacher-profile-footer {
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border-radius: 0 0 15px 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+}
+
+/* Responsive Design for Modal */
+@media (max-width: 768px) {
+    .teacher-profile-modal {
+        padding: 10px;
+    }
+    
+    .teacher-profile-content {
+        max-width: 100%;
+        border-radius: 12px;
+    }
+    
+    .teacher-profile-header {
+        padding: 12px 15px;
+        border-radius: 12px 12px 0 0;
+    }
+    
+    .teacher-profile-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .teacher-profile-body {
+        padding: 15px;
+    }
+    
+    .teacher-avatar {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .teacher-avatar i {
+        font-size: 1.8rem;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+    }
+    
+    .info-item label {
+        min-width: auto;
+        font-size: 0.7rem;
+    }
+    
+    .info-item span {
+        font-size: 0.8rem;
+    }
+    
+    .teacher-profile-footer {
+        padding: 10px 15px;
+        flex-direction: column;
+        border-radius: 0 0 12px 12px;
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.75rem;
+    }
+}
 </style>
 
 <div class="teachers-container">
@@ -576,7 +843,7 @@ echo $OUTPUT->header();
                                     $institution = $teacher->institution ? $teacher->institution : 'N/A';
                                     $department = $teacher->department ? $teacher->department : 'N/A';
                                     
-                                    echo '<tr class="teacher-row" data-status="' . strtolower($status) . '">';
+                                    echo '<tr class="teacher-row" data-status="' . strtolower($status) . '" data-teacher-id="' . $teacher->id . '" onclick="showTeacherProfile(' . $teacher->id . ', \'' . htmlspecialchars($teacher->firstname . ' ' . $teacher->lastname) . '\', \'' . htmlspecialchars($teacher->email) . '\', \'' . htmlspecialchars($teacher->username) . '\', \'' . $phone . '\', \'' . htmlspecialchars($institution) . '\', \'' . htmlspecialchars($department) . '\', \'' . $last_access . '\', \'' . $status . '\')" style="cursor: pointer;">';
                                     
                                     // Teacher Info
                                     echo '<td>';
@@ -603,7 +870,7 @@ echo $OUTPUT->header();
                                     
                                     // Actions
                                     echo '<td>';
-                                    echo '<div class="action-icons">';
+                                    echo '<div class="action-icons" onclick="event.stopPropagation();">';
                                     echo '<a href="' . $CFG->wwwroot . '/theme/remui_kids/teacher_view.php?id=' . $teacher->id . '" class="action-icon view-icon" title="View Details">👁</a>';
                                     echo '<a href="teacher_edit.php?id=' . $teacher->id . '" class="action-icon edit-icon" title="Edit Teacher">✏</a>';
                                     echo '<a href="teacher_suspend.php?id=' . $teacher->id . '" class="action-icon suspend-icon" title="Manage Status">⏸</a>';
@@ -623,6 +890,72 @@ echo $OUTPUT->header();
         
         <div style="text-align: center;">
             <a href="../../my/" class="back-button">← Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<!-- Teacher Profile Modal -->
+<div id="teacherProfileModal" class="teacher-profile-modal" style="display: none;">
+    <div class="teacher-profile-overlay" onclick="closeTeacherProfile()"></div>
+    <div class="teacher-profile-content">
+        <div class="teacher-profile-header">
+            <h2 id="teacherProfileName">Teacher Profile</h2>
+            <button class="teacher-profile-close" onclick="closeTeacherProfile()">&times;</button>
+        </div>
+        <div class="teacher-profile-body">
+            <div class="teacher-profile-image">
+                <div class="teacher-avatar">
+                    <i class="fa fa-user"></i>
+                </div>
+            </div>
+            <div class="teacher-profile-info">
+                <div class="profile-section">
+                    <h3>Personal Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Full Name:</label>
+                            <span id="profileFullName">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Username:</label>
+                            <span id="profileUsername">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Email:</label>
+                            <span id="profileEmail">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Phone:</label>
+                            <span id="profilePhone">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-section">
+                    <h3>Institution Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Institution:</label>
+                            <span id="profileInstitution">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Department:</label>
+                            <span id="profileDepartment">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Last Access:</label>
+                            <span id="profileLastAccess">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Status:</label>
+                            <span id="profileStatus" class="status-badge">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="teacher-profile-footer">
+            <button class="btn btn-primary" onclick="editTeacher()">Edit Teacher</button>
+            <button class="btn btn-secondary" onclick="closeTeacherProfile()">Close</button>
         </div>
     </div>
 </div>
@@ -729,6 +1062,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } catch (error) {
         console.log('Error setting up button hover effects:', error);
+    }
+});
+
+// Teacher Profile Modal Functions
+let currentTeacherId = null;
+
+function showTeacherProfile(id, fullName, email, username, phone, institution, department, lastAccess, status) {
+    currentTeacherId = id;
+    
+    // Update modal content
+    document.getElementById('teacherProfileName').textContent = fullName + ' - Profile';
+    document.getElementById('profileFullName').textContent = fullName;
+    document.getElementById('profileUsername').textContent = '@' + username;
+    document.getElementById('profileEmail').textContent = email;
+    document.getElementById('profilePhone').textContent = phone;
+    document.getElementById('profileInstitution').textContent = institution;
+    document.getElementById('profileDepartment').textContent = department;
+    document.getElementById('profileLastAccess').textContent = lastAccess;
+    
+    // Update status badge
+    const statusElement = document.getElementById('profileStatus');
+    statusElement.textContent = status;
+    statusElement.className = 'status-badge ' + (status === 'Active' ? 'status-active' : 'status-suspended');
+    
+    // Show modal
+    document.getElementById('teacherProfileModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeTeacherProfile() {
+    document.getElementById('teacherProfileModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    currentTeacherId = null;
+}
+
+function editTeacher() {
+    if (currentTeacherId) {
+        window.location.href = 'teacher_edit.php?id=' + currentTeacherId;
+    }
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeTeacherProfile();
     }
 });
 </script>

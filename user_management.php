@@ -181,6 +181,9 @@ echo $OUTPUT->header();
 // Add user management JavaScript
 $PAGE->requires->js('/theme/remui_kids/js/user_management.js');
 
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
+
 // Pass wwwroot to JavaScript
 echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
 ?>
@@ -468,16 +471,16 @@ echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
 }
 
 .action-btn {
-    display: flex;
+    display: flex !important;
     flex-direction: row;
     align-items: center;
     padding: 12px 20px;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
+    cursor: pointer !important;
     transition: all 0.3s ease;
     text-decoration: none !important;
-    color: #333;
+    color: #333 !important;
     font-weight: 500;
     text-align: left;
     min-height: 45px;
@@ -486,12 +489,16 @@ echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
     gap: 12px;
     background: white;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 10;
+    pointer-events: auto !important;
 }
 
 .action-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0,0,0,0.15);
     text-decoration: none !important;
+    color: #333 !important;
 }
 
 .action-btn.create:hover {
@@ -1282,28 +1289,40 @@ echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
     <div class="quick-actions">
         <h3>Quick Actions</h3>
         <div class="actions-grid">
-            <a href="#" class="action-btn create">
+            <a href="<?php echo $CFG->wwwroot; ?>/blocks/iomad_company_admin/company_user_create_form.php" 
+               class="action-btn create" 
+               onclick="console.log('Create New User clicked'); window.location.href=this.href; return false;"
+               style="text-decoration: none !important; cursor: pointer !important; display: block !important;">
                 <div class="action-icon">👤</div>
                 <div class="action-text">
                     <span>Create New User</span>
                     <small>Click to access</small>
                 </div>
             </a>
-            <a href="#" class="action-btn upload">
+            <a href="<?php echo $CFG->wwwroot; ?>/admin/tool/uploaduser/index.php" 
+               class="action-btn upload" 
+               onclick="console.log('Bulk Upload clicked'); window.location.href=this.href; return false;"
+               style="text-decoration: none !important; cursor: pointer !important; display: block !important;">
                 <div class="action-icon">📤</div>
                 <div class="action-text">
                     <span>Bulk Upload</span>
                     <small>Click to access</small>
                 </div>
             </a>
-            <a href="#" class="action-btn export">
+            <a href="<?php echo $CFG->wwwroot; ?>/admin/user.php" 
+               class="action-btn export" 
+               onclick="console.log('Export Users clicked'); window.location.href=this.href; return false;"
+               style="text-decoration: none !important; cursor: pointer !important; display: block !important;">
                 <div class="action-icon">📥</div>
                 <div class="action-text">
                     <span>Export Users</span>
                     <small>Click to access</small>
                 </div>
             </a>
-            <a href="#" class="action-btn approve">
+            <a href="<?php echo $CFG->wwwroot; ?>/blocks/iomad_approve_access/approve.php" 
+               class="action-btn approve" 
+               onclick="console.log('Approve Events clicked'); window.location.href=this.href; return false;"
+               style="text-decoration: none !important; cursor: pointer !important; display: block !important;">
                 <div class="action-icon">✓</div>
                 <div class="action-text">
                     <span>Approve Events</span>
@@ -1495,6 +1514,20 @@ document.addEventListener('DOMContentLoaded', function() {
     if (refreshBtn) {
         refreshBtn.style.display = 'none';
     }
+    
+    // Add click event listeners to Quick Action buttons for debugging
+    const actionButtons = document.querySelectorAll('.action-btn');
+    actionButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            console.log('Action button clicked:', this.href);
+            // Force navigation using window.location
+            e.preventDefault();
+            window.location.href = this.href;
+            return false;
+        });
+    });
+    
+    console.log('User Management page loaded - Quick Action buttons ready');
 });
 
 // Mobile sidebar functionality - using vanilla JavaScript to avoid conflicts

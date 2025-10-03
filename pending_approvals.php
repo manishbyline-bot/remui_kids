@@ -78,6 +78,9 @@ echo $OUTPUT->header();
 
 // Add pending approvals JavaScript
 $PAGE->requires->js('/theme/remui_kids/js/pending_approvals.js');
+
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
 ?>
 
 <style>
