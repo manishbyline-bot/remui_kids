@@ -179,7 +179,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
     max-width: 100%;
     width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 0 20px;
     min-height: 100vh;
 }
 
@@ -896,7 +896,7 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
 
 @media (max-width: 768px) {
     .user-details-container {
-        padding: 0;
+        padding: 0 15px;
     }
     
     .header-section {

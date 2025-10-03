@@ -4,15 +4,124 @@
  * @package theme_remui_kids
  */
 
-/* ========== CRITICAL FIXES ========== */
+.iomad-admin-dashboard {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #f5f7fa;
+    min-height: 100vh;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* CRITICAL FIX - Remove body margin for admin dashboard */
 body#page-theme-remui_kids-admin_dashboard {
     margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     padding: 0 !important;
 }
 
-#region-main {
+/* Hide admin navigation tabs */
+.tertiary-navigation,
+.navbar-nav.tertiary-navigation,
+[data-region="admin-settings-navigation"],
+.settingsnavigation,
+.admin-menu,
+#adminsettings {
+    display: none !important;
+}
+
+/* Hide secondary navigation with admin tabs */
+.secondary-navigation,
+.edw-tabs-navigation {
+    display: none !important;
+}
+
+/* Hide page header if it contains admin tabs */
+.page-header-headings + .secondary-navigation {
+    display: none !important;
+}
+
+/* Remove ALL Moodle page margins and padding */
+#page,
+#page-wrapper,
+#page-content,
+#region-main-box,
+.container,
+.container-fluid,
+.row,
+[class*="col-"] {
     padding: 0 !important;
     margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* ZERO padding on region-main for admin dashboard */
+body:has(.iomad-admin-dashboard) #region-main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+}
+
+#region-main {
+    padding: 1rem 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+}
+
+/* Remove left/right padding from all dashboard sections */
+.iomad-admin-dashboard {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* NO horizontal padding for dashboard components - full edge to edge */
+.dashboard-header,
+.stats-row,
+.section-container,
+.analytics-grid,
+.management-grid,
+.quick-actions-grid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* ========== HEADER ========== */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 1rem 0;
+    background: white;
+    padding: 1.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-main-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 0.25rem 0;
+}
+
+.dashboard-subtitle {
+    font-size: 0.95rem;
+    color: #718096;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
 }
 
 .tertiary-navigation,
@@ -32,19 +141,19 @@ body#page-theme-remui_kids-admin_dashboard {
 .stats-grid-six {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 0.5rem;
+    margin: 0 0 1rem 0;
+    padding: 0;
 }
 
 .stat-card-modern {
     background: white;
-    border-radius: 8px;
-    border-left: 3px solid #e5e7eb;
-    padding: 1.25rem;
+    border-radius: 4px;
+    padding: 1rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    gap: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -102,9 +211,72 @@ body#page-theme-remui_kids-admin_dashboard {
 
 .stat-badge-small {
     display: inline-block;
-    padding: 0.25rem 0.625rem;
-    border-radius: 10px;
-    font-size: 0.7rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.stat-badge.success { background: #c6f6d5; color: #22543d; }
+.stat-badge.info { background: #bee3f8; color: #2c5282; }
+.stat-badge.warning { background: #feebc8; color: #744210; }
+.stat-badge.purple { background: #e9d8fd; color: #44337a; }
+.stat-badge.danger { background: #fed7d7; color: #742a2a; }
+
+/* ========== SECTION CONTAINER ========== */
+.section-container {
+    background: white;
+    border-radius: 0;
+    padding: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin: 0 0 1rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+}
+
+.view-all-link {
+    color: #4299e1;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.view-all-link:hover {
+    color: #3182ce;
+    text-decoration: underline;
+}
+
+/* ========== ROLE BREAKDOWN TABLE ========== */
+.role-breakdown-table {
+    overflow-x: auto;
+}
+
+.role-breakdown-table .table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.role-breakdown-table th {
+    background: #f7fafc;
+    padding: 1rem;
+    text-align: left;
     font-weight: 600;
 }
 
@@ -118,8 +290,9 @@ body#page-theme-remui_kids-admin_dashboard {
 .analytics-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
-    margin-bottom: 2rem;
+    gap: 0.5rem;
+    margin: 0 0 1rem 0;
+    padding: 0;
 }
 
 .analytics-card-iomad {
@@ -228,8 +401,9 @@ body#page-theme-remui_kids-admin_dashboard {
 .management-cards-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.25rem;
-    margin-bottom: 2rem;
+    gap: 0.5rem;
+    margin: 0 0 1rem 0;
+    padding: 0;
 }
 
 .management-card-iomad {

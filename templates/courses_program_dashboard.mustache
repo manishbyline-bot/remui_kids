@@ -1,0 +1,497 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_remui_kids/courses_program_dashboard
+
+    Courses & Programs dashboard cards
+
+    Context variables required for this template:
+    * totalcourses - Total number of courses
+    * categories - Number of categories
+    * totalenrollments - Total enrollments
+    * learningpaths - Number of learning paths
+
+    Example context (json):
+    {
+        "totalcourses": 7,
+        "categories": 11,
+        "totalenrollments": 79,
+        "learningpaths": 0
+    }
+}}
+
+<style>
+/* Inline CSS for Courses & Programs Dashboard */
+.dashboard-cards-container .summary-card {
+    border: none !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    transition: transform 0.2s ease-in-out !important;
+    overflow: hidden !important;
+    height: 120px !important;
+}
+
+.dashboard-cards-container .summary-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+.dashboard-cards-container .summary-card .card-body {
+    padding: 1rem 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+}
+
+.dashboard-cards-container .summary-card .summary-icon {
+    margin-right: 1rem !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    flex-shrink: 0 !important;
+}
+
+.dashboard-cards-container .summary-card .summary-icon i {
+    color: white !important;
+    font-size: 1.2rem !important;
+}
+
+.dashboard-cards-container .summary-card .summary-content .summary-number {
+    font-size: 2rem !important;
+    font-weight: bold !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    color: white !important;
+}
+
+.dashboard-cards-container .summary-card .summary-content .summary-label {
+    font-size: 0.85rem !important;
+    color: white !important;
+    margin: 0 !important;
+    margin-top: 0.25rem !important;
+    opacity: 0.95 !important;
+}
+
+/* Gradient colors for summary cards */
+.dashboard-cards-container .summary-card.total-courses {
+    background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%) !important;
+}
+
+.dashboard-cards-container .summary-card.categories {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%) !important;
+}
+
+.dashboard-cards-container .summary-card.total-enrollments {
+    background: linear-gradient(135deg, #673AB7 0%, #5E35B1 100%) !important;
+}
+
+.dashboard-cards-container .summary-card.learning-paths {
+    background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%) !important;
+}
+
+/* Force proper spacing between cards - VERY SPECIFIC - FULL WIDTH */
+body .dashboard-cards-container {
+    padding: 30px 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+body .dashboard-cards-container .row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    margin-left: -20px !important;
+    margin-right: -20px !important;
+    margin-bottom: 0 !important;
+    gap: 0 !important;
+}
+
+body .dashboard-cards-container .col-lg-3,
+body .dashboard-cards-container .col-md-6,
+body .dashboard-cards-container .col-sm-12,
+body .dashboard-cards-container [class*="col-"] {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    margin-bottom: 40px !important;
+    display: flex !important;
+    box-sizing: border-box !important;
+}
+
+/* Make card links fill the column */
+body .dashboard-cards-container .card-link {
+    width: 100% !important;
+    display: flex !important;
+    flex: 1 !important;
+}
+
+/* Summary and Management Cards fill container */
+body .dashboard-cards-container .management-card,
+body .dashboard-cards-container .summary-card {
+    width: 100% !important;
+    margin: 0 !important;
+    flex: 1 !important;
+}
+
+body .dashboard-cards-container .summary-card {
+    height: 120px !important;
+}
+
+.dashboard-cards-container .management-card {
+    border: 1px solid #e9ecef !important;
+    border-radius: 12px !important;
+    transition: all 0.3s ease !important;
+    background: white !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    min-height: 220px !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.dashboard-cards-container .management-card:hover {
+    border: 2px solid #007bff !important;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15) !important;
+    transform: translateY(-2px) !important;
+}
+
+.dashboard-cards-container .card-link {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: block !important;
+    height: 100% !important;
+}
+
+.dashboard-cards-container .card-link:hover {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.dashboard-cards-container .management-card .card-body {
+    padding: 1.5rem !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+.dashboard-cards-container .management-icon {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #17a2b8, #138496) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 1rem !important;
+    color: white !important;
+    font-size: 1.2rem !important;
+}
+
+.dashboard-cards-container .management-card .card-title {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #2c3e50 !important;
+    margin-bottom: 0.5rem !important;
+    line-height: 1.3 !important;
+}
+
+.dashboard-cards-container .management-card .card-subtitle {
+    font-size: 0.85rem !important;
+    color: #6c757d !important;
+    margin-bottom: 0.75rem !important;
+    font-weight: 500 !important;
+}
+
+.dashboard-cards-container .management-card .card-text {
+    font-size: 0.8rem !important;
+    color: #6c757d !important;
+    line-height: 1.4 !important;
+    margin-bottom: 1rem !important;
+    flex-grow: 1 !important;
+}
+
+.dashboard-cards-container .card-footer-info {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-top: auto !important;
+}
+
+.dashboard-cards-container .card-availability {
+    font-size: 0.75rem !important;
+    color: #6c757d !important;
+    font-weight: 600 !important;
+}
+
+.dashboard-cards-container .card-action-icon {
+    width: 28px !important;
+    height: 28px !important;
+    background: #007bff !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    font-size: 0.8rem !important;
+    font-weight: bold !important;
+}
+</style>
+
+<div class="dashboard-cards-container mb-5" style="max-width: 100%; margin: 0; padding: 30px 0;">
+    <div class="row">
+        <!-- Summary Cards -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card summary-card total-courses">
+                <div class="card-body d-flex align-items-center">
+                    <div class="summary-icon">
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <div class="summary-content">
+                        <h3 class="summary-number">{{totalcourses}}</h3>
+                        <p class="summary-label">Total Courses</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
+            <div class="card summary-card categories">
+                <div class="card-body d-flex align-items-center">
+                    <div class="summary-icon">
+                        <i class="fa fa-folder"></i>
+                    </div>
+                    <div class="summary-content">
+                        <h3 class="summary-number">{{categories}}</h3>
+                        <p class="summary-label">Categories</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
+            <div class="card summary-card total-enrollments">
+                <div class="card-body d-flex align-items-center">
+                    <div class="summary-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <div class="summary-content">
+                        <h3 class="summary-number">{{totalenrollments}}</h3>
+                        <p class="summary-label">Total Enrollments</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
+            <div class="card summary-card learning-paths">
+                <div class="card-body d-flex align-items-center">
+                    <div class="summary-icon">
+                        <i class="fa fa-link"></i>
+                    </div>
+                    <div class="summary-content">
+                        <h3 class="summary-number">{{learningpaths}}</h3>
+                        <p class="summary-label">Learning Paths</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Management Tool Cards - Row 1 -->
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <a href="{{{wwwroot}}}/course/edit.php?category=0" class="card-link">
+                <div class="card management-card">
+                    <div class="card-body">
+                        <div class="management-icon">
+                            <i class="fa fa-plus"></i>
+                        </div>
+                        <h5 class="card-title">Create Course / Category</h5>
+                        <p class="card-subtitle">Course Management</p>
+                        <p class="card-text">Add new courses and organize them into categories.</p>
+                        <div class="card-footer-info">
+                            <span class="card-availability">{{categories}} Available</span>
+                            <div class="card-action-icon">→</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
+            <a href="{{{wwwroot}}}/enrol/users.php" class="card-link">
+                <div class="card management-card">
+                    <div class="card-body">
+                        <div class="management-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <h5 class="card-title">User Enrolments</h5>
+                        <p class="card-subtitle">Enrollment Management</p>
+                        <p class="card-text">Manage student enrollments and track progress.</p>
+                        <div class="card-footer-info">
+                            <span class="card-availability">{{totalenrollments}} Available</span>
+                            <div class="card-action-icon">→</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
+            <a href="{{{wwwroot}}}/course/view.php" class="card-link">
+                <div class="card management-card">
+                    <div class="card-body">
+                        <div class="management-icon">
+                            <i class="fa fa-cogs"></i>
+                        </div>
+                        <h5 class="card-title">Manage Course Content</h5>
+                        <p class="card-subtitle">Enrollment Management</p>
+                        <p class="card-text">Manage Course Content Add Activities, Quiz, Etc...</p>
+                        <div class="card-footer-info">
+                            <span class="card-availability">{{totalcourses}} Available</span>
+                            <div class="card-action-icon">→</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
+            <a href="{{{wwwroot}}}/blocks/iomad_company_admin/company_courses_form.php" class="card-link">
+                <div class="card management-card">
+                    <div class="card-body">
+                        <div class="management-icon">
+                            <i class="fa fa-sliders"></i>
+                        </div>
+                        <h5 class="card-title">Manage IOMAD Course Settings</h5>
+                        <p class="card-subtitle">Course Configuration</p>
+                        <p class="card-text">Configure advanced course settings and parameters.</p>
+                        <div class="card-footer-info">
+                            <span class="card-availability">Available Available</span>
+                            <div class="card-action-icon">→</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Management Tool Cards - Row 2 -->
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <a href="{{{wwwroot}}}/blocks/iomad_company_admin/company_courses_form.php" class="card-link">
+                <div class="card management-card">
+                    <div class="card-body">
+                        <div class="management-icon">
+                            <i class="fa fa-building"></i>
+                        </div>
+                        <h5 class="card-title">Assign to School</h5>
+                        <p class="card-subtitle">School Assignment</p>
+                        <p class="card-text">Assign courses to specific schools and institutions.</p>
+                        <div class="card-footer-info">
+                            <span class="card-availability">Available Available</span>
+                            <div class="card-action-icon">→</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
+            <a href="{{{wwwroot}}}/group/index.php" class="card-link">
+                <div class="card management-card">
+                    <div class="card-body">
+                        <div class="management-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <h5 class="card-title">Manage School Groups</h5>
+                        <p class="card-subtitle">Group Management</p>
+                        <p class="card-text">Create and manage groups within schools.</p>
+                        <div class="card-footer-info">
+                            <span class="card-availability">Available Available</span>
+                            <div class="card-action-icon">→</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
+            <a href="{{{wwwroot}}}/group/assign.php" class="card-link">
+                <div class="card management-card">
+                    <div class="card-body">
+                        <div class="management-icon">
+                            <i class="fa fa-layer-group"></i>
+                        </div>
+                        <h5 class="card-title">Assign Course Groups</h5>
+                        <p class="card-subtitle">Group Assignment</p>
+                        <p class="card-text">Assign courses to specific user groups.</p>
+                        <div class="card-footer-info">
+                            <span class="card-availability">Available Available</span>
+                            <div class="card-action-icon">→</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
+            <a href="{{{wwwroot}}}/blocks/iomad_company_admin/classroom_list.php" class="card-link">
+                <div class="card management-card">
+                    <div class="card-body">
+                        <div class="management-icon">
+                            <i class="fa fa-map-marker-alt"></i>
+                        </div>
+                        <h5 class="card-title">Teaching Locations</h5>
+                        <p class="card-subtitle">Location Management</p>
+                        <p class="card-text">Manage physical and virtual teaching locations.</p>
+                        <div class="card-footer-info">
+                            <span class="card-availability">Available Available</span>
+                            <div class="card-action-icon">→</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Management Tool Cards - Row 3 -->
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <a href="{{{wwwroot}}}/local/iomad_learningpath/path_list.php" class="card-link">
+                <div class="card management-card">
+                    <div class="card-body">
+                        <div class="management-icon">
+                            <i class="fa fa-route"></i>
+                        </div>
+                        <h5 class="card-title">Learning Paths</h5>
+                        <p class="card-subtitle">Path Management</p>
+                        <p class="card-text">Create structured learning journeys and pathways.</p>
+                        <div class="card-footer-info">
+                            <span class="card-availability">{{learningpaths}} Available</span>
+                            <div class="card-action-icon">→</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+

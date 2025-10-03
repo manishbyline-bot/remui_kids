@@ -46,7 +46,7 @@ body[id*="page-theme-remui_kids"] {
 
 /* Exception: Only add minimal padding to region-main for content */
 #region-main {
-    padding: 0 !important;
+    padding: 0 20px !important;
     margin: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
@@ -182,10 +182,12 @@ body.admin-user[class*="reportbuilder"] #region-main {
     padding: 1rem 0 !important;
 }
 
-/* Reportbuilder with admin sidebar */
-body.admin-user[class*="reportbuilder"] #page-wrapper {
-    margin-left: 280px !important;
-    padding: 0 !important;
+/* But keep the page-wrapper margin for sidebar space - increased for wider sidebar */
+body.admin-user #page-wrapper {
+    margin-left: 320px !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 /* Reportbuilder content should have minimal horizontal padding */
@@ -211,53 +213,58 @@ body:not(.admin-user) #region-main {
 
 /* For ALL users - zero left/right padding on region-main */
 #region-main {
-    padding: 0 !important;
+    padding: 0 20px !important;
     margin: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
 }
 
-/* Make all custom page containers full-width with no side spacing */
+/* Make all custom page containers full-width with proper side padding */
 .enrollments-container,
 .teachers-container,
 .user-details-container,
 .schools-container {
     max-width: 100% !important;
     width: 100% !important;
-    padding: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-/* ========== SPECIFIC FIXES ========== */
-
-/* Remove padding from specific Moodle elements */
-.navbar-nav,
-.nav-tabs,
-.breadcrumb {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-/* Activity and course pages */
-#page-mod-assign-view #page,
-#page-mod-quiz-view #page,
-#page-course-view-topics #page {
+    padding: 0 20px !important;
     margin: 0 !important;
-    padding: 0 !important;
+}
+
+/* Constrain courses and schools dashboard card container width - WIDER */
+body.page-mycourses .dashboard-cards,
+body.page-myschools .dashboard-cards-container,
+body.page-mycoursesprogram .dashboard-cards-container,
+.dashboard-cards-container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20px 0 !important;
+}
+
+/* Ensure proper card spacing */
+body.page-mycourses .dashboard-cards .row,
+body.page-myschools .dashboard-cards-container .row {
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+}
+
+body.page-mycourses .dashboard-cards [class*="col-"],
+body.page-myschools .dashboard-cards-container [class*="col-"] {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-bottom: 30px !important;
 }
 
 /* ========== MOBILE RESPONSIVE ========== */
 
 @media (max-width: 768px) {
     #region-main {
-        padding: 0 !important;
+        padding: 0 15px !important;
     }
     
     .secondary-navigation {
-        padding: 0 !important;
-  }
-    /* Remove sidebar margin on mobile */
+        padding: 0 15px !important;
+    }
+    
     body.admin-user #page-wrapper {
         margin-left: 0 !important;
         width: 100% !important;
@@ -473,6 +480,14 @@ textarea,
     .teachers-container,
     .user-details-container,
     .schools-container {
-        padding: 0 !important;
+        padding: 0 15px !important;
+    }
+    
+    /* On mobile, dashboard containers use full width with padding */
+    body.page-mycourses .dashboard-cards,
+    body.page-myschools .dashboard-cards-container,
+    .dashboard-cards-container {
+        max-width: 100% !important;
+        padding: 15px !important;
     }
 }
