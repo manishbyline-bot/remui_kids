@@ -107,11 +107,14 @@
     background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%) !important;
 }
 
-/* Force proper spacing between cards - VERY SPECIFIC - FULL WIDTH */
+/* Force proper spacing between cards - CENTERED LAYOUT */
 body .dashboard-cards-container {
     padding: 30px 0 !important;
-    max-width: 100% !important;
-    margin: 0 !important;
+    max-width: calc(100% - 40px) !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important;
 }
 
 body .dashboard-cards-container .row {
@@ -257,31 +260,35 @@ body .dashboard-cards-container .summary-card {
     <div class="row">
         <!-- Summary Cards -->
         <div class="col-lg-3 col-md-6">
-            <div class="card summary-card total-courses">
-                <div class="card-body d-flex align-items-center">
-                    <div class="summary-icon">
-                        <i class="fa fa-book"></i>
-                    </div>
-                    <div class="summary-content">
-                        <h3 class="summary-number">{{totalcourses}}</h3>
-                        <p class="summary-label">Total Courses</p>
+            <a href="{{{wwwroot}}}/theme/remui_kids/courses_list.php" class="card-link">
+                <div class="card summary-card total-courses">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon">
+                            <i class="fa fa-book"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3 class="summary-number">{{totalcourses}}</h3>
+                            <p class="summary-label">Total Courses</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         
         <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
-            <div class="card summary-card categories">
-                <div class="card-body d-flex align-items-center">
-                    <div class="summary-icon">
-                        <i class="fa fa-folder"></i>
-                    </div>
-                    <div class="summary-content">
-                        <h3 class="summary-number">{{categories}}</h3>
-                        <p class="summary-label">Categories</p>
+            <a href="{{{wwwroot}}}/theme/remui_kids/categories_list.php" class="card-link">
+                <div class="card summary-card categories">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon">
+                            <i class="fa fa-folder"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3 class="summary-number">{{categories}}</h3>
+                            <p class="summary-label">Categories</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         
         <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
@@ -335,7 +342,7 @@ body .dashboard-cards-container .summary-card {
         </div>
         
         <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
-            <a href="{{{wwwroot}}}/enrol/users.php" class="card-link">
+            <a href="{{{wwwroot}}}/blocks/iomad_company_admin/company_course_users_form.php" class="card-link">
                 <div class="card management-card">
                     <div class="card-body">
                         <div class="management-icon">
@@ -354,7 +361,7 @@ body .dashboard-cards-container .summary-card {
         </div>
         
         <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
-            <a href="{{{wwwroot}}}/course/view.php" class="card-link">
+            <a href="{{{wwwroot}}}/course/management.php?categoryid=0" class="card-link">
                 <div class="card management-card">
                     <div class="card-body">
                         <div class="management-icon">
@@ -373,7 +380,7 @@ body .dashboard-cards-container .summary-card {
         </div>
         
         <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
-            <a href="{{{wwwroot}}}/blocks/iomad_company_admin/company_courses_form.php" class="card-link">
+            <a href="{{{wwwroot}}}/blocks/iomad_company_admin/iomad_courses_form.php" class="card-link">
                 <div class="card management-card">
                     <div class="card-body">
                         <div class="management-icon">
@@ -414,7 +421,7 @@ body .dashboard-cards-container .summary-card {
         </div>
         
         <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
-            <a href="{{{wwwroot}}}/group/index.php" class="card-link">
+            <a href="{{{wwwroot}}}/blocks/iomad_company_admin/company_groups_create_form.php" class="card-link">
                 <div class="card management-card">
                     <div class="card-body">
                         <div class="management-icon">
@@ -433,7 +440,7 @@ body .dashboard-cards-container .summary-card {
         </div>
         
         <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 15px; padding-right: 15px;">
-            <a href="{{{wwwroot}}}/group/assign.php" class="card-link">
+            <a href="{{{wwwroot}}}/blocks/iomad_company_admin/company_groups_users_form.php" class="card-link">
                 <div class="card management-card">
                     <div class="card-body">
                         <div class="management-icon">
@@ -474,7 +481,7 @@ body .dashboard-cards-container .summary-card {
     <!-- Management Tool Cards - Row 3 -->
     <div class="row">
         <div class="col-lg-3 col-md-6">
-            <a href="{{{wwwroot}}}/local/iomad_learningpath/path_list.php" class="card-link">
+            <a href="{{{wwwroot}}}/local/iomad_learningpath/manage.php" class="card-link">
                 <div class="card management-card">
                     <div class="card-body">
                         <div class="management-icon">

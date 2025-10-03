@@ -37,19 +37,19 @@ body[id*="page-theme-remui_kids"] {
 #page-content,
 #page-content .row,
 #region-main-box,
-#region-main,
 #region-main-settings-menu {
     margin: 0 !important;
     padding: 0 !important;
     max-width: 100% !important;
 }
 
-/* Exception: Only add minimal padding to region-main for content */
+/* MAIN CONTENT REGION - CENTERED WITH SIDEBAR SPACING */
 #region-main {
-    padding: 0 20px !important;
-    margin: 0 !important;
-    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    max-width: calc(100% - 40px) !important;
     width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 /* Force remove from all Bootstrap elements */
@@ -155,10 +155,12 @@ body.admin-user [class*="col-"] {
     padding-right: 0 !important;
 }
 
-/* Region main - ZERO left/right padding, only top/bottom */
+/* Admin users with sidebar - maintain centered content */
 body.admin-user #region-main {
-    margin: 0 !important;
-    padding: 1rem 0 !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    max-width: calc(100% - 40px) !important;
+    margin-left: 20px !important;
 }
 
 /* Specific fix for reportbuilder pages */
@@ -206,38 +208,34 @@ body:not(.admin-user) #page-content {
     padding: 0 !important;
 }
 
+/* Non-admin users - centered content */
 body:not(.admin-user) #region-main {
-    margin: 0 !important;
-    padding: 1rem 0 !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    max-width: calc(100% - 40px) !important;
 }
 
-/* For ALL users - zero left/right padding on region-main */
-#region-main {
-    padding: 0 20px !important;
-    margin: 0 !important;
-    max-width: 100% !important;
-    width: 100% !important;
-}
-
-/* Make all custom page containers full-width with proper side padding */
+/* Make all custom page containers centered with reduced width */
 .enrollments-container,
 .teachers-container,
 .user-details-container,
 .schools-container {
-    max-width: 100% !important;
+    max-width: calc(100% - 40px) !important;
     width: 100% !important;
-    padding: 0 20px !important;
-    margin: 0 !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
 }
 
-/* Constrain courses and schools dashboard card container width - WIDER */
+/* Constrain courses and schools dashboard card container width - CENTERED */
 body.page-mycourses .dashboard-cards,
 body.page-myschools .dashboard-cards-container,
 body.page-mycoursesprogram .dashboard-cards-container,
 .dashboard-cards-container {
-    max-width: 100% !important;
-    margin: 0 !important;
+    max-width: calc(100% - 40px) !important;
+    margin: 0 auto !important;
     padding: 20px 0 !important;
+    box-sizing: border-box !important;
 }
 
 /* Ensure proper card spacing */
@@ -258,7 +256,8 @@ body.page-myschools .dashboard-cards-container [class*="col-"] {
 
 @media (max-width: 768px) {
     #region-main {
-        padding: 0 15px !important;
+        padding: 15px !important;
+        max-width: calc(100% - 30px) !important;
     }
     
     .secondary-navigation {
@@ -269,11 +268,28 @@ body.page-myschools .dashboard-cards-container [class*="col-"] {
         margin-left: 0 !important;
         width: 100% !important;
     }
+    
+    .enrollments-container,
+    .teachers-container,
+    .user-details-container,
+    .schools-container {
+        max-width: calc(100% - 30px) !important;
+        padding: 0 !important;
+    }
 }
 
 @media (max-width: 576px) {
     #region-main {
-        padding: 0.5rem !important;
+        padding: 10px !important;
+        max-width: calc(100% - 20px) !important;
+    }
+    
+    .enrollments-container,
+    .teachers-container,
+    .user-details-container,
+    .schools-container {
+        max-width: calc(100% - 20px) !important;
+        padding: 0 !important;
     }
 }
 
@@ -388,6 +404,83 @@ body.fullwidth-layout [class*="col-"] {
     margin-bottom: 0.75rem !important;
 }
 
+/* ========== FORCE CONTENT CENTERING - ULTRA STRONG ========== */
+
+/* Force all main content to be centered with proper spacing - HIGHEST PRIORITY */
+body[id*="page-theme-remui_kids"] #region-main,
+body.page-myenrollments #region-main,
+body.page-myteachers #region-main,
+body.page-myschools #region-main,
+body.page-mycourses #region-main,
+body.fullwidth-layout #region-main {
+    margin: 0 auto !important;
+    padding: 20px !important;
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important;
+}
+
+/* Admin users with sidebar - maintain 20px left margin from sidebar */
+body.admin-user[id*="page-theme-remui_kids"] #region-main,
+body.admin-user.page-myenrollments #region-main,
+body.admin-user.page-myteachers #region-main,
+body.admin-user.page-myschools #region-main,
+body.admin-user.page-mycourses #region-main,
+body.admin-user.fullwidth-layout #region-main {
+    margin: 0 auto !important;
+    margin-left: 20px !important;
+    padding: 20px !important;
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important;
+}
+
+/* Force all page content containers to be centered */
+body[id*="page-theme-remui_kids"] #page-content,
+body.page-myenrollments #page-content,
+body.page-myteachers #page-content,
+body.page-myschools #page-content,
+body.page-mycourses #page-content,
+body.fullwidth-layout #page-content {
+    margin: 0 auto !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+/* Force all custom containers to be centered - ULTRA SPECIFIC */
+body[id*="page-theme-remui_kids"] .enrollments-container,
+body[id*="page-theme-remui_kids"] .teachers-container,
+body[id*="page-theme-remui_kids"] .user-details-container,
+body[id*="page-theme-remui_kids"] .schools-container,
+body[id*="page-theme-remui_kids"] .user-management-container,
+body[id*="page-theme-remui_kids"] .teacher-view-container,
+body[id*="page-theme-remui_kids"] .suspended-schools-container,
+body.page-myenrollments .enrollments-container,
+body.page-myteachers .teachers-container,
+body.page-myschools .schools-container,
+body.page-mycourses .enrollments-container,
+body.fullwidth-layout .enrollments-container,
+body.fullwidth-layout .teachers-container,
+body.fullwidth-layout .user-details-container,
+body.fullwidth-layout .schools-container,
+body.fullwidth-layout .user-management-container,
+body.fullwidth-layout .teacher-view-container,
+body.fullwidth-layout .suspended-schools-container {
+    margin: 0 auto !important;
+    padding: 0 !important;
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important;
+}
+
 /* ========== LAST RESORT - UNIVERSAL ========== */
 
 /* Nuclear option for any remaining spacing */
@@ -481,6 +574,7 @@ textarea,
     .user-details-container,
     .schools-container {
         padding: 0 15px !important;
+        max-width: 100% !important;
     }
     
     /* On mobile, dashboard containers use full width with padding */
@@ -490,4 +584,43 @@ textarea,
         max-width: 100% !important;
         padding: 15px !important;
     }
+}
+
+/* ========== FINAL OVERRIDE - FORCE CENTERING ========== */
+
+/* This is the final override to ensure content is centered */
+#region-main {
+    margin: 0 auto !important;
+    padding: 20px !important;
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+/* Admin users with sidebar */
+body.admin-user #region-main {
+    margin: 0 auto !important;
+    margin-left: 20px !important;
+    padding: 20px !important;
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+/* All custom containers */
+.enrollments-container,
+.teachers-container,
+.user-details-container,
+.schools-container,
+.user-management-container,
+.teacher-view-container,
+.suspended-schools-container {
+    margin: 0 auto !important;
+    padding: 0 !important;
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
 }

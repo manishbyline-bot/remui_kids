@@ -1,0 +1,693 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_remui_kids/categories_list
+
+    Categories list with card layout similar to enrollments
+
+    Context variables required for this template:
+    * categories - Array of category objects
+    * totalcategories - Total number of categories
+    * wwwroot - Moodle root URL
+    * sesskey - Session key for security
+
+    Example context (json):
+    {
+        "categories": [
+            {
+                "id": 1,
+                "name": "Category Name",
+                "description": "Category description",
+                "course_count": 5,
+                "child_count": 2
+            }
+        ],
+        "totalcategories": 11,
+        "wwwroot": "http://localhost/moodle",
+        "sesskey": "abc123"
+    }
+}}
+
+<style>
+/* Categories List Container - Centered Layout */
+.categories-list-container {
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    min-height: 100vh;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important;
+}
+
+/* Page Header */
+.categories-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.categories-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.categories-header p {
+    margin: 0.5rem 0 0 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Back Button */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.back-button i {
+    margin-right: 0.5rem;
+}
+
+/* Search Container */
+.search-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 1rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #007bff;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.clear-search-btn:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.search-results-info {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Categories Table */
+.categories-table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.categories-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.categories-table thead {
+    background: #f8f9fa;
+}
+
+.categories-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.categories-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f3f4;
+    vertical-align: middle;
+}
+
+.categories-table tbody tr:hover {
+    background: #f8f9fa;
+    transition: background-color 0.2s ease;
+}
+
+/* Category Info Column */
+.category-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.category-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.category-details h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    line-height: 1.3;
+}
+
+.category-details p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+/* Status Column */
+.category-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Course Count Column */
+.course-count {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: #e3f2fd;
+    color: #1976d2;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Subcategory Count Column */
+.subcategory-count {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: #e8f5e8;
+    color: #388e3c;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Actions Column */
+.category-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 0.4rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn i {
+    margin-right: 0.25rem;
+}
+
+.btn-view {
+    background: #007bff;
+    color: white;
+}
+
+.btn-view:hover {
+    background: #0056b3;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-edit {
+    background: #28a745;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #1e7e34;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c82333;
+    color: white;
+    text-decoration: none;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    margin: 0 0 1rem 0;
+    color: #495057;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .search-box {
+        max-width: none;
+    }
+    
+    .search-results-info {
+        text-align: center;
+    }
+    
+    .categories-table-container {
+        overflow-x: auto;
+    }
+    
+    .categories-table {
+        min-width: 500px;
+    }
+    
+    .categories-header h1 {
+        font-size: 2rem;
+    }
+    
+    .category-actions {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .action-btn {
+        padding: 0.3rem;
+        font-size: 0.7rem;
+    }
+}
+
+/* Loading Animation */
+.categories-table tbody tr.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.categories-table tbody tr.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
+<div class="categories-list-container">
+    <!-- Back Button -->
+    <a href="{{{wwwroot}}}/theme/remui_kids/courses_program.php" class="back-button">
+        <i class="fa fa-arrow-left"></i>
+        Back to Courses & Programs
+    </a>
+    
+    <!-- Page Header -->
+    <div class="categories-header">
+        <h1>All Categories</h1>
+        <p>Manage and view all course categories in the system ({{totalcategories}} categories found)</p>
+    </div>
+    
+    <!-- Search Bar -->
+    <div class="search-container">
+        <div class="search-box">
+            <i class="fa fa-search search-icon"></i>
+            <input type="text" id="categorySearch" placeholder="Search categories by name..." class="search-input">
+            <button type="button" id="clearSearch" class="clear-search-btn" style="display: none;">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <div class="search-results-info">
+            <span id="searchResultsCount">{{totalcategories}} categories</span>
+        </div>
+    </div>
+    
+    <!-- Categories Table -->
+    <div class="categories-table-container">
+        <table class="categories-table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Courses</th>
+                    <th>Subcategories</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#categories}}
+                <tr data-category-id="{{id}}" class="category-row" data-category-name="{{name}}">
+                    <td>
+                        <div class="category-info">
+                            <div class="category-avatar">
+                                {{#name}}{{name}}{{/name}}
+                            </div>
+                            <div class="category-details">
+                                <h4>{{name}}</h4>
+                                <p>ID: {{id}}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="category-status status-active">Active</span>
+                    </td>
+                    <td>
+                        <span class="course-count">{{course_count}} courses</span>
+                    </td>
+                    <td>
+                        <span class="subcategory-count">{{child_count}} subcategories</span>
+                    </td>
+                    <td>
+                        <div class="category-actions">
+                            <a href="{{{wwwroot}}}/course/index.php?categoryid={{id}}" class="action-btn btn-view" target="_blank" title="View Category">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            <a href="{{{wwwroot}}}/course/editcategory.php?id={{id}}" class="action-btn btn-edit" target="_blank" title="Edit Category">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <button class="action-btn btn-delete" onclick="deleteCategory({{id}}, '{{name}}')" title="Delete Category">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {{/categories}}
+            </tbody>
+        </table>
+    </div>
+    
+    {{^categories}}
+    <!-- Empty State -->
+    <div class="empty-state">
+        <i class="fa fa-folder"></i>
+        <h3>No Categories Found</h3>
+        <p>There are no categories available in the system.</p>
+    </div>
+    {{/categories}}
+</div>
+
+<script>
+// Search functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('categorySearch');
+    const clearBtn = document.getElementById('clearSearch');
+    const resultsCount = document.getElementById('searchResultsCount');
+    const categoryRows = document.querySelectorAll('.category-row');
+    const totalCategories = categoryRows.length;
+
+    // Search function
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        categoryRows.forEach(row => {
+            const categoryName = row.getAttribute('data-category-name').toLowerCase();
+            const isVisible = categoryName.includes(searchTerm);
+            
+            if (isVisible) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Update results count
+        if (searchTerm === '') {
+            resultsCount.textContent = `${totalCategories} categories`;
+        } else {
+            resultsCount.textContent = `${visibleCount} of ${totalCategories} categories`;
+        }
+
+        // Show/hide clear button
+        clearBtn.style.display = searchTerm ? 'block' : 'none';
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', performSearch);
+    
+    clearBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        performSearch();
+        searchInput.focus();
+    });
+
+    // Initial search
+    performSearch();
+});
+
+// Delete category function
+function deleteCategory(categoryId, categoryName) {
+    if (confirm('Are you sure you want to delete the category "' + categoryName + '"?\n\nThis action cannot be undone and will affect all courses in this category.')) {
+        // Add loading state
+        const row = document.querySelector(`[data-category-id="${categoryId}"]`);
+        if (row) {
+            row.classList.add('loading');
+        }
+        
+        // Make AJAX request to delete category
+        fetch('{{{wwwroot}}}/theme/remui_kids/delete_category.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `categoryid=${categoryId}&sesskey={{sesskey}}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove row from DOM
+                if (row) {
+                    row.style.opacity = '0';
+                    row.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        row.remove();
+                        // Update category count
+                        const header = document.querySelector('.categories-header p');
+                        if (header) {
+                            const currentCount = parseInt(header.textContent.match(/\d+/)[0]);
+                            header.textContent = header.textContent.replace(/\d+/, currentCount - 1);
+                        }
+                    }, 300);
+                }
+                
+                // Show success message
+                showNotification('Category deleted successfully!', 'success');
+            } else {
+                // Show error message
+                showNotification('Error deleting category: ' + (data.message || 'Unknown error'), 'error');
+                // Remove loading state
+                if (row) {
+                    row.classList.remove('loading');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Error deleting category. Please try again.', 'error');
+            // Remove loading state
+            if (row) {
+                row.classList.remove('loading');
+            }
+        });
+    }
+}
+
+// Show notification function
+function showNotification(message, type) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        color: white;
+        font-weight: 500;
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+        max-width: 300px;
+    `;
+    
+    if (type === 'success') {
+        notification.style.background = '#28a745';
+    } else {
+        notification.style.background = '#dc3545';
+    }
+    
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Add CSS for notifications
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+</script>

@@ -1,11 +1,14 @@
 /* Schools Management Styles - Matching Courses Dashboard */
 /* @package theme_remui_kids */
 
-/* Dashboard Cards Container with proper spacing - FULL WIDTH */
+/* Dashboard Cards Container with proper spacing - CENTERED */
 body .dashboard-cards-container {
     padding: 30px 0 !important;
-    max-width: 100% !important;
-    margin: 0 !important;
+    max-width: calc(100% - 40px) !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important;
 }
 
 body .dashboard-cards-container .row {

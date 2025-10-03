@@ -373,11 +373,14 @@ echo $OUTPUT->header();
 
 <style>
 .enrollments-container {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0 20px;
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
     min-height: 100vh;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important;
 }
 
 .header-section {
@@ -390,6 +393,9 @@ echo $OUTPUT->header();
     overflow: hidden;
     border: 1px solid #3A9BA8;
     box-shadow: 0 8px 32px rgba(82, 201, 217, 0.3);
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .header-content {
@@ -461,9 +467,12 @@ echo $OUTPUT->header();
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
     margin-bottom: 30px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .stat-card {
@@ -554,6 +563,9 @@ echo $OUTPUT->header();
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     margin-bottom: 25px;
     border: 1px solid #e9ecef;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .search-form {
@@ -660,6 +672,9 @@ echo $OUTPUT->header();
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     border: 1px solid #e9ecef;
     margin-bottom: 30px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .enrollments-table {
@@ -801,6 +816,9 @@ echo $OUTPUT->header();
     gap: 10px;
     margin-top: 20px;
     padding: 20px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .pagination a,
@@ -834,10 +852,12 @@ echo $OUTPUT->header();
 @media (max-width: 768px) {
     .enrollments-container {
         padding: 0 15px;
+        max-width: 100%;
     }
     
     .header-section {
         padding: 20px;
+        max-width: 100%;
     }
     
     .header-title {
@@ -847,6 +867,19 @@ echo $OUTPUT->header();
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
+        max-width: 100%;
+    }
+    
+    .search-section {
+        max-width: 100%;
+    }
+    
+    .table-container {
+        max-width: 100%;
+    }
+    
+    .pagination {
+        max-width: 100%;
     }
     
     .search-form {
@@ -883,6 +916,7 @@ echo $OUTPUT->header();
 @media (max-width: 576px) {
     .stats-grid {
         grid-template-columns: 1fr;
+        max-width: 100%;
     }
     
     .enrollments-table th:nth-child(4),
