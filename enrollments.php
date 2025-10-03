@@ -23,7 +23,8 @@ $context = context_system::instance();
 // Set up the page exactly like schools.php
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/enrollments.php');
-$PAGE->add_body_classes(['limitedwidth', 'page-myenrollments']);
+$PAGE->add_body_classes(['fullwidth-layout', 'page-myenrollments']);
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 $PAGE->set_pagelayout('mycourses');
 
 $PAGE->set_pagetype('enrollments-index');

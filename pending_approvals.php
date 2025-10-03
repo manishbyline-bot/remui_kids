@@ -23,7 +23,8 @@ $context = context_system::instance();
 // Set up the page exactly like schools.php
 $PAGE->set_context($context);
 $PAGE->set_url('/theme/remui_kids/pending_approvals.php');
-$PAGE->add_body_classes(['limitedwidth', 'page-mypendingapprovals']);
+$PAGE->add_body_classes(['fullwidth-layout', 'page-mypendingapprovals']);
+$PAGE->requires->css('/theme/remui_kids/style/fullwidth.css');
 $PAGE->set_pagelayout('mycourses');
 
 $PAGE->set_pagetype('pendingapprovals-index');
