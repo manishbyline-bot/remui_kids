@@ -1,0 +1,222 @@
+{{!
+    Trainee Discussion Forums Template
+    
+    @template theme_remui_kids/trainee_forums
+    
+    Browse and participate in discussion forums
+}}
+
+<!-- Include forums CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/trainee_forums.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="forums-container">
+    <!-- Header Section -->
+    <div class="forums-header">
+        <div class="header-content">
+            <a href="{{back_url}}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+            <h1 class="page-title">
+                <i class="fas fa-comments"></i>
+                Discussion Forums
+            </h1>
+            <p class="page-subtitle">Connect, discuss, and collaborate with your community</p>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="forum-stats-row">
+        <div class="forum-stat-card total-card">
+            <div class="stat-icon">
+                <i class="fas fa-comments"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{total_forums}}</div>
+                <div class="stat-label">Active Forums</div>
+            </div>
+        </div>
+        
+        <div class="forum-stat-card discussions-card">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{total_discussions}}</div>
+                <div class="stat-label">Discussions</div>
+            </div>
+        </div>
+        
+        <div class="forum-stat-card posts-card">
+            <div class="stat-icon">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{total_posts}}</div>
+                <div class="stat-label">Total Posts</div>
+            </div>
+        </div>
+        
+        <div class="forum-stat-card user-posts-card">
+            <div class="stat-icon">
+                <i class="fas fa-user-edit"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{user_posts_count}}</div>
+                <div class="stat-label">Your Posts</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="forums-main-content">
+        <!-- Forums List -->
+        <div class="forums-section">
+            <div class="section-header">
+                <h2><i class="fas fa-list"></i> Available Forums</h2>
+                <p class="section-subtitle">Join discussions and share your thoughts</p>
+            </div>
+
+            {{#has_forums}}
+            <div class="forums-grid">
+                {{#forums}}
+                <div class="forum-card forum-{{forum_color}}">
+                    <div class="forum-header">
+                        <div class="forum-icon-wrapper">
+                            <div class="forum-icon">
+                                <i class="fas fa-{{forum_icon}}"></i>
+                            </div>
+                            {{#has_unread}}
+                            <span class="unread-badge">{{unread_count}}</span>
+                            {{/has_unread}}
+                        </div>
+                        <div class="forum-title-section">
+                            <h3 class="forum-title">{{name}}</h3>
+                            <span class="forum-course">{{course_name}}</span>
+                        </div>
+                    </div>
+
+                    {{#intro}}
+                    <p class="forum-description">{{intro}}</p>
+                    {{/intro}}
+
+                    <div class="forum-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span>{{discussions_count}} discussions</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-comment"></i>
+                            <span>{{posts_count}} posts</span>
+                        </div>
+                    </div>
+
+                    <div class="forum-meta">
+                        <span class="last-activity">
+                            <i class="fas fa-clock"></i>
+                            {{last_activity}}
+                        </span>
+                        {{#user_has_posted}}
+                        <span class="user-badge">
+                            <i class="fas fa-check-circle"></i>
+                            You've participated
+                        </span>
+                        {{/user_has_posted}}
+                    </div>
+
+                    <div class="forum-footer">
+                        <a href="{{forum_url}}" class="btn-view-forum">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Visit Forum</span>
+                        </a>
+                    </div>
+                </div>
+                {{/forums}}
+            </div>
+            {{/has_forums}}
+
+            {{^has_forums}}
+            <div class="no-forums">
+                <div class="no-forums-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>No Forums Available</h3>
+                <p>You don't have access to any forums yet. Enroll in courses to join discussions.</p>
+                <a href="{{wwwroot}}/course/index.php" class="btn-browse-courses">
+                    <i class="fas fa-search"></i>
+                    Browse Courses
+                </a>
+            </div>
+            {{/has_forums}}
+        </div>
+
+        <!-- Recent Discussions Sidebar -->
+        {{#has_recent_discussions}}
+        <div class="recent-discussions-section">
+            <div class="section-header">
+                <h3><i class="fas fa-fire"></i> Recent Discussions</h3>
+            </div>
+
+            <div class="discussions-list">
+                {{#recent_discussions}}
+                <a href="{{discussion_url}}" class="discussion-item">
+                    <div class="discussion-icon">
+                        <i class="fas fa-comment-alt"></i>
+                    </div>
+                    <div class="discussion-content">
+                        <h4 class="discussion-title">{{name}}</h4>
+                        <div class="discussion-meta">
+                            <span class="discussion-forum">{{forum_name}}</span>
+                            <span class="discussion-replies">
+                                <i class="fas fa-reply"></i>
+                                {{replies}} replies
+                            </span>
+                        </div>
+                        <span class="discussion-time">{{time_ago}}</span>
+                    </div>
+                </a>
+                {{/recent_discussions}}
+            </div>
+        </div>
+        {{/has_recent_discussions}}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add entrance animations
+    const statCards = document.querySelectorAll('.forum-stat-card');
+    statCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Add hover effects to forum cards
+    const forumCards = document.querySelectorAll('.forum-card');
+    forumCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+    
+    // Add hover effects to discussion items
+    const discussionItems = document.querySelectorAll('.discussion-item');
+    discussionItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateX(5px)';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateX(0)';
+        });
+    });
+});
+</script>
+

@@ -1,228 +1,177 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{section.name}} - {{course.fullname}}</title>
-    <link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/section_viewer.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-    <div class="section-viewer-container">
-        <!-- Header Section -->
-        <div class="section-header">
-            <div class="header-content">
-                <div class="back-button">
-                    <a href="{{back_url}}" class="btn-back">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back to Learning Path</span>
-                    </a>
-                </div>
-                <div class="section-info">
-                    <div class="section-title">
-                        <h1>{{section.name}}</h1>
-                        <p class="course-name">{{course.fullname}}</p>
-                    </div>
-                    <div class="section-progress-overview">
-                        <div class="progress-circle">
-                            <svg class="progress-ring" width="80" height="80">
-                                <circle class="progress-ring-circle" stroke="#e5e7eb" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
-                                <circle class="progress-ring-circle progress-ring-fill" stroke="#3b82f6" stroke-width="6" fill="transparent" r="34" cx="40" cy="40" 
-                                        style="stroke-dasharray: 214; stroke-dashoffset: {{section.progress}};" />
-                            </svg>
-                            <div class="progress-text">{{section.progress}}%</div>
-                        </div>
-                        <div class="progress-details">
-                            <div class="progress-stat">
-                                <span class="stat-number">{{section.completed_activities}}</span>
-                                <span class="stat-label">Completed</span>
-                            </div>
-                            <div class="progress-stat">
-                                <span class="stat-number">{{section.total_activities}}</span>
-                                <span class="stat-label">Total Activities</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+{{!
+    Section Viewer Template
+    
+    @template theme_remui_kids/section_viewer
+    
+    Section viewer with activities in linked list format
+}}
 
-        <!-- Section Summary -->
-        {{#section.summary}}
-        <div class="section-summary">
-            <h3><i class="fas fa-info-circle"></i> Section Overview</h3>
-            <div class="summary-content">
-                {{{section.summary}}}
-            </div>
-        </div>
-        {{/section.summary}}
+<!-- Include section viewer CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/section_viewer.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-        <!-- Activities List -->
-        <div class="activities-container">
-            <div class="activities-header">
-                <h2><i class="fas fa-tasks"></i> Learning Activities</h2>
-                <p>Complete these activities to progress through this section</p>
-            </div>
-            
-            <div class="activities-list">
-                {{#activities}}
-                <div class="activity-card {{#is_completed}}completed{{/is_completed}} {{#has_started}}started{{/has_started}}" data-activity="{{id}}">
-                    <div class="activity-icon">
-                        {{#is_completed}}
+<div class="section-viewer-container">
+    <!-- Page Header -->
+    <div class="section-header">
+        <div class="header-content">
+            <div class="course-info">
+                <div class="course-image">
+                    <img src="{{course_image_url}}" alt="{{course.fullname}}" onerror="this.src='{{wwwroot}}/theme/remui_kids/pix/default_course.svg'">
+                </div>
+                <div class="course-details">
+                    <h1>{{course.fullname}}</h1>
+                    <h2 class="section-title">{{section_name}}</h2>
+                    <div class="section-meta">
+                        <span class="meta-item">
+                            <i class="fas fa-tasks"></i>
+                            {{total_activities}} Activities
+                        </span>
+                        <span class="meta-item">
                             <i class="fas fa-check-circle"></i>
-                        {{/is_completed}}
-                        {{^is_completed}}
-                            {{#has_started}}
-                                <i class="fas fa-play-circle"></i>
-                            {{/has_started}}
-                            {{^has_started}}
-                                <i class="fas fa-circle"></i>
-                            {{/has_started}}
-                        {{/is_completed}}
-                    </div>
-                    
-                    <div class="activity-content">
-                        <div class="activity-header">
-                            <h3>{{name}}</h3>
-                            <div class="activity-type">
-                                <span class="type-badge {{modname}}">{{modname}}</span>
-                            </div>
-                        </div>
-                        
-                        <div class="activity-description">
-                            <p>{{description}}</p>
-                        </div>
-                        
-                        <div class="activity-meta">
-                            <div class="meta-item">
-                                <i class="fas fa-calendar"></i>
-                                <span>{{start_date}}</span>
-                            </div>
-                            {{#end_date}}
-                            <div class="meta-item">
-                                <i class="fas fa-clock"></i>
-                                <span>{{end_date}}</span>
-                            </div>
-                            {{/end_date}}
-                        </div>
-                        
-                        <div class="activity-actions">
-                            <a href="{{url}}" class="btn-activity {{#is_completed}}completed{{/is_completed}}">
-                                {{#is_completed}}
-                                    <i class="fas fa-eye"></i>
-                                    Review
-                                {{/is_completed}}
-                                {{^is_completed}}
-                                    {{#has_started}}
-                                        <i class="fas fa-play"></i>
-                                        Continue
-                                    {{/has_started}}
-                                    {{^has_started}}
-                                        <i class="fas fa-play"></i>
-                                        Start Activity
-                                    {{/has_started}}
-                                {{/is_completed}}
-                            </a>
-                        </div>
+                            {{completed_count}} Completed
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas fa-chart-line"></i>
+                            {{progress_percentage}}% Progress
+                        </span>
                     </div>
                 </div>
-                {{/activities}}
             </div>
-        </div>
-
-        <!-- Navigation -->
-        <div class="section-navigation">
-            <div class="nav-container">
-                {{#prev_section}}
-                <a href="{{wwwroot}}/theme/remui_kids/section_viewer.php?courseid={{courseid}}&section={{section}}" class="nav-button prev">
-                    <i class="fas fa-chevron-left"></i>
-                    <div class="nav-content">
-                        <span class="nav-label">Previous</span>
-                        <span class="nav-title">{{name}}</span>
-                    </div>
-                </a>
-                {{/prev_section}}
-                
-                {{#next_section}}
-                <a href="{{wwwroot}}/theme/remui_kids/section_viewer.php?courseid={{courseid}}&section={{section}}" class="nav-button next">
-                    <div class="nav-content">
-                        <span class="nav-label">Next</span>
-                        <span class="nav-title">{{name}}</span>
-                    </div>
-                    <i class="fas fa-chevron-right"></i>
-                </a>
-                {{/next_section}}
-                
-                {{^next_section}}
-                {{#section.is_completed}}
-                <a href="{{wwwroot}}/theme/remui_kids/learning_path.php?courseid={{course.id}}" class="nav-button next">
-                    <div class="nav-content">
-                        <span class="nav-label">Complete</span>
-                        <span class="nav-title">Back to Learning Path</span>
-                    </div>
-                    <i class="fas fa-check"></i>
-                </a>
-                {{/section.is_completed}}
-                {{/next_section}}
-            </div>
-        </div>
-
-        <!-- Section Completion Status -->
-        {{#section.is_completed}}
-        <div class="completion-celebration">
-            <div class="celebration-content">
-                <i class="fas fa-trophy"></i>
-                <h3>Section Completed!</h3>
-                <p>Congratulations! You have successfully completed all activities in this section.</p>
-                <a href="{{wwwroot}}/theme/remui_kids/learning_path.php?courseid={{course.id}}" class="btn-celebration">
-                    <i class="fas fa-arrow-right"></i>
-                    Continue to Next Section
+            <div class="header-actions">
+                <a href="{{back_url}}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Learning Path
                 </a>
             </div>
         </div>
-        {{/section.is_completed}}
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add click animations to activity cards
-            const activityCards = document.querySelectorAll('.activity-card');
-            activityCards.forEach(card => {
-                card.addEventListener('click', function(e) {
-                    if (!e.target.closest('.btn-activity')) {
-                        const link = this.querySelector('.btn-activity');
-                        if (link) {
-                            window.location.href = link.href;
-                        }
-                    }
-                });
-            });
+    <!-- Section Summary -->
+    {{#section_summary}}
+    <div class="section-summary">
+        <div class="summary-content">{{{section_summary}}}</div>
+    </div>
+    {{/section_summary}}
 
-            // Animate progress circle
-            const progressCircle = document.querySelector('.progress-ring-fill');
-            if (progressCircle) {
-                const progress = {{section.progress}};
-                const circumference = 2 * Math.PI * 34; // radius = 34
-                const offset = circumference - (progress / 100) * circumference;
+    <!-- Progress Bar -->
+    <div class="progress-section">
+        <div class="progress-header">
+            <h3>Section Progress</h3>
+            <span class="progress-text">{{completed_count}}/{{total_activities}} activities completed</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{progress_percentage}}%"></div>
+        </div>
+    </div>
+
+    <!-- Activities List -->
+    <div class="activities-container">
+        <h3 class="activities-title">
+            <i class="fas fa-list"></i>
+            Section Activities
+        </h3>
+        
+        {{#activities}}
+        <div class="activity-list">
+            {{#activities}}
+            <div class="activity-item {{#completed}}completed{{/completed}}" data-activity="{{id}}">
+                <!-- Connection line to next activity -->
+                {{^last}}
+                <div class="connection-line"></div>
+                {{/last}}
                 
-                progressCircle.style.strokeDasharray = circumference;
-                progressCircle.style.strokeDashoffset = circumference;
+                <!-- Activity node -->
+                <div class="activity-node">
+                    <div class="node-circle {{#completed}}completed{{/completed}}">
+                        {{#completed}}
+                        <i class="fas fa-check"></i>
+                        {{/completed}}
+                        {{^completed}}
+                        <i class="fas fa-{{icon}}"></i>
+                        {{/completed}}
+                    </div>
+                </div>
                 
-                setTimeout(() => {
-                    progressCircle.style.transition = 'stroke-dashoffset 1s ease-in-out';
-                    progressCircle.style.strokeDashoffset = offset;
-                }, 500);
+                <!-- Activity content -->
+                <div class="activity-content">
+                    <div class="activity-header">
+                        <h4 class="activity-name">{{name}}</h4>
+                        <div class="activity-type">
+                            <span class="type-badge">{{modname}}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-status">
+                        {{#completed}}
+                        <span class="status-completed">
+                            <i class="fas fa-check-circle"></i>
+                            Completed
+                        </span>
+                        {{/completed}}
+                        {{^completed}}
+                        <span class="status-pending">
+                            <i class="fas fa-clock"></i>
+                            Pending
+                        </span>
+                        {{/completed}}
+                    </div>
+                    
+                    <div class="activity-actions">
+                        <a href="{{url}}" class="btn-activity {{#completed}}btn-review{{/completed}}">
+                            {{#completed}}
+                            <i class="fas fa-eye"></i>
+                            Review Activity
+                            {{/completed}}
+                            {{^completed}}
+                            <i class="fas fa-play"></i>
+                            Start Activity
+                            {{/completed}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{/activities}}
+        </div>
+        {{/activities}}
+    </div>
+
+    <!-- Navigation -->
+    <div class="section-navigation">
+        {{#prev_section}}
+        <a href="{{wwwroot}}/theme/remui_kids/section_viewer.php?courseid={{courseid}}&section={{section}}" class="nav-button prev">
+            <i class="fas fa-chevron-left"></i>
+            <span>Previous Section</span>
+        </a>
+        {{/prev_section}}
+        
+        {{#next_section}}
+        <a href="{{wwwroot}}/theme/remui_kids/section_viewer.php?courseid={{courseid}}&section={{section}}" class="nav-button next">
+            <span>Next Section</span>
+            <i class="fas fa-chevron-right"></i>
+        </a>
+        {{/next_section}}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add animations to activity items
+    const activityItems = document.querySelectorAll('.activity-item');
+    activityItems.forEach((item, index) => {
+        setTimeout(() => {
+            item.classList.add('animate');
+        }, index * 100);
+    });
+    
+    // Add click handlers for activity items
+    activityItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (!e.target.closest('.btn-activity')) {
+                const activityId = this.dataset.activity;
+                const activityUrl = this.querySelector('.btn-activity').href;
+                window.location.href = activityUrl;
             }
-
-            // Add activity completion animations
-            const completedActivities = document.querySelectorAll('.activity-card.completed');
-            completedActivities.forEach((activity, index) => {
-                setTimeout(() => {
-                    activity.style.animation = 'slideInUp 0.6s ease-out';
-                }, index * 100);
-            });
         });
-    </script>
-</body>
-</html>
-
+    });
+});
+</script>

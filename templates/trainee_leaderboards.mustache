@@ -1,0 +1,214 @@
+{{!
+    Trainee Leaderboards Template
+    
+    @template theme_remui_kids/trainee_leaderboards
+    
+    Rankings and top performers
+}}
+
+<!-- Include leaderboards CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/trainee_leaderboards.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="leaderboards-container">
+    <!-- Header Section -->
+    <div class="leaderboards-header">
+        <div class="header-content">
+            <a href="{{back_url}}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+            <h1 class="page-title">
+                <i class="fas fa-trophy"></i>
+                Leaderboards
+            </h1>
+            <p class="page-subtitle">See how you rank among your peers</p>
+        </div>
+    </div>
+
+    <!-- User Stats Card -->
+    <div class="user-stats-card">
+        <div class="stats-header">
+            <h3><i class="fas fa-user-circle"></i> Your Performance</h3>
+        </div>
+        <div class="stats-content">
+            <div class="stat-item">
+                <div class="stat-icon rank-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-value">
+                        {{#user_rank}}#{{user_rank}}{{/user_rank}}
+                        {{^user_rank}}Not Ranked{{/user_rank}}
+                    </div>
+                    <div class="stat-label">Your Rank</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon score-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-value">{{user_score}}</div>
+                    <div class="stat-label">Your Score</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon percentile-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-value">Top {{user_percentile}}%</div>
+                    <div class="stat-label">Percentile</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon total-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-value">{{total_participants}}</div>
+                    <div class="stat-label">Total Participants</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="filter-tabs">
+            <button class="filter-tab {{#is_overall}}active{{/is_overall}}" onclick="window.location.href='{{wwwroot}}/theme/remui_kids/trainee_leaderboards.php?type=overall'">
+                <i class="fas fa-chart-bar"></i>
+                <span>Overall Performance</span>
+            </button>
+            <button class="filter-tab {{#is_badges}}active{{/is_badges}}" onclick="window.location.href='{{wwwroot}}/theme/remui_kids/trainee_leaderboards.php?type=badges'">
+                <i class="fas fa-award"></i>
+                <span>Most Badges</span>
+            </button>
+            <button class="filter-tab {{#is_courses}}active{{/is_courses}}" onclick="window.location.href='{{wwwroot}}/theme/remui_kids/trainee_leaderboards.php?type=courses'">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Courses Completed</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Leaderboard Table -->
+    {{#has_leaderboard}}
+    <div class="leaderboard-section">
+        <div class="section-header">
+            <h2><i class="fas fa-ranking-star"></i> Top Performers</h2>
+            <p class="section-subtitle">Celebrating excellence and achievement</p>
+        </div>
+
+        <div class="leaderboard-table">
+            <div class="table-header">
+                <div class="rank-col">Rank</div>
+                <div class="name-col">Name</div>
+                <div class="location-col">Location</div>
+                <div class="score-col">Score</div>
+                <div class="action-col">Action</div>
+            </div>
+
+            <div class="table-body">
+                {{#leaderboard_data}}
+                <div class="table-row {{#is_current_user}}current-user{{/is_current_user}} {{badge_class}}">
+                    <div class="rank-col">
+                        {{#has_medal}}
+                        <span class="medal">{{medal}}</span>
+                        {{/has_medal}}
+                        {{^has_medal}}
+                        <span class="rank-number">#{{rank}}</span>
+                        {{/has_medal}}
+                    </div>
+                    <div class="name-col">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="user-details">
+                                <span class="user-name">{{fullname}}</span>
+                                <span class="user-institution">{{institution}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="location-col">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{location}}</span>
+                    </div>
+                    <div class="score-col">
+                        <span class="score-value">{{score}}</span>
+                        {{#is_overall}}<span class="score-unit">%</span>{{/is_overall}}
+                        {{#is_badges}}<span class="score-unit">badges</span>{{/is_badges}}
+                        {{#is_courses}}<span class="score-unit">courses</span>{{/is_courses}}
+                    </div>
+                    <div class="action-col">
+                        <a href="{{profile_url}}" class="btn-view-profile">
+                            <i class="fas fa-eye"></i>
+                            View
+                        </a>
+                    </div>
+                </div>
+                {{/leaderboard_data}}
+            </div>
+        </div>
+    </div>
+    {{/has_leaderboard}}
+
+    {{^has_leaderboard}}
+    <div class="no-leaderboard">
+        <div class="no-leaderboard-icon">
+            <i class="fas fa-trophy"></i>
+        </div>
+        <h3>No Rankings Available</h3>
+        <p>No performance data available for this leaderboard. Complete some activities to see rankings!</p>
+        <a href="{{wwwroot}}/my/courses.php" class="btn-start-learning">
+            <i class="fas fa-book-open"></i>
+            Start Learning
+        </a>
+    </div>
+    {{/has_leaderboard}}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Scroll to current user's position if not in top 10
+    const currentUserRow = document.querySelector('.table-row.current-user');
+    if (currentUserRow) {
+        const tableBody = document.querySelector('.table-body');
+        const rows = document.querySelectorAll('.table-row');
+        const currentUserIndex = Array.from(rows).indexOf(currentUserRow);
+        
+        // If user is not in first 10 positions, scroll to show them
+        if (currentUserIndex > 10) {
+            setTimeout(() => {
+                currentUserRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+        }
+    }
+    
+    // Add entrance animations
+    const tableRows = document.querySelectorAll('.table-row');
+    tableRows.forEach((row, index) => {
+        setTimeout(() => {
+            row.style.opacity = '1';
+            row.style.transform = 'translateX(0)';
+        }, index * 50);
+    });
+    
+    // Add hover effects
+    tableRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            if (!this.classList.contains('current-user')) {
+                this.style.transform = 'translateX(5px)';
+            }
+        });
+        
+        row.addEventListener('mouseleave', function() {
+            if (!this.classList.contains('current-user')) {
+                this.style.transform = 'translateX(0)';
+            }
+        });
+    });
+});
+</script>
+
