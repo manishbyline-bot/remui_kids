@@ -15,36 +15,36 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template theme_remui_kids/categories_list
+    @template theme_remui_kids/learning_paths
 
-    Categories list with card layout similar to enrollments
+    Learning Paths list page
 
     Context variables required for this template:
-    * categories - Array of category objects
-    * totalcategories - Total number of categories
-    * wwwroot - Moodle root URL
-    * sesskey - Session key for security
+    * learningpaths - Array of learning paths
+    * totallearningpaths - Total number of learning paths
+    * wwwroot - Moodle wwwroot
+    * sesskey - Session key
 
     Example context (json):
     {
-        "categories": [
+        "learningpaths": [
             {
                 "id": 1,
-                "name": "Category Name",
-                "description": "Category description",
+                "name": "Digital Literacy Path",
+                "description": "Complete digital literacy learning path",
                 "course_count": 5,
-                "child_count": 2
+                "user_count": 12
             }
         ],
-        "totalcategories": 11,
+        "totallearningpaths": 1,
         "wwwroot": "http://localhost/moodle",
         "sesskey": "abc123"
     }
 }}
 
 <style>
-/* Categories List Container - Centered Layout */
-.categories-list-container {
+/* Learning Paths List Container - Centered Layout */
+.learning-paths-list-container {
     max-width: calc(100% - 40px) !important;
     width: 100% !important;
     margin: 0 auto !important;
@@ -56,30 +56,7 @@
 }
 
 /* Page Header */
-.categories-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 2rem;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.categories-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: 600;
-}
-
-.categories-header p {
-    margin: 0.5rem 0 0 0;
-    font-size: 1.1rem;
-    opacity: 0.9;
-}
-
-/* Back Button */
-/* Page Header */
-.categories-header {
+.learning-paths-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -180,8 +157,8 @@
     white-space: nowrap;
 }
 
-/* Categories Table */
-.categories-table-container {
+/* Learning Paths Table */
+.learning-paths-table-container {
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -189,17 +166,17 @@
     margin-top: 1rem;
 }
 
-.categories-table {
+.learning-paths-table {
     width: 100%;
     border-collapse: collapse;
     margin: 0;
 }
 
-.categories-table thead {
+.learning-paths-table thead {
     background: #f8f9fa;
 }
 
-.categories-table th {
+.learning-paths-table th {
     padding: 1rem;
     text-align: left;
     font-weight: 600;
@@ -210,24 +187,24 @@
     letter-spacing: 0.5px;
 }
 
-.categories-table td {
+.learning-paths-table td {
     padding: 1rem;
     border-bottom: 1px solid #f1f3f4;
     vertical-align: middle;
 }
 
-.categories-table tbody tr:hover {
+.learning-paths-table tbody tr:hover {
     background: #f8f9fa;
     transition: background-color 0.2s ease;
 }
 
-/* Category Info Column */
-.category-info {
+/* Learning Path Info Column */
+.learning-path-info {
     display: flex;
     align-items: center;
 }
 
-.category-details h4 {
+.learning-path-details h4 {
     margin: 0;
     font-size: 1rem;
     font-weight: 600;
@@ -235,7 +212,7 @@
     line-height: 1.3;
 }
 
-.category-details p {
+.learning-path-details p {
     margin: 0;
     font-size: 0.8rem;
     color: #6c757d;
@@ -243,7 +220,7 @@
 }
 
 /* Status Column */
-.category-status {
+.learning-path-status {
     display: inline-block;
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
@@ -274,8 +251,8 @@
     font-weight: 600;
 }
 
-/* Subcategory Count Column */
-.subcategory-count {
+/* User Count Column */
+.user-count {
     display: inline-block;
     padding: 0.25rem 0.75rem;
     background: #e8f5e8;
@@ -286,7 +263,7 @@
 }
 
 /* Actions Column */
-.category-actions {
+.learning-path-actions {
     display: flex;
     gap: 0.5rem;
     align-items: center;
@@ -297,19 +274,16 @@
     padding: 0.4rem;
     border: none;
     border-radius: 6px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
     text-decoration: none;
     text-align: center;
-    display: flex;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-}
-
-.action-btn i {
-    margin-right: 0.25rem;
+    gap: 0.25rem;
 }
 
 .btn-view {
@@ -342,7 +316,6 @@
 .btn-delete:hover {
     background: #c82333;
     color: white;
-    text-decoration: none;
 }
 
 /* Empty State */
@@ -359,7 +332,8 @@
 }
 
 .empty-state h3 {
-    margin: 0 0 1rem 0;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
     color: #495057;
 }
 
@@ -384,19 +358,19 @@
         text-align: center;
     }
     
-    .categories-table-container {
+    .learning-paths-table-container {
         overflow-x: auto;
     }
     
-    .categories-table {
+    .learning-paths-table {
         min-width: 500px;
     }
     
-    .categories-header h1 {
+    .learning-paths-header h1 {
         font-size: 2rem;
     }
     
-    .category-actions {
+    .learning-path-actions {
         flex-direction: column;
         gap: 0.25rem;
     }
@@ -408,12 +382,12 @@
 }
 
 /* Loading Animation */
-.categories-table tbody tr.loading {
+.learning-paths-table tbody tr.loading {
     opacity: 0.7;
     pointer-events: none;
 }
 
-.categories-table tbody tr.loading::after {
+.learning-paths-table tbody tr.loading::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -433,12 +407,12 @@
 }
 </style>
 
-<div class="categories-list-container">
+<div class="learning-paths-list-container">
     <!-- Page Header -->
-    <div class="categories-header">
+    <div class="learning-paths-header">
         <div class="header-content">
-            <h1>All Categories</h1>
-            <p>Manage and view all course categories in the system ({{totalcategories}} categories found)</p>
+            <h1>Learning Paths</h1>
+            <p>Manage and view all learning paths in the system ({{totallearningpaths}} learning paths found)</p>
         </div>
         <!-- Back Button -->
         <a href="{{{wwwroot}}}/theme/remui_kids/courses_program.php" class="back-button">
@@ -451,94 +425,96 @@
     <div class="search-container">
         <div class="search-box">
             <i class="fa fa-search search-icon"></i>
-            <input type="text" id="categorySearch" placeholder="Search categories by name..." class="search-input">
+            <input type="text" id="learningPathSearch" placeholder="Search learning paths by name..." class="search-input">
             <button type="button" id="clearSearch" class="clear-search-btn" style="display: none;">
                 <i class="fa fa-times"></i>
             </button>
         </div>
         <div class="search-results-info">
-            <span id="searchResultsCount">{{totalcategories}} categories</span>
+            <span id="searchResultsCount">{{totallearningpaths}} learning paths</span>
         </div>
     </div>
     
-    <!-- Categories Table -->
-    <div class="categories-table-container">
-        <table class="categories-table">
+    {{#learningpaths}}
+    <!-- Learning Paths Table -->
+    <div class="learning-paths-table-container">
+        <table class="learning-paths-table">
             <thead>
                 <tr>
-                    <th>Category</th>
+                    <th>Learning Path</th>
                     <th>Status</th>
                     <th>Courses</th>
-                    <th>Subcategories</th>
+                    <th>Users</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {{#categories}}
-                <tr data-category-id="{{id}}" class="category-row" data-category-name="{{name}}">
+                {{#learningpaths}}
+                <tr data-learning-path-id="{{id}}" class="learning-path-row" data-learning-path-name="{{name}}">
                     <td>
-                        <div class="category-info">
-                            <div class="category-details">
+                        <div class="learning-path-info">
+                            <div class="learning-path-details">
                                 <h4>{{name}}</h4>
                                 <p>ID: {{id}}</p>
                             </div>
                         </div>
                     </td>
                     <td>
-                        <span class="category-status status-active">Active</span>
+                        <span class="learning-path-status status-active">Active</span>
                     </td>
                     <td>
                         <span class="course-count">{{course_count}} courses</span>
                     </td>
                     <td>
-                        <span class="subcategory-count">{{child_count}} subcategories</span>
+                        <span class="user-count">{{user_count}} users</span>
                     </td>
                     <td>
-                        <div class="category-actions">
-                            <a href="{{{wwwroot}}}/course/index.php?categoryid={{id}}" class="action-btn btn-view" title="View Category">
+                        <div class="learning-path-actions">
+                            <a href="{{{wwwroot}}}/local/iomad_learningpath/view.php?id={{id}}" class="action-btn btn-view" target="_blank" title="View Learning Path">
                                 <i class="fa fa-eye"></i>
                             </a>
-                            <a href="{{{wwwroot}}}/course/editcategory.php?id={{id}}" class="action-btn btn-edit" title="Edit Category">
+                            <a href="{{{wwwroot}}}/local/iomad_learningpath/edit.php?id={{id}}" class="action-btn btn-edit" target="_blank" title="Edit Learning Path">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <button class="action-btn btn-delete" onclick="deleteCategory({{id}}, '{{name}}')" title="Delete Category">
+                            <button class="action-btn btn-delete" onclick="deleteLearningPath({{id}}, '{{name}}')" title="Delete Learning Path">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
                     </td>
                 </tr>
-                {{/categories}}
+                {{/learningpaths}}
             </tbody>
         </table>
     </div>
+    {{/learningpaths}}
     
-    {{^categories}}
+    {{^learningpaths}}
     <!-- Empty State -->
     <div class="empty-state">
-        <i class="fa fa-folder"></i>
-        <h3>No Categories Found</h3>
-        <p>There are no categories available in the system.</p>
+        <i class="fa fa-link"></i>
+        <h3>No Learning Paths Found</h3>
+        <p>There are no learning paths available in the system.</p>
     </div>
-    {{/categories}}
+    {{/learningpaths}}
 </div>
 
 <script>
 // Search functionality
 document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('categorySearch');
+    const searchInput = document.getElementById('learningPathSearch');
     const clearBtn = document.getElementById('clearSearch');
     const resultsCount = document.getElementById('searchResultsCount');
-    const categoryRows = document.querySelectorAll('.category-row');
-    const totalCategories = categoryRows.length;
+    const learningPathRows = document.querySelectorAll('.learning-path-row');
+    const totalLearningPaths = learningPathRows.length;
 
     // Search function
     function performSearch() {
         const searchTerm = searchInput.value.toLowerCase().trim();
         let visibleCount = 0;
 
-        categoryRows.forEach(row => {
-            const categoryName = row.getAttribute('data-category-name').toLowerCase();
-            const isVisible = categoryName.includes(searchTerm);
+        learningPathRows.forEach(row => {
+            const learningPathName = row.getAttribute('data-learning-path-name').toLowerCase();
+            const isVisible = learningPathName.includes(searchTerm);
             
             if (isVisible) {
                 row.style.display = '';
@@ -550,9 +526,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update results count
         if (searchTerm === '') {
-            resultsCount.textContent = `${totalCategories} categories`;
+            resultsCount.textContent = `${totalLearningPaths} learning paths`;
         } else {
-            resultsCount.textContent = `${visibleCount} of ${totalCategories} categories`;
+            resultsCount.textContent = `${visibleCount} of ${totalLearningPaths} learning paths`;
         }
 
         // Show/hide clear button
@@ -572,22 +548,22 @@ document.addEventListener('DOMContentLoaded', function() {
     performSearch();
 });
 
-// Delete category function
-function deleteCategory(categoryId, categoryName) {
-    if (confirm('Are you sure you want to delete the category "' + categoryName + '"?\n\nThis action cannot be undone and will affect all courses in this category.')) {
+// Delete learning path function
+function deleteLearningPath(learningPathId, learningPathName) {
+    if (confirm('Are you sure you want to delete the learning path "' + learningPathName + '"?\n\nThis action cannot be undone and will affect all users enrolled in this learning path.')) {
         // Add loading state
-        const row = document.querySelector(`[data-category-id="${categoryId}"]`);
+        const row = document.querySelector(`[data-learning-path-id="${learningPathId}"]`);
         if (row) {
             row.classList.add('loading');
         }
         
-        // Make AJAX request to delete category
-        fetch('{{{wwwroot}}}/theme/remui_kids/delete_category.php', {
+        // Make AJAX request to delete learning path
+        fetch('{{{wwwroot}}}/theme/remui_kids/delete_learning_path.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `categoryid=${categoryId}&sesskey={{sesskey}}`
+            body: `learningpathid=${learningPathId}&sesskey={{sesskey}}`
         })
         .then(response => response.json())
         .then(data => {
@@ -598,8 +574,8 @@ function deleteCategory(categoryId, categoryName) {
                     row.style.transform = 'scale(0.95)';
                     setTimeout(() => {
                         row.remove();
-                        // Update category count
-                        const header = document.querySelector('.categories-header p');
+                        // Update learning path count
+                        const header = document.querySelector('.learning-paths-header p');
                         if (header) {
                             const currentCount = parseInt(header.textContent.match(/\d+/)[0]);
                             header.textContent = header.textContent.replace(/\d+/, currentCount - 1);
@@ -608,10 +584,10 @@ function deleteCategory(categoryId, categoryName) {
                 }
                 
                 // Show success message
-                showNotification('Category deleted successfully!', 'success');
+                showNotification('Learning path deleted successfully!', 'success');
             } else {
                 // Show error message
-                showNotification('Error deleting category: ' + (data.message || 'Unknown error'), 'error');
+                showNotification('Error deleting learning path: ' + (data.message || 'Unknown error'), 'error');
                 // Remove loading state
                 if (row) {
                     row.classList.remove('loading');
@@ -620,7 +596,7 @@ function deleteCategory(categoryId, categoryName) {
         })
         .catch(error => {
             console.error('Error:', error);
-            showNotification('Error deleting category. Please try again.', 'error');
+            showNotification('Error deleting learning path. Please try again.', 'error');
             // Remove loading state
             if (row) {
                 row.classList.remove('loading');
@@ -633,51 +609,25 @@ function deleteCategory(categoryId, categoryName) {
 function showNotification(message, type) {
     // Create notification element
     const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        color: white;
-        font-weight: 500;
-        z-index: 9999;
-        animation: slideIn 0.3s ease;
-        max-width: 300px;
+    notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+    notification.style.position = 'fixed';
+    notification.style.top = '20px';
+    notification.style.right = '20px';
+    notification.style.zIndex = '9999';
+    notification.style.minWidth = '300px';
+    
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
     
-    if (type === 'success') {
-        notification.style.background = '#28a745';
-    } else {
-        notification.style.background = '#dc3545';
-    }
-    
-    notification.textContent = message;
     document.body.appendChild(notification);
     
-    // Remove notification after 3 seconds
+    // Auto remove after 5 seconds
     setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    }, 3000);
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, 5000);
 }
-
-// Add CSS for notifications
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-    }
-`;
-document.head.appendChild(style);
 </script>

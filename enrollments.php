@@ -1202,8 +1202,8 @@ echo $OUTPUT->header();
                 <h1 class="header-title">Enrollments Management</h1>
                 <p class="header-subtitle">Manage user enrollments and course assignments</p>
             </div>
-            <a href="<?php echo $CFG->wwwroot; ?>/my/" class="back-btn" title="Go back to Home Dashboard">
-                ← Back to Dashboard
+            <a href="<?php echo $CFG->wwwroot; ?>/theme/remui_kids/courses_program.php" class="back-btn" title="Go back to Courses & Programs">
+                ← Back to Courses & Programs
             </a>
         </div>
     </div>
