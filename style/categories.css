@@ -1,0 +1,159 @@
+/* Categories List Page Styles */
+
+/* Ensure the categories list container is properly centered */
+.categories-list-container {
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    min-height: 100vh;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important;
+}
+
+/* Override any conflicting styles */
+body .categories-list-container {
+    max-width: calc(100% - 40px) !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important;
+}
+
+/* Admin users with sidebar - maintain 20px left margin from sidebar */
+body.admin-user .categories-list-container {
+    margin: 0 auto !important;
+    margin-left: 20px !important;
+    padding: 20px !important;
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .categories-list-container {
+        max-width: calc(100% - 20px) !important;
+        margin: 0 auto !important;
+        padding: 15px !important;
+    }
+    
+    body.admin-user .categories-list-container {
+        margin-left: 10px !important;
+        max-width: calc(100% - 20px) !important;
+    }
+}
+
+/* Ensure proper spacing for category cards - 4 per row */
+.categories-grid {
+    margin-top: 2rem !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Responsive grid adjustments - FORCE LAYOUT */
+@media (max-width: 1200px) {
+    .categories-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .categories-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.category-card {
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Action buttons styling */
+.category-actions {
+    margin-top: 0.8rem;
+}
+
+.action-btn {
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Loading state for delete action */
+.category-card.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.category-card.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    z-index: 9999;
+    animation: slideIn 0.3s ease;
+    max-width: 300px;
+}
+
+.notification-success {
+    background: #28a745;
+}
+
+.notification-error {
+    background: #dc3545;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}

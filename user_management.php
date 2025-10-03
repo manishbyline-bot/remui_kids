@@ -187,9 +187,9 @@ echo '<script>var MOODLE_WWWROOT = "' . $CFG->wwwroot . '";</script>';
 
 <style>
 .user-management-container {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    margin: 0 auto !important;
     padding: 20px;
     min-height: 100vh;
 }

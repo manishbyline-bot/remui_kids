@@ -176,9 +176,9 @@ $PAGE->requires->js('/theme/remui_kids/js/user_details.js');
 
 <style>
 .user-details-container {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
+    max-width: calc(100% - 40px) !important;
+    width: 100% !important;
+    margin: 0 auto !important;
     padding: 0 20px;
     min-height: 100vh;
 }
