@@ -216,10 +216,17 @@ footer,
     }
 }
 
-/* Ensure sidebar doesn't interfere with main content */
+/* Ensure sidebar doesn't interfere with main content - remove green space */
 body {
-    margin-left: 280px;
+    margin-left: 0 !important;
     margin-top: 60px;
+}
+
+/* Fix page wrapper to remove green space */
+#page-wrapper {
+    margin-left: 280px !important;
+    padding-left: 0 !important;
+    width: calc(100% - 280px) !important;
 }
 
 /* When sidebar is hidden, adjust body margin */
@@ -227,13 +234,14 @@ body.sidebar-hidden {
     margin-left: 0;
 }
 
-/* Main content adjustment - only for non-admin users */
+/* Main content adjustment - only for non-admin users - remove green space */
 body:not(.admin-user) .main-content,
 body:not(.admin-user) #page-wrapper,
 body:not(.admin-user) .container-fluid,
 body:not(.admin-user) .main-content-wrapper {
-    margin-left: 280px;
+    margin-left: 280px !important;
     margin-top: 40px; /* Add top margin to account for sidebar position */
+    padding-left: 0 !important;
     transition: margin-left 0.3s ease;
 }
 
