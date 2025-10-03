@@ -20,6 +20,7 @@ require_once($CFG->dirroot . '/lib/completionlib.php');
 require_once($CFG->dirroot . '/lib/filelib.php');
 require_once($CFG->dirroot . '/lib/badgeslib.php');
 require_once($CFG->dirroot . '/lib/modinfolib.php');
+require_once(__DIR__ . '/lib.php');
 
 // Get parameters
 $courseid = required_param('courseid', PARAM_INT);
@@ -33,6 +34,12 @@ $section_record = $DB->get_record('course_sections', array('course' => $courseid
 require_login($course);
 $context = context_course::instance($courseid);
 require_capability('moodle/course:view', $context);
+
+// Set page context
+$PAGE->set_context($context);
+$PAGE->set_url('/theme/remui_kids/section_viewer.php', array('courseid' => $courseid, 'section' => $section));
+$PAGE->set_title($course->fullname . ' - ' . $section_record->name);
+$PAGE->set_heading($course->fullname);
 
 // Get course image
 $course_image = null;
@@ -60,6 +67,12 @@ try {
 $section_data = theme_remui_kids_get_section_activities($course, $section);
 $activities = $section_data['activities'];
 
+// Debug: Log activities data
+error_log("Section activities count: " . count($activities));
+if (!empty($activities)) {
+    error_log("First activity: " . print_r($activities[0], true));
+}
+
 // Get completion info
 $completion = new completion_info($course);
 
@@ -68,14 +81,8 @@ $activities_with_completion = array();
 $completed_count = 0;
 
 foreach ($activities as $activity) {
-    // Check if activity is completed
-    try {
-        $completion_data = $completion->get_data($activity, false);
-        $is_completed = $completion_data->completionstate > 0;
-    } catch (Exception $e) {
-        error_log("Error checking completion for activity {$activity->id}: " . $e->getMessage());
-        $is_completed = false;
-    }
+    // Use completion status from theme function
+    $is_completed = $activity['is_completed'] ?? false;
     
     if ($is_completed) {
         $completed_count++;
@@ -83,29 +90,29 @@ foreach ($activities as $activity) {
     
     // Get activity icon
     $icon = 'file';
-    if ($activity->modname == 'quiz') {
+    if ($activity['modname'] == 'quiz') {
         $icon = 'question-circle';
-    } elseif ($activity->modname == 'assign') {
+    } elseif ($activity['modname'] == 'assign') {
         $icon = 'edit';
-    } elseif ($activity->modname == 'forum') {
+    } elseif ($activity['modname'] == 'forum') {
         $icon = 'comments';
-    } elseif ($activity->modname == 'resource') {
+    } elseif ($activity['modname'] == 'resource') {
         $icon = 'file-alt';
-    } elseif ($activity->modname == 'url') {
+    } elseif ($activity['modname'] == 'url') {
         $icon = 'link';
-    } elseif ($activity->modname == 'page') {
+    } elseif ($activity['modname'] == 'page') {
         $icon = 'file-text';
-    } elseif ($activity->modname == 'label') {
+    } elseif ($activity['modname'] == 'label') {
         $icon = 'tag';
     }
     
     // Get activity URL
-    $activity_url = $CFG->wwwroot . '/mod/' . $activity->modname . '/view.php?id=' . $activity->id;
+    $activity_url = $CFG->wwwroot . '/mod/' . $activity['modname'] . '/view.php?id=' . $activity['id'];
     
     $activities_with_completion[] = array(
-        'id' => $activity->id,
-        'name' => $activity->name,
-        'modname' => $activity->modname,
+        'id' => $activity['id'],
+        'name' => $activity['name'],
+        'modname' => $activity['modname'],
         'icon' => $icon,
         'completed' => $is_completed,
         'url' => $activity_url,
@@ -121,6 +128,12 @@ if (!empty($activities_with_completion)) {
 // Calculate progress
 $total_activities = count($activities_with_completion);
 $progress_percentage = $total_activities > 0 ? round(($completed_count / $total_activities) * 100) : 0;
+
+// Debug: Log processed activities
+error_log("Processed activities count: " . count($activities_with_completion));
+if (!empty($activities_with_completion)) {
+    error_log("First processed activity: " . print_r($activities_with_completion[0], true));
+}
 
 // Get navigation sections
 $all_sections = $DB->get_records('course_sections', array('course' => $courseid), 'section ASC');
@@ -167,5 +180,17 @@ $templatecontext = array(
     'back_url' => $CFG->wwwroot . '/theme/remui_kids/learning_path.php?courseid=' . $courseid
 );
 
-// Render template
-echo $OUTPUT->render_from_template('theme_remui_kids/section_viewer', $templatecontext);
+// Output the page
+echo $OUTPUT->header();
+
+// Include section viewer template directly
+$template_file = $CFG->dirroot . '/theme/remui_kids/templates/section_viewer.mustache';
+if (file_exists($template_file)) {
+    $mustache = new core\output\mustache_engine();
+    $template_content = file_get_contents($template_file);
+    echo $mustache->render($template_content, $templatecontext);
+} else {
+    echo '<div class="alert alert-warning">Section viewer template not found.</div>';
+}
+
+echo $OUTPUT->footer();

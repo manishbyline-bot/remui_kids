@@ -15,26 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Custom layout for all pages with admin restrictions
+ * Custom 2 column layout with Riyada sidebar
  *
- * @package    theme_remui_kids
- * @copyright  2024 Riyada Trainings
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   theme_remui_kids
+ * @copyright 2024 Riyada Trainings
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-// Include common layout elements - sets up $templatecontext with all navbar, user menu, etc.
-require_once(__DIR__ . '/common.php');
+global $CFG, $PAGE, $COURSE, $USER;
 
-// Include common_end - finalizes $templatecontext with body attributes, blocks, etc.
-require_once(__DIR__ . '/common_end.php');
+require_once($CFG->dirroot . '/theme/remui/layout/common.php');
 
-// Add custom sidebar data to template context
-$templatecontext['config'] = [
-    'wwwroot' => $CFG->wwwroot
-];
-$templatecontext['sitename'] = $SITE->shortname;
+// Add custom context for the sidebar
+$templatecontext['user'] = array(
+    'firstname' => $USER->firstname,
+    'lastname' => $USER->lastname,
+    'institution' => !empty($USER->institution) ? $USER->institution : 'Riyada Trainings'
+);
 
-// Render our custom columns2 template (which extends parent and adds Riyada sidebar)
+$templatecontext['config'] = array('wwwroot' => $CFG->wwwroot);
+
+// Must be called before rendering the template.
+// This will ease us to add body classes directly to the array.
+require_once($CFG->dirroot . '/theme/remui/layout/common_end.php');
 echo $OUTPUT->render_from_template('theme_remui_kids/columns2', $templatecontext);

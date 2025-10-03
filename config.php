@@ -162,4 +162,10 @@ $THEME->layouts = array(
         'defaultregion' => 'side-pre',
         'options' => array('nofooter' => true, 'nonavbar' => true),
     ),
+    // Custom 2 column layout with Riyada sidebar
+    'columns2' => array(
+        'file' => 'columns2.php',
+        'regions' => array('side-pre'),
+        'defaultregion' => 'side-pre',
+    ),
 );
