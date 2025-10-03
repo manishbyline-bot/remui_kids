@@ -91,6 +91,9 @@ if ($isediting) {
     require_once($CFG->dirroot . '/theme/remui/layout/common_end.php');
     
     echo $OUTPUT->render_from_template('theme_remui_kids/course', $templatecontext);
+    
+    // Output main content (required by Moodle) but hide it with CSS
+    echo '<div style="display: none;">' . $OUTPUT->main_content() . '</div>';
 } else {
     // Use our custom Learning Modules layout for students (course overview)
     $templatecontext['custom_course_cards'] = true;
@@ -109,4 +112,7 @@ if ($isediting) {
     require_once($CFG->dirroot . '/theme/remui/layout/common_end.php');
     
     echo $OUTPUT->render_from_template('theme_remui_kids/course', $templatecontext);
+    
+    // Output main content (required by Moodle) but hide it with CSS
+    echo '<div style="display: none;">' . $OUTPUT->main_content() . '</div>';
 }

@@ -31,3 +31,4 @@ require_once($CFG->dirroot . '/theme/remui/layout/common.php');
 // Any RemUI Kids specific customizations can be added below
 // The $templatecontext variable is available from the parent theme
 
+

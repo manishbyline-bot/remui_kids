@@ -310,6 +310,22 @@ function initializeSectionActivities() {
         }
     }
     
+    // Debug: Log all section elements found
+    const allSections = document.querySelectorAll('.section-navigation-item');
+    console.log('Found sections:', allSections.length);
+    
+    allSections.forEach((section, index) => {
+        const sectionNum = section.querySelector('.section-number')?.textContent;
+        const activitiesList = section.querySelector('.section-activities-list');
+        const expandBtn = section.querySelector('.section-expand-btn');
+        console.log(`Section ${index + 1}:`, {
+            sectionNum,
+            hasActivitiesList: !!activitiesList,
+            hasExpandBtn: !!expandBtn,
+            activitiesListId: activitiesList?.id
+        });
+    });
+    
     // Add click handlers for activity links
     document.querySelectorAll('.activity-link').forEach(link => {
         link.addEventListener('click', function(e) {
@@ -353,8 +369,22 @@ function initializeSectionActivities() {
             if (!e.target.closest('.section-expand-btn')) {
                 const sectionItem = this.closest('.section-navigation-item');
                 const sectionNum = sectionItem.querySelector('.section-number').textContent;
+                console.log('Section header clicked, section number:', sectionNum);
                 toggleSection(parseInt(sectionNum));
             }
+        });
+    });
+    
+    // Add click handlers for expand buttons
+    document.querySelectorAll('.section-expand-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const sectionItem = this.closest('.section-navigation-item');
+            const sectionNum = sectionItem.querySelector('.section-number').textContent;
+            console.log('Expand button clicked, section number:', sectionNum);
+            toggleSection(parseInt(sectionNum));
         });
     });
     
@@ -370,22 +400,37 @@ function initializeSectionActivities() {
 
 // Global functions for section activities
 function toggleSection(sectionNum) {
+    console.log('toggleSection called with:', sectionNum);
+    
     const activitiesList = document.getElementById(`section-${sectionNum}-activities`);
     const expandBtn = document.querySelector(`button[onclick="toggleSection(${sectionNum})"]`);
-    const sectionItem = document.querySelector(`#section-${sectionNum}-activities`).closest('.section-navigation-item');
+    const sectionItem = activitiesList ? activitiesList.closest('.section-navigation-item') : null;
+    
+    console.log('Found elements:', { activitiesList, expandBtn, sectionItem });
     
     if (activitiesList && expandBtn) {
         const isExpanded = activitiesList.classList.contains('expanded');
+        console.log('Current state - isExpanded:', isExpanded);
         
         if (isExpanded) {
+            // Collapse
             activitiesList.classList.remove('expanded');
             expandBtn.classList.remove('rotated');
-            sectionItem.classList.remove('section-expanded');
+            if (sectionItem) {
+                sectionItem.classList.remove('section-expanded');
+            }
+            console.log('Section collapsed');
         } else {
+            // Expand
             activitiesList.classList.add('expanded');
             expandBtn.classList.add('rotated');
-            sectionItem.classList.add('section-expanded');
+            if (sectionItem) {
+                sectionItem.classList.add('section-expanded');
+            }
+            console.log('Section expanded');
         }
+    } else {
+        console.error('Could not find required elements for section:', sectionNum);
     }
 }
 

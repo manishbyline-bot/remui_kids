@@ -1,3 +1,20 @@
+/* Ensure main navbar is visible and has content */
+.navbar {
+    display: flex !important;
+    visibility: visible !important;
+    min-height: 60px !important;
+}
+
+.navbar-nav {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+.navbar-brand {
+    display: flex !important;
+    visibility: visible !important;
+}
+
 /* Riyada Sidebar Styles - Matching First Sidebar Design - Updated */
 .riyada-sidebar-container {
     position: fixed;
@@ -131,9 +148,18 @@
     }
 }
 
-/* Adjust page content when sidebar is present */
-body.has-sidebar {
-    margin-left: 280px;
+/* Adjust page content when sidebar is present - add margin between sidebar and content */
+body.has-sidebar #page-wrapper {
+    margin-left: 300px !important;
+    padding-left: 20px !important;
+}
+
+/* Add margin between sidebar and content */
+body.has-sidebar #page-content,
+body.has-sidebar #region-main,
+body.has-sidebar .main-content {
+    margin-left: 0 !important;
+    padding-left: 20px !important;
 }
 
 /* Make dashboard use full width */
@@ -160,10 +186,47 @@ body.has-sidebar {
     padding: 0 !important;
 }
 
-/* Remove any wrapper constraints */
+/* Remove any wrapper constraints and green space */
 .wrapper, .page-wrapper {
     max-width: none !important;
     width: 100% !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+/* Add margin between sidebar and content */
+#page-wrapper {
+    margin-left: 300px !important;
+    padding-left: 20px !important;
+    width: calc(100% - 300px) !important;
+}
+
+/* Hide sidebar on activity pages (incourse layout) */
+body.pagelayout-incourse .riyada-sidebar-container,
+body.pagelayout-incourse .riyada-sidebar,
+body.pagelayout-incourse .sidebar-navigation {
+    display: none !important;
+}
+
+/* Adjust page wrapper for activity pages without sidebar */
+body.pagelayout-incourse #page-wrapper {
+    margin-left: 0 !important;
+    padding-left: 20px !important;
+    width: 100% !important;
+}
+
+/* Adjust content area for activity pages */
+body.pagelayout-incourse #page-content,
+body.pagelayout-incourse #region-main,
+body.pagelayout-incourse .main-content {
+    margin-left: 0 !important;
+    padding-left: 20px !important;
+}
+
+/* Remove any container spacing that creates green space */
+.container, .container-fluid {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
 }
 
 /* Hide footer on all pages */

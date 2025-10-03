@@ -22,24 +22,24 @@ body#page-theme-remui_kids-admin_dashboard {
     padding: 0 !important;
 }
 
-/* Hide admin navigation tabs */
-.tertiary-navigation,
-.navbar-nav.tertiary-navigation,
-[data-region="admin-settings-navigation"],
-.settingsnavigation,
-.admin-menu,
-#adminsettings {
+/* Hide admin navigation tabs - but keep main navbar visible */
+body.path-admin .tertiary-navigation,
+body.path-admin .navbar-nav.tertiary-navigation,
+body.path-admin [data-region="admin-settings-navigation"],
+body.path-admin .settingsnavigation,
+body.path-admin .admin-menu,
+body.path-admin #adminsettings {
     display: none !important;
 }
 
-/* Hide secondary navigation with admin tabs */
-.secondary-navigation,
-.edw-tabs-navigation {
+/* Hide secondary navigation with admin tabs - but keep main navbar visible */
+body.path-admin .secondary-navigation,
+body.path-admin .edw-tabs-navigation {
     display: none !important;
 }
 
-/* Hide page header if it contains admin tabs */
-.page-header-headings + .secondary-navigation {
+/* Hide page header if it contains admin tabs - but keep main navbar visible */
+body.path-admin .page-header-headings + .secondary-navigation {
     display: none !important;
 }
 
@@ -124,9 +124,10 @@ body:has(.iomad-admin-dashboard) #region-main {
     gap: 1rem;
 }
 
-.tertiary-navigation,
-.secondary-navigation,
-.edw-tabs-navigation {
+/* Only hide these on admin pages, not globally */
+body.path-admin .tertiary-navigation,
+body.path-admin .secondary-navigation,
+body.path-admin .edw-tabs-navigation {
     display: none !important;
 }
 
