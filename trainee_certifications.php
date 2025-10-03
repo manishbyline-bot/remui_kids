@@ -167,3 +167,4 @@ if (file_exists($template_file)) {
 
 echo $OUTPUT->footer();
 
+

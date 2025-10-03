@@ -1,0 +1,290 @@
+{{!
+    Trainee Resource Library Template
+    
+    @template theme_remui_kids/trainee_resources
+    
+    Browse and download course resources
+}}
+
+<!-- Include resources CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/trainee_resources.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="resources-container">
+    <!-- Header Section -->
+    <div class="resources-header">
+        <div class="header-content">
+            <a href="{{back_url}}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+            <h1 class="page-title">
+                <i class="fas fa-folder-open"></i>
+                Resource Library
+            </h1>
+            <p class="page-subtitle">Access and manage teaching resources and materials</p>
+        </div>
+        <a href="{{wwwroot}}/my/courses.php" class="btn-view-courses">
+            <i class="fas fa-book"></i>
+            View Courses
+        </a>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="resource-stats-row">
+        <div class="resource-stat-card total-card">
+            <div class="stat-icon">
+                <i class="fas fa-folder"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{total_resources}}</div>
+                <div class="stat-label">Total Resources</div>
+            </div>
+        </div>
+        
+        <div class="resource-stat-card documents-card">
+            <div class="stat-icon">
+                <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{documents_count}}</div>
+                <div class="stat-label">Documents</div>
+            </div>
+        </div>
+        
+        <div class="resource-stat-card videos-card">
+            <div class="stat-icon">
+                <i class="fas fa-file-video"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{videos_count}}</div>
+                <div class="stat-label">Videos</div>
+            </div>
+        </div>
+        
+        <div class="resource-stat-card images-card">
+            <div class="stat-icon">
+                <i class="fas fa-file-image"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{images_count}}</div>
+                <div class="stat-label">Images</div>
+            </div>
+        </div>
+        
+        <div class="resource-stat-card audio-card">
+            <div class="stat-icon">
+                <i class="fas fa-file-audio"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{audio_count}}</div>
+                <div class="stat-label">Audio</div>
+            </div>
+        </div>
+        
+        <div class="resource-stat-card archives-card">
+            <div class="stat-icon">
+                <i class="fas fa-file-archive"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{archives_count}}</div>
+                <div class="stat-label">Archives</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+        <div class="filter-tabs">
+            <button class="filter-tab {{#is_all_type}}active{{/is_all_type}}" onclick="filterByType('all')">
+                All
+            </button>
+            <button class="filter-tab {{#is_document_type}}active{{/is_document_type}}" onclick="filterByType('document')">
+                <i class="fas fa-file-pdf"></i>
+                Documents
+            </button>
+            <button class="filter-tab {{#is_video_type}}active{{/is_video_type}}" onclick="filterByType('video')">
+                <i class="fas fa-file-video"></i>
+                Videos
+            </button>
+            <button class="filter-tab {{#is_audio_type}}active{{/is_audio_type}}" onclick="filterByType('audio')">
+                <i class="fas fa-file-audio"></i>
+                Audio
+            </button>
+            <button class="filter-tab {{#is_image_type}}active{{/is_image_type}}" onclick="filterByType('image')">
+                <i class="fas fa-file-image"></i>
+                Images
+            </button>
+            <button class="filter-tab {{#is_archive_type}}active{{/is_archive_type}}" onclick="filterByType('archive')">
+                <i class="fas fa-file-archive"></i>
+                Archives
+            </button>
+        </div>
+        
+        <div class="search-filter-row">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Search by file name..." value="{{search_query}}">
+            </div>
+            
+            <div class="course-filter">
+                <label for="course-select">Course</label>
+                <select id="course-select">
+                    <option value="0">All Courses</option>
+                    {{#courses}}
+                    <option value="{{id}}" {{#is_selected}}selected{{/is_selected}}>{{name}}</option>
+                    {{/courses}}
+                </select>
+            </div>
+            
+            <div class="file-type-filter">
+                <label for="type-select">File Type</label>
+                <select id="type-select">
+                    <option value="all">All Types</option>
+                    <option value="document" {{#is_document_type}}selected{{/is_document_type}}>Documents</option>
+                    <option value="video" {{#is_video_type}}selected{{/is_video_type}}>Videos</option>
+                    <option value="audio" {{#is_audio_type}}selected{{/is_audio_type}}>Audio</option>
+                    <option value="image" {{#is_image_type}}selected{{/is_image_type}}>Images</option>
+                    <option value="archive" {{#is_archive_type}}selected{{/is_archive_type}}>Archives</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Grid -->
+    <div class="resources-section">
+        <div class="section-header">
+            <h2><i class="fas fa-th-large"></i> Resources</h2>
+        </div>
+
+        {{#has_resources}}
+        <div class="resources-grid">
+            {{#resources}}
+            <div class="resource-card resource-{{file_color}}">
+                <div class="resource-icon-wrapper">
+                    <div class="resource-icon">
+                        <i class="fas fa-{{file_icon}}"></i>
+                    </div>
+                    <span class="file-extension">{{extension}}</span>
+                </div>
+                
+                <div class="resource-info">
+                    <h3 class="resource-filename">{{filename}}</h3>
+                    <div class="resource-meta">
+                        <span class="course-badge">
+                            <i class="fas fa-book"></i>
+                            {{course_shortname}}
+                        </span>
+                        <span class="file-size">{{filesize}}</span>
+                    </div>
+                    <span class="upload-date">
+                        <i class="fas fa-calendar"></i>
+                        {{uploaded_date}}
+                    </span>
+                </div>
+                
+                <div class="resource-actions">
+                    <a href="{{download_url}}" class="btn-download" download>
+                        <i class="fas fa-download"></i>
+                        Download
+                    </a>
+                </div>
+            </div>
+            {{/resources}}
+        </div>
+        {{/has_resources}}
+
+        {{^has_resources}}
+        <div class="no-resources">
+            <div class="no-resources-icon">
+                <i class="fas fa-folder-open"></i>
+            </div>
+            <h3>No Resources Found</h3>
+            <p>No resources match your current filters. Try adjusting your search or browse different courses.</p>
+            <button class="btn-reset" onclick="window.location.href='{{wwwroot}}/theme/remui_kids/trainee_resources.php'">
+                <i class="fas fa-redo"></i>
+                Reset Filters
+            </button>
+        </div>
+        {{/has_resources}}
+    </div>
+</div>
+
+<script>
+function filterByType(type) {
+    const searchValue = document.getElementById('search-input').value;
+    const courseValue = document.getElementById('course-select').value;
+    let url = '{{wwwroot}}/theme/remui_kids/trainee_resources.php?type=' + type;
+    if (searchValue) url += '&search=' + encodeURIComponent(searchValue);
+    if (courseValue && courseValue !== '0') url += '&course=' + courseValue;
+    window.location.href = url;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Search functionality
+    const searchInput = document.getElementById('search-input');
+    let searchTimeout;
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const typeValue = document.getElementById('type-select').value;
+                const courseValue = document.getElementById('course-select').value;
+                let url = '{{wwwroot}}/theme/remui_kids/trainee_resources.php?search=' + encodeURIComponent(this.value);
+                if (typeValue && typeValue !== 'all') url += '&type=' + typeValue;
+                if (courseValue && courseValue !== '0') url += '&course=' + courseValue;
+                window.location.href = url;
+            }, 500);
+        });
+    }
+    
+    // Course filter
+    const courseSelect = document.getElementById('course-select');
+    if (courseSelect) {
+        courseSelect.addEventListener('change', function() {
+            const typeValue = document.getElementById('type-select').value;
+            const searchValue = searchInput.value;
+            let url = '{{wwwroot}}/theme/remui_kids/trainee_resources.php?course=' + this.value;
+            if (typeValue && typeValue !== 'all') url += '&type=' + typeValue;
+            if (searchValue) url += '&search=' + encodeURIComponent(searchValue);
+            window.location.href = url;
+        });
+    }
+    
+    // Type filter
+    const typeSelect = document.getElementById('type-select');
+    if (typeSelect) {
+        typeSelect.addEventListener('change', function() {
+            const courseValue = courseSelect.value;
+            const searchValue = searchInput.value;
+            let url = '{{wwwroot}}/theme/remui_kids/trainee_resources.php?type=' + this.value;
+            if (courseValue && courseValue !== '0') url += '&course=' + courseValue;
+            if (searchValue) url += '&search=' + encodeURIComponent(searchValue);
+            window.location.href = url;
+        });
+    }
+    
+    // Add entrance animations
+    const statCards = document.querySelectorAll('.resource-stat-card');
+    statCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Add hover effects
+    const resourceCards = document.querySelectorAll('.resource-card');
+    resourceCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+

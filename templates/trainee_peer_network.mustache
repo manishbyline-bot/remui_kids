@@ -1,0 +1,239 @@
+{{!
+    Trainee Peer Network Template
+    
+    @template theme_remui_kids/trainee_peer_network
+    
+    Connect with fellow trainees and teachers
+}}
+
+<!-- Include peer network CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/trainee_peer_network.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="peer-network-container">
+    <!-- Header Section -->
+    <div class="peer-network-header">
+        <div class="header-content">
+            <a href="{{back_url}}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+            <h1 class="page-title">
+                <i class="fas fa-users"></i>
+                Peer Network
+            </h1>
+            <p class="page-subtitle">Connect and collaborate with your learning community</p>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="peer-stats-row">
+        <div class="peer-stat-card total-card">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{total_peers}}</div>
+                <div class="stat-label">Total Peers</div>
+            </div>
+        </div>
+        
+        <div class="peer-stat-card online-card">
+            <div class="stat-icon">
+                <i class="fas fa-circle"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{online_peers}}</div>
+                <div class="stat-label">Online Now</div>
+            </div>
+        </div>
+        
+        <div class="peer-stat-card teacher-card">
+            <div class="stat-icon">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{teachers_count}}</div>
+                <div class="stat-label">Teachers</div>
+            </div>
+        </div>
+        
+        <div class="peer-stat-card trainee-card">
+            <div class="stat-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{trainees_count}}</div>
+                <div class="stat-label">Trainees</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="search-filter-section">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" placeholder="Search by name or email..." value="{{search_query}}">
+        </div>
+        <div class="filter-buttons">
+            <button class="filter-btn {{#is_all_filter}}active{{/is_all_filter}}" data-role="all">
+                All Roles
+            </button>
+            <button class="filter-btn {{#is_teacher_filter}}active{{/is_teacher_filter}}" data-role="teacher">
+                <i class="fas fa-chalkboard-teacher"></i>
+                Teachers
+            </button>
+            <button class="filter-btn {{#is_trainee_filter}}active{{/is_trainee_filter}}" data-role="trainee">
+                <i class="fas fa-user-graduate"></i>
+                Trainees
+            </button>
+        </div>
+    </div>
+
+    <!-- Peers Grid -->
+    {{#has_peers}}
+    <div class="peers-section">
+        <div class="section-header">
+            <h2><i class="fas fa-users"></i> Your Network</h2>
+            <p class="section-subtitle">Connect and collaborate with peers</p>
+        </div>
+
+        <div class="peers-grid">
+            {{#peers}}
+            <div class="peer-card">
+                <div class="peer-header">
+                    <div class="peer-avatar">
+                        <div class="avatar-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        {{#is_online}}
+                        <span class="online-indicator"></span>
+                        {{/is_online}}
+                    </div>
+                    <div class="peer-info">
+                        <h3 class="peer-name">{{fullname}}</h3>
+                        <span class="peer-role {{role}}">{{role}}</span>
+                    </div>
+                </div>
+
+                <div class="peer-body">
+                    <div class="peer-details">
+                        <div class="detail-item">
+                            <i class="fas fa-building"></i>
+                            <span>{{institution}}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{location}}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-book"></i>
+                            <span>{{course_count}} courses</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>{{last_seen}}</span>
+                        </div>
+                    </div>
+
+                    {{#has_shared_courses}}
+                    <div class="shared-courses">
+                        <div class="courses-label">
+                            <i class="fas fa-users-class"></i>
+                            <span>Shared Courses:</span>
+                        </div>
+                        <div class="courses-list">
+                            {{#shared_courses}}
+                            <a href="{{wwwroot}}/course/view.php?id={{id}}" class="course-tag">
+                                {{name}}
+                            </a>
+                            {{/shared_courses}}
+                        </div>
+                    </div>
+                    {{/has_shared_courses}}
+                </div>
+
+                <div class="peer-footer">
+                    <a href="{{profile_url}}" class="btn-profile">
+                        <i class="fas fa-user"></i>
+                        <span>View Profile</span>
+                    </a>
+                    <a href="{{message_url}}" class="btn-message">
+                        <i class="fas fa-envelope"></i>
+                        <span>Message</span>
+                    </a>
+                </div>
+            </div>
+            {{/peers}}
+        </div>
+    </div>
+    {{/has_peers}}
+
+    {{^has_peers}}
+    <div class="no-peers">
+        <div class="no-peers-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <h3>No Peers Found</h3>
+        <p>No peers match your current filters. Try adjusting your search or filters.</p>
+        <button class="btn-reset" onclick="window.location.href='{{wwwroot}}/theme/remui_kids/trainee_peer_network.php'">
+            <i class="fas fa-redo"></i>
+            Reset Filters
+        </button>
+    </div>
+    {{/has_peers}}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Search functionality
+    const searchInput = document.getElementById('search-input');
+    let searchTimeout;
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchValue = this.value;
+                window.location.href = '{{wwwroot}}/theme/remui_kids/trainee_peer_network.php?search=' + encodeURIComponent(searchValue);
+            }, 500);
+        });
+    }
+    
+    // Filter functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const role = this.getAttribute('data-role');
+            const searchValue = searchInput ? searchInput.value : '';
+            let url = '{{wwwroot}}/theme/remui_kids/trainee_peer_network.php?role=' + role;
+            if (searchValue) {
+                url += '&search=' + encodeURIComponent(searchValue);
+            }
+            window.location.href = url;
+        });
+    });
+    
+    // Add entrance animations
+    const statCards = document.querySelectorAll('.peer-stat-card');
+    statCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Add hover effects
+    const peerCards = document.querySelectorAll('.peer-card');
+    peerCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+

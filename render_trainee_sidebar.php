@@ -147,7 +147,7 @@ body {
                     </a>
                 </li>
                 <li class="riyada-nav-item">
-                    <a href="<?php echo $wwwroot; ?>/user/profile.php" class="riyada-nav-link" data-page="profile">
+                    <a href="<?php echo $wwwroot; ?>/theme/remui_kids/trainee_profile.php" class="riyada-nav-link" data-page="profile">
                         <span class="riyada-nav-icon">👤</span>
                         <span class="riyada-nav-text">My Profile</span>
                     </a>
@@ -217,10 +217,27 @@ body {
             <div class="riyada-nav-section-title">COMMUNITY</div>
             <ul class="riyada-nav-list">
                 <li class="riyada-nav-item">
-                    <a href="<?php echo $wwwroot; ?>/user/index.php" class="riyada-nav-link" data-page="community">
+                    <a href="<?php echo $wwwroot; ?>/theme/remui_kids/trainee_peer_network.php" class="riyada-nav-link" data-page="peer-network">
                         <span class="riyada-nav-icon">👥</span>
-                        <span class="riyada-nav-text">Community</span>
-                        <span class="riyada-nav-dropdown">▼</span>
+                        <span class="riyada-nav-text">Peer Network</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="<?php echo $wwwroot; ?>/theme/remui_kids/trainee_leaderboards.php" class="riyada-nav-link" data-page="leaderboards">
+                        <span class="riyada-nav-icon">🏆</span>
+                        <span class="riyada-nav-text">Leaderboards</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="<?php echo $wwwroot; ?>/theme/remui_kids/trainee_forums.php" class="riyada-nav-link" data-page="forums">
+                        <span class="riyada-nav-icon">💬</span>
+                        <span class="riyada-nav-text">Discussion Forums</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
+                    <a href="<?php echo $wwwroot; ?>/theme/remui_kids/trainee_resources.php" class="riyada-nav-link" data-page="resources">
+                        <span class="riyada-nav-icon">📚</span>
+                        <span class="riyada-nav-text">Resource Library</span>
                     </a>
                 </li>
             </ul>
@@ -367,6 +384,8 @@ function getCurrentPage(path) {
         return 'courses';
     } else if (path.includes('/course/index.php')) {
         return 'learning-paths';
+    } else if (path.includes('/trainee_profile.php')) {
+        return 'profile';
     } else if (path.includes('/profile.php')) {
         return 'profile';
     } else if (path.includes('/badges/mybadges.php')) {
@@ -379,6 +398,16 @@ function getCurrentPage(path) {
         return 'certifications';
     } else if (path.includes('/badges/index.php')) {
         return 'certifications';
+    } else if (path.includes('/trainee_peer_network.php')) {
+        return 'peer-network';
+    } else if (path.includes('/trainee_leaderboards.php')) {
+        return 'leaderboards';
+    } else if (path.includes('/trainee_forums.php')) {
+        return 'forums';
+    } else if (path.includes('/forum/index.php')) {
+        return 'forums';
+    } else if (path.includes('/trainee_resources.php')) {
+        return 'resources';
     } else if (path.includes('/user/index.php')) {
         return 'community';
     } else if (path.includes('/preferences.php')) {

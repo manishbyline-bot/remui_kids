@@ -132,16 +132,9 @@ foreach ($enrolled_courses as $course) {
         $files = $fs->get_area_files($context->id, 'course', 'overviewfiles', 0, 'timemodified DESC', false);
         
         if (!empty($files)) {
-            $file = reset($files);
-            $course_image_url = moodle_url::make_pluginfile_url(
-                $file->get_contextid(),
-                $file->get_component(),
-                $file->get_filearea(),
-                $file->get_itemid(),
-                $file->get_filepath(),
-                $file->get_filename()
-            )->out();
-            $course_image = $course_image_url;
+            // Use our custom image handler
+            $course_image = $CFG->wwwroot . '/theme/remui_kids/course_image.php?courseid=' . $course->id;
+            $course_image_url = $course_image;
         }
     } catch (Exception $e) {
         // If there's any error, use default image

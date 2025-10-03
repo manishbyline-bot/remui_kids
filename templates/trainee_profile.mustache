@@ -1,0 +1,207 @@
+{{!
+    Trainee Profile Template
+    
+    @template theme_remui_kids/trainee_profile
+    
+    User profile with learning preferences and capabilities
+}}
+
+<!-- Include profile CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/trainee_profile.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="trainee-profile-container">
+    <!-- Page Header -->
+    <div class="profile-page-header">
+        <h1>Profile</h1>
+        <a href="{{edit_profile_url}}" class="btn-edit-profile">
+            <i class="fas fa-edit"></i>
+            Edit Profile
+        </a>
+    </div>
+
+    <!-- Profile Information Card -->
+    <div class="profile-card">
+        <h2 class="section-title">Profile Information</h2>
+        
+        <div class="profile-content">
+            <!-- Left: Avatar Section -->
+            <div class="profile-avatar-section">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 class="profile-name">{{profile_fields.firstname}} {{profile_fields.lastname}}</h3>
+                <p class="profile-role">{{user_role}}</p>
+                <p class="profile-department">{{profile_fields.department}}</p>
+                <p class="profile-email">{{profile_fields.email}}</p>
+                <a href="{{edit_profile_url}}" class="link-change-photo">
+                    <i class="fas fa-camera"></i>
+                    Change Photo
+                </a>
+                {{#has_focus_areas}}
+                <div class="profile-focus">
+                    <strong>Teaching Competencies</strong>
+                </div>
+                {{/has_focus_areas}}
+            </div>
+            
+            <!-- Right: Profile Fields -->
+            <div class="profile-fields-section">
+                <div class="field-row">
+                    <div class="field-group">
+                        <label>First Name</label>
+                        <input type="text" value="{{profile_fields.firstname}}" readonly>
+                    </div>
+                    <div class="field-group">
+                        <label>Last Name</label>
+                        <input type="text" value="{{profile_fields.lastname}}" readonly>
+                    </div>
+                </div>
+                
+                <div class="field-row">
+                    <div class="field-group full-width">
+                        <label>Email Address</label>
+                        <input type="email" value="{{profile_fields.email}}" readonly>
+                        <small class="field-note">Email cannot be changed</small>
+                    </div>
+                </div>
+                
+                <div class="field-row">
+                    <div class="field-group">
+                        <label>Department</label>
+                        <input type="text" value="{{profile_fields.department}}" readonly>
+                    </div>
+                    <div class="field-group">
+                        <label>School / Company</label>
+                        <input type="text" value="{{profile_fields.institution}}" readonly>
+                    </div>
+                </div>
+                
+                <div class="field-row">
+                    <div class="field-group">
+                        <label>Phone Number</label>
+                        <input type="text" value="{{profile_fields.phone1}}" readonly>
+                    </div>
+                    <div class="field-group">
+                        <label>Username</label>
+                        <input type="text" value="{{profile_fields.username}}" readonly>
+                        <small class="field-note">Username cannot be changed</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Two Column Layout for Additional Sections -->
+    <div class="profile-two-column">
+        <!-- Learning Path Preferences -->
+        <div class="learning-preferences-card">
+            <div class="card-header">
+                <h2><i class="fas fa-route"></i> Learning Path Preferences</h2>
+                <button class="btn-edit-small">Edit</button>
+            </div>
+            
+            <div class="preference-section">
+                <h3>Current Career Goal</h3>
+                <div class="career-goal-box">
+                    <i class="fas fa-star"></i>
+                    <div class="goal-content">
+                        <strong>{{career_goal}}</strong>
+                        <small>Expected completion: {{expected_completion}}</small>
+                    </div>
+                </div>
+            </div>
+            
+            {{#has_focus_areas}}
+            <div class="preference-section">
+                <h3>Development Focus Areas</h3>
+                <ul class="focus-areas-list">
+                    {{#focus_areas}}
+                    <li class="focus-item {{#active}}active{{/active}}">
+                        <i class="fas fa-circle"></i>
+                        <span>{{name}}</span>
+                    </li>
+                    {{/focus_areas}}
+                </ul>
+            </div>
+            {{/has_focus_areas}}
+        </div>
+        
+        <!-- Connected Accounts -->
+        <div class="connected-accounts-card">
+            <div class="card-header">
+                <h2><i class="fas fa-link"></i> Connected Accounts</h2>
+                <button class="btn-manage-small">Manage</button>
+            </div>
+            
+            <div class="accounts-list">
+                {{#connected_accounts}}
+                <div class="account-item">
+                    <div class="account-info">
+                        <div class="account-icon {{icon}}">
+                            <i class="fab fa-{{icon}}"></i>
+                        </div>
+                        <div class="account-details">
+                            <strong>{{name}}</strong>
+                            {{#connected}}
+                            <small>{{email}}</small>
+                            {{/connected}}
+                        </div>
+                    </div>
+                    <div class="account-action">
+                        {{#connected}}
+                        <span class="badge-connected">Connected</span>
+                        {{/connected}}
+                        {{^connected}}
+                        <button class="btn-connect">Connect</button>
+                        {{/connected}}
+                    </div>
+                </div>
+                {{/connected_accounts}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Role & Capabilities -->
+    <div class="capabilities-card">
+        <div class="card-header">
+            <h2><i class="fas fa-user-shield"></i> Your Role & Capabilities</h2>
+            <span class="role-badge">{{user_role}}</span>
+        </div>
+        
+        <div class="capabilities-grid">
+            {{#capabilities}}
+            <div class="capability-section">
+                <h3><i class="fas fa-{{icon}}"></i> {{category}}</h3>
+                <ul class="capabilities-list">
+                    {{#items}}
+                    <li class="capability-item {{#enabled}}enabled{{/enabled}} {{^enabled}}disabled{{/enabled}}">
+                        {{#enabled}}
+                        <i class="fas fa-check"></i>
+                        {{/enabled}}
+                        {{^enabled}}
+                        <i class="fas fa-times"></i>
+                        {{/enabled}}
+                        <span>{{text}}</span>
+                    </li>
+                    {{/items}}
+                </ul>
+            </div>
+            {{/capabilities}}
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add animations
+    const cards = document.querySelectorAll('.profile-card, .learning-preferences-card, .connected-accounts-card, .capabilities-card');
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
+</script>
+

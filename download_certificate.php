@@ -171,3 +171,4 @@ $filename = clean_filename($badge->name . ' - ' . fullname($user) . '.pdf');
 $pdf->Output($filename, 'D'); // 'D' forces download
 exit;
 
+
