@@ -94,3 +94,4 @@ $eventparams = array('context' => $context);
 $event = \core\event\course_viewed::create($eventparams);
 $event->trigger();
 ?>
+
