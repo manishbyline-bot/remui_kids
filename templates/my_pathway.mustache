@@ -1,0 +1,975 @@
+{{!
+    My Pathway Template
+    
+    @template theme_remui_kids/my_pathway
+    
+    Enhanced learning pathway dashboard with tabs and visualizations
+}}
+
+<!-- Include Pathway CSS -->
+<link rel="stylesheet" href="{{wwwroot}}/theme/remui_kids/style/my_pathway.css">
+
+<div class="pathway-container">
+    <!-- Pathway Header -->
+    <div class="pathway-header">
+        <div class="pathway-selector">
+            <label class="pathway-label">Current Pathway:</label>
+            <select class="pathway-dropdown" id="pathway-select">
+                {{#pathway_options}}
+                <option value="{{id}}" {{#selected}}selected{{/selected}}>
+                    {{name}}
+                </option>
+                {{/pathway_options}}
+                {{^has_pathways}}
+                <option value="" selected>No enrolled courses</option>
+                {{/has_pathways}}
+            </select>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="pathway-tabs">
+        <button class="tab-button active" data-tab="overview">
+            <i class="fas fa-chart-line"></i>
+            Overview
+        </button>
+        <button class="tab-button" data-tab="program-map">
+            <i class="fas fa-map"></i>
+            Program Map
+        </button>
+        <button class="tab-button" data-tab="my-progress">
+            <i class="fas fa-chart-bar"></i>
+            My Progress
+        </button>
+        <button class="tab-button" data-tab="schedule">
+            <i class="fas fa-calendar"></i>
+            Schedule
+        </button>
+        <button class="tab-button" data-tab="resources">
+            <i class="fas fa-folder"></i>
+            Resources
+        </button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+        <!-- Overview Tab -->
+        <div class="tab-panel active" id="overview">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <div class="banner-content">
+                    <h2 class="welcome-title">Welcome back, Course Participant!</h2>
+                    <p class="welcome-subtitle">Continue your learning journey in {{current_pathway}}</p>
+                </div>
+                <div class="banner-progress">
+                    <div class="progress-percentage">{{pathway_progress}}%</div>
+                    <div class="progress-label">Complete</div>
+                </div>
+            </div>
+
+            <!-- Key Metrics Cards -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon cefr">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-title">CEFR Level</div>
+                        <div class="metric-value">{{cefr_level}}</div>
+                        <div class="metric-subtitle">Current Level</div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon hours">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-title">Hours Completed</div>
+                        <div class="metric-value">{{hours_completed}}</div>
+                        <div class="metric-subtitle">of {{total_hours}} total</div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon events">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-title">Events Completed</div>
+                        <div class="metric-value">{{events_completed}}</div>
+                        <div class="metric-subtitle">of {{total_events}} total</div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon next">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-title">Next Event</div>
+                        {{#has_next_event}}
+                        <div class="metric-value">{{next_event.title}}</div>
+                        <div class="metric-subtitle">{{next_event.date}}</div>
+                        {{/has_next_event}}
+                        {{^has_next_event}}
+                        <div class="metric-value">No upcoming events</div>
+                        <div class="metric-subtitle">All caught up!</div>
+                        {{/has_next_event}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Up Next Section -->
+            <div class="up-next-section">
+                <h3 class="section-title">Up Next</h3>
+                {{#has_upcoming}}
+                <div class="upcoming-events">
+                    {{#upcoming_events}}
+                    <div class="event-item">
+                        <div class="event-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="event-details">
+                            <div class="event-title">{{title}}</div>
+                            <div class="event-date">{{date}}</div>
+                        </div>
+                    </div>
+                    {{/upcoming_events}}
+                </div>
+                {{/has_upcoming}}
+                {{^has_upcoming}}
+                <div class="no-events">
+                    <div class="no-events-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="no-events-text">No upcoming events scheduled</div>
+                </div>
+                {{/has_upcoming}}
+            </div>
+
+            <!-- Recent Achievements -->
+            <div class="achievements-section">
+                <h3 class="section-title">Recent Achievements</h3>
+                {{#has_achievements}}
+                <div class="achievements-list">
+                    {{#recent_achievements}}
+                    <div class="achievement-item">
+                        <div class="achievement-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="achievement-details">
+                            <div class="achievement-name">{{name}}</div>
+                            <div class="achievement-date">{{date}}</div>
+                        </div>
+                        <div class="achievement-points">+{{points}} pts</div>
+                    </div>
+                    {{/recent_achievements}}
+                </div>
+                {{/has_achievements}}
+                {{^has_achievements}}
+                <div class="no-achievements">
+                    <div class="no-achievements-text">No recent achievements</div>
+                </div>
+                {{/has_achievements}}
+            </div>
+        </div>
+
+        <!-- Program Map Tab -->
+        <div class="tab-panel" id="program-map">
+            <div class="program-map-header">
+                <div class="map-title">
+                    <h2>Program Map</h2>
+                    <p>Your complete learning journey visualization</p>
+                </div>
+                <div class="map-controls">
+                    <div class="filter-section">
+                        <label class="filter-label">View:</label>
+                        <select class="filter-dropdown" id="view-filter">
+                            <option value="monthly">Monthly</option>
+                            <option value="daily">Daily</option>
+                        </select>
+                    </div>
+                    <div class="view-options">
+                        <button class="view-option active" data-view="timeline">Timeline View</button>
+                        <button class="view-option" data-view="detailed">Detailed View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pathway Overview Card -->
+            <div class="pathway-overview-card">
+                <div class="overview-content">
+                    <h3 class="overview-title">{{current_pathway}}</h3>
+                    <p class="overview-subtitle">{{current_pathway}}</p>
+                </div>
+                <div class="overview-progress">
+                    <div class="progress-text">{{pathway_progress}}% Complete</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{pathway_progress}}%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Learning Timeline -->
+            <div class="learning-timeline">
+                <div class="timeline-line"></div>
+                <div class="timeline-start">
+                    <div class="start-node">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+
+                <!-- Monthly View -->
+                <div id="monthly-view" class="timeline-view">
+                    {{#monthly_sections}}
+                    <div class="month-section">
+                        <div class="month-header">
+                            <div class="month-title">{{month_name}}</div>
+                        </div>
+                        <div class="month-timeline">
+                            {{#sections}}
+                            <div class="timeline-event {{#completed}}completed{{/completed}}" 
+                                 data-section="{{section_number}}">
+                            <div class="event-card {{#completed}}completed{{/completed}}">
+                                <div class="event-header">
+                                    <div class="event-type-icon {{type_color}}">
+                                        <i class="fas fa-{{icon}}"></i>
+                                    </div>
+                                    <div class="event-content">
+                                        <h4 class="event-title">{{day_name}} Event</h4>
+                                        <p class="event-subtitle">{{day_name}} Activities</p>
+                                        {{#course_name}}
+                                        <div class="course-badge">
+                                            <i class="fas fa-graduation-cap"></i>
+                                            {{course_name}}
+                                        </div>
+                                        {{/course_name}}
+                                    </div>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-meta">
+                                        <span class="event-date">
+                                            <i class="fas fa-calendar"></i>
+                                            {{date}}
+                                        </span>
+                                        <span class="event-duration">
+                                            <i class="fas fa-clock"></i>
+                                            {{activities.0.duration}}
+                                        </span>
+                                    </div>
+                                    <div class="event-type-badge {{type_color}}">{{activities.0.type}}</div>
+                                </div>
+                                <div class="event-footer">
+                                    <span class="event-month">{{../month_name}} • Week {{section_number}}</span>
+                                </div>
+                            </div>
+                                <div class="timeline-node {{type_color}}"></div>
+                            </div>
+                            {{/sections}}
+                        </div>
+                    </div>
+                    {{/monthly_sections}}
+                </div>
+
+                <!-- Daily View -->
+                <div id="daily-view" class="timeline-view" style="display: none;">
+                    {{#daily_sections}}
+                    <div class="timeline-event daily-event {{#is_even}}right{{/is_even}}{{^is_even}}left{{/is_even}}">
+                        <div class="day-event-card">
+                            <div class="day-header">
+                                <div class="day-header-icon {{first_activity_color}}">
+                                    <i class="fas fa-{{first_activity_icon}}"></i>
+                                </div>
+                                <div class="day-header-content">
+                                    <h3 class="day-header-title">{{section_name}}</h3>
+                                    {{#course_name}}
+                                    <div class="course-badge">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        {{course_name}}
+                                    </div>
+                                    {{/course_name}}
+                                </div>
+                            </div>
+                            <div class="day-header-meta">
+                                <div class="day-meta-item">
+                                    <span class="day-meta-icon">📅</span>
+                                    <span class="day-meta-text">{{date}}</span>
+                                </div>
+                                <div class="day-meta-item">
+                                    <span class="day-meta-icon">⏱</span>
+                                    <span class="day-meta-text">{{total_duration}} hours</span>
+                                </div>
+                                <div class="day-meta-item">
+                                    <span class="day-meta-icon">🧩</span>
+                                    <span class="day-meta-text">{{activity_count}} activities</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="timeline-node {{first_activity_color}}"></div>
+                    </div>
+                    {{/daily_sections}}
+                </div>
+            </div>
+        </div>
+
+        <!-- My Progress Tab -->
+        <div class="tab-panel" id="my-progress">
+            <div class="progress-header">
+                <h2>My Progress</h2>
+                <p>Track your learning journey and achievements</p>
+            </div>
+
+            <!-- Progress Overview -->
+            <div class="progress-overview">
+                <div class="progress-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">{{pathway_progress}}%</div>
+                            <div class="stat-label">Overall Progress</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">{{total_hours_spent}}</div>
+                            <div class="stat-label">Hours Completed</div>
+                            <div class="stat-subtitle">of {{total_hours_estimated}} total</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">{{total_activities_completed}}</div>
+                            <div class="stat-label">Activities Completed</div>
+                            <div class="stat-subtitle">of {{total_activities_available}} total</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">{{completed_courses}}</div>
+                            <div class="stat-label">Courses Completed</div>
+                            <div class="stat-subtitle">of {{total_courses}} total</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Progress Breakdown -->
+            <div class="course-progress-section">
+                <h3 class="section-title">Course Progress Breakdown</h3>
+                {{#has_course_progress}}
+                <div class="course-progress-list">
+                    {{#course_progress_data}}
+                    <div class="course-progress-card">
+                        <div class="course-progress-header">
+                            <div class="course-info">
+                                <h4 class="course-name">{{course_name}}</h4>
+                                <div class="course-status status-{{status}}">
+                                    {{#status}}
+                                    {{#completed}}Completed{{/completed}}
+                                    {{#in_progress}}In Progress{{/in_progress}}
+                                    {{#not_started}}Not Started{{/not_started}}
+                                    {{/status}}
+                                </div>
+                            </div>
+                            <div class="course-progress-percentage">
+                                <span class="progress-number">{{progress}}%</span>
+                            </div>
+                        </div>
+                        <div class="course-progress-bar">
+                            <div class="progress-fill" style="width: {{progress}}%"></div>
+                        </div>
+                        <div class="course-progress-details">
+                            <div class="progress-detail-item">
+                                <span class="detail-label">Activities:</span>
+                                <span class="detail-value">{{activities_completed}}/{{activities_total}}</span>
+                            </div>
+                            <div class="progress-detail-item">
+                                <span class="detail-label">Hours:</span>
+                                <span class="detail-value">{{hours_spent}}/{{hours_estimated}}</span>
+                            </div>
+                            <div class="progress-detail-item">
+                                <span class="detail-label">Enrolled:</span>
+                                <span class="detail-value">{{timeenrolled}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{/course_progress_data}}
+                </div>
+                {{/has_course_progress}}
+                {{^has_course_progress}}
+                <div class="no-progress-data">
+                    <div class="no-progress-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="no-progress-text">No course progress data available</div>
+                </div>
+                {{/has_course_progress}}
+            </div>
+
+            <!-- Progress Visualization -->
+            <div class="progress-visualization">
+                <h3 class="section-title">Learning Journey Visualization</h3>
+                <div class="progress-chart-container">
+                    <div class="chart-tabs">
+                        <button class="chart-tab active" data-chart="overview">Overview</button>
+                        <button class="chart-tab" data-chart="timeline">Timeline</button>
+                        <button class="chart-tab" data-chart="achievements">Achievements</button>
+                    </div>
+                    
+                    <div class="chart-content">
+                        <!-- Overview Chart -->
+                        <div class="chart-panel active" id="overview-chart">
+                            <div class="progress-radial-chart">
+                                <div class="radial-progress">
+                                    <svg class="radial-chart" viewBox="0 0 100 100">
+                                        <circle class="radial-bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="radial-progress" cx="50" cy="50" r="40" 
+                                                style="stroke-dasharray: {{pathway_progress}} 100;"></circle>
+                                    </svg>
+                                    <div class="radial-text">
+                                        <span class="radial-percentage">{{pathway_progress}}%</span>
+                                        <span class="radial-label">Complete</span>
+                                    </div>
+                                </div>
+                                <div class="radial-stats">
+                                    <div class="radial-stat">
+                                        <span class="stat-number">{{completed_courses}}</span>
+                                        <span class="stat-text">Courses Completed</span>
+                                    </div>
+                                    <div class="radial-stat">
+                                        <span class="stat-number">{{in_progress_courses}}</span>
+                                        <span class="stat-text">In Progress</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Timeline Chart -->
+                        <div class="chart-panel" id="timeline-chart">
+                            <div class="timeline-progress">
+                                <div class="timeline-header">
+                                    <h4>Learning Timeline</h4>
+                                    <p>Your progress over time</p>
+                                </div>
+                                <div class="timeline-chart">
+                                    <div class="timeline-placeholder">
+                                        <i class="fas fa-chart-line"></i>
+                                        <p>Timeline visualization coming soon</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Achievements Chart -->
+                        <div class="chart-panel" id="achievements-chart">
+                            <div class="achievements-progress">
+                                <div class="achievements-header">
+                                    <h4>Learning Achievements</h4>
+                                    <p>Your accomplishments and milestones</p>
+                                </div>
+                                <div class="achievements-grid">
+                                    <div class="achievement-badge {{#completed_courses}}earned{{/completed_courses}}">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        <span>Course Completion</span>
+                                    </div>
+                                    <div class="achievement-badge {{#total_activities_completed}}earned{{/total_activities_completed}}">
+                                        <i class="fas fa-tasks"></i>
+                                        <span>Activity Master</span>
+                                    </div>
+                                    <div class="achievement-badge {{#total_hours_spent}}earned{{/total_hours_spent}}">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Time Dedication</span>
+                                    </div>
+                                    <div class="achievement-badge {{#pathway_progress}}earned{{/pathway_progress}}">
+                                        <i class="fas fa-star"></i>
+                                        <span>Progress Champion</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Tab -->
+        <div class="tab-panel" id="schedule">
+            <div class="schedule-header">
+                <h2>Schedule</h2>
+                <p>Your upcoming learning events and deadlines</p>
+            </div>
+
+            <!-- Calendar Placeholder -->
+            <div class="schedule-calendar">
+                <div class="calendar-placeholder">
+                    <i class="fas fa-calendar-alt"></i>
+                    <p>Calendar view coming soon</p>
+                </div>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="upcoming-schedule">
+                <h3>Upcoming Events</h3>
+                {{#has_upcoming}}
+                <div class="schedule-events">
+                    {{#upcoming_events}}
+                    <div class="schedule-event">
+                        <div class="event-date">
+                            <div class="date-day">{{day}}</div>
+                            <div class="date-month">{{month}}</div>
+                        </div>
+                        <div class="event-info">
+                            <div class="event-title">{{title}}</div>
+                            <div class="event-time">{{time}}</div>
+                        </div>
+                    </div>
+                    {{/upcoming_events}}
+                </div>
+                {{/has_upcoming}}
+                {{^has_upcoming}}
+                <div class="no-schedule">
+                    <p>No upcoming events scheduled</p>
+                </div>
+                {{/has_upcoming}}
+            </div>
+        </div>
+
+        <!-- Resources Tab -->
+        <div class="tab-panel" id="resources">
+            <div class="resources-header">
+                <h2>Resources</h2>
+                <p>Access your learning materials and downloads</p>
+            </div>
+
+            <!-- Resource Categories -->
+            <div class="resource-categories">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Learning Materials</h3>
+                        <p>Course content and study guides</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Downloads</h3>
+                        <p>PDFs, templates, and resources</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Videos</h3>
+                        <p>Recorded sessions and tutorials</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching functionality
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and panels
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanels.forEach(panel => panel.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding panel
+            this.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+        });
+    });
+
+     // View option switching in Program Map
+     const viewOptions = document.querySelectorAll('.view-option');
+     viewOptions.forEach(option => {
+         option.addEventListener('click', function() {
+             viewOptions.forEach(opt => opt.classList.remove('active'));
+             this.classList.add('active');
+         });
+     });
+
+     // View filter functionality for Program Map
+     const viewFilter = document.getElementById('view-filter');
+     const monthlyView = document.getElementById('monthly-view');
+     const dailyView = document.getElementById('daily-view');
+
+     function updateTimelineView() {
+         if (!viewFilter) return;
+         
+         const selectedView = viewFilter.value;
+         
+         if (selectedView === 'monthly') {
+             // Show monthly view
+             if (monthlyView) monthlyView.style.display = 'block';
+             if (dailyView) dailyView.style.display = 'none';
+         } else if (selectedView === 'daily') {
+             // Show daily view
+             if (monthlyView) monthlyView.style.display = 'none';
+             if (dailyView) dailyView.style.display = 'block';
+         }
+     }
+
+     // Add event listener for view filter
+     if (viewFilter) {
+         viewFilter.addEventListener('change', updateTimelineView);
+     }
+
+     // Chart tabs functionality for My Progress
+     const chartTabs = document.querySelectorAll('.chart-tab');
+     const chartPanels = document.querySelectorAll('.chart-panel');
+
+     chartTabs.forEach(tab => {
+         tab.addEventListener('click', function() {
+             const targetChart = this.getAttribute('data-chart');
+             
+             // Remove active class from all tabs and panels
+             chartTabs.forEach(t => t.classList.remove('active'));
+             chartPanels.forEach(p => p.classList.remove('active'));
+             
+             // Add active class to clicked tab and corresponding panel
+             this.classList.add('active');
+             const targetPanel = document.getElementById(targetChart + '-chart');
+             if (targetPanel) {
+                 targetPanel.classList.add('active');
+             }
+         });
+     });
+
+    // Animate progress bars
+    const progressBars = document.querySelectorAll('.progress-fill');
+    progressBars.forEach(bar => {
+        const progress = bar.style.width;
+        bar.style.width = '0%';
+        
+        setTimeout(() => {
+            bar.style.transition = 'width 1.5s ease';
+            bar.style.width = progress;
+        }, 500);
+    });
+
+    // Animate metric cards
+    const metricCards = document.querySelectorAll('.metric-card');
+    metricCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 150);
+    });
+
+    // Pathway selector functionality
+    const pathwaySelect = document.getElementById('pathway-select');
+    if (pathwaySelect) {
+        pathwaySelect.addEventListener('change', function() {
+        const selectedPathwayId = this.value;
+        const selectedOption = this.options[this.selectedIndex];
+        const selectedPathwayName = selectedOption.text; // Course name only
+        
+        if (selectedPathwayId) {
+            // Show loading state
+            const pathwayContainer = document.querySelector('.pathway-container');
+            pathwayContainer.style.opacity = '0.7';
+            
+            // Fetch course metrics via AJAX
+            fetch('{{wwwroot}}/theme/remui_kids/get_course_metrics.php?courseid=' + selectedPathwayId)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        showNotification('Error loading course data: ' + data.error, 'error');
+                        return;
+                    }
+                    
+                    // Update the welcome banner with selected pathway
+                    const welcomeSubtitle = document.querySelector('.welcome-subtitle');
+                    if (welcomeSubtitle) {
+                        welcomeSubtitle.textContent = `Continue your learning journey in ${selectedPathwayName}`;
+                    }
+                    
+                    // Update the pathway overview card
+                    const overviewTitle = document.querySelector('.overview-title');
+                    if (overviewTitle) {
+                        overviewTitle.textContent = selectedPathwayName;
+                    }
+                    
+                    const overviewSubtitle = document.querySelector('.overview-subtitle');
+                    if (overviewSubtitle) {
+                        overviewSubtitle.textContent = selectedPathwayName;
+                    }
+                    
+                    // Update CEFR Level
+                    const cefrValue = document.querySelector('.metric-card:nth-child(1) .metric-value');
+                    if (cefrValue) {
+                        cefrValue.textContent = data.cefr_level;
+                    }
+                    
+                    // Update Hours Completed
+                    const hoursValue = document.querySelector('.metric-card:nth-child(2) .metric-value');
+                    if (hoursValue) {
+                        hoursValue.textContent = data.hours_completed;
+                    }
+                    
+                    // Update Events Completed
+                    const eventsValue = document.querySelector('.metric-card:nth-child(3) .metric-value');
+                    if (eventsValue) {
+                        eventsValue.textContent = data.events_completed;
+                    }
+                    
+                    const eventsSubtitle = document.querySelector('.metric-card:nth-child(3) .metric-subtitle');
+                    if (eventsSubtitle) {
+                        eventsSubtitle.textContent = `of ${data.total_events} total`;
+                    }
+                    
+                    // Update Next Event
+                    const nextEventValue = document.querySelector('.metric-card:nth-child(4) .metric-value');
+                    const nextEventSubtitle = document.querySelector('.metric-card:nth-child(4) .metric-subtitle');
+                    
+                    if (data.has_next_event) {
+                        if (nextEventValue) {
+                            nextEventValue.textContent = data.next_event.title;
+                        }
+                        if (nextEventSubtitle) {
+                            nextEventSubtitle.textContent = data.next_event.date;
+                        }
+                    } else {
+                        if (nextEventValue) {
+                            nextEventValue.textContent = 'No upcoming events';
+                        }
+                        if (nextEventSubtitle) {
+                            nextEventSubtitle.textContent = 'All caught up!';
+                        }
+                    }
+                    
+                    // Update timeline views with new course data
+                    updateTimelineViews(data);
+                    
+                    // Hide loading state
+                    pathwayContainer.style.opacity = '1';
+                    
+                    // Show success notification
+                    showNotification(`Switched to ${selectedPathwayName} pathway`, 'success');
+                })
+                .catch(error => {
+                    console.error('Error fetching course metrics:', error);
+                    showNotification('Error loading course data', 'error');
+                    pathwayContainer.style.opacity = '1';
+                });
+        }
+    });
+    }
+    
+    // Update timeline views with new course data
+    function updateTimelineViews(data) {
+        // Update monthly view
+        if (data.has_monthly_sections && data.monthly_sections) {
+            updateMonthlyView(data.monthly_sections);
+        }
+        
+        // Update daily view
+        if (data.has_daily_sections && data.daily_sections) {
+            updateDailyView(data.daily_sections);
+        }
+    }
+    
+    // Update monthly timeline view
+    function updateMonthlyView(monthlySections) {
+        const monthlyView = document.getElementById('monthly-view');
+        if (!monthlyView) return;
+        
+        // Clear existing content
+        monthlyView.innerHTML = '';
+        
+        // Rebuild monthly sections
+        monthlySections.forEach(month => {
+            const monthSection = document.createElement('div');
+            monthSection.className = 'month-section';
+            
+            const monthHeader = document.createElement('div');
+            monthHeader.className = 'month-header';
+            monthHeader.innerHTML = `<div class="month-title">${month.month_name}</div>`;
+            
+            const monthTimeline = document.createElement('div');
+            monthTimeline.className = 'month-timeline';
+            
+            month.sections.forEach(section => {
+                const timelineEvent = document.createElement('div');
+                timelineEvent.className = `timeline-event ${section.completed ? 'completed' : ''}`;
+                timelineEvent.setAttribute('data-section', section.section_number);
+                
+                const eventCard = document.createElement('div');
+                eventCard.className = `event-card ${section.completed ? 'completed' : ''}`;
+                
+                const courseBadge = section.course_name ? 
+                    `<div class="course-badge"><i class="fas fa-graduation-cap"></i>${section.course_name}</div>` : '';
+                
+                eventCard.innerHTML = `
+                    <div class="event-header">
+                        <div class="event-type-icon ${section.type_color}">
+                            <i class="fas fa-${section.icon}"></i>
+                        </div>
+                        <div class="event-content">
+                            <h4 class="event-title">${section.day_name} Event</h4>
+                            <p class="event-subtitle">${section.day_name} Activities</p>
+                            ${courseBadge}
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-meta">
+                            <span class="event-date">
+                                <i class="fas fa-calendar"></i>
+                                ${section.date}
+                            </span>
+                            <span class="event-duration">
+                                <i class="fas fa-clock"></i>
+                                ${section.activities && section.activities[0] ? section.activities[0].duration : '8 hours'}
+                            </span>
+                        </div>
+                        <div class="event-type-badge ${section.type_color}">${section.type}</div>
+                    </div>
+                    <div class="event-footer">
+                        <span class="event-month">${month.month_name} • Week ${section.section_number}</span>
+                    </div>
+                `;
+                
+                const timelineNode = document.createElement('div');
+                timelineNode.className = `timeline-node ${section.type_color}`;
+                
+                timelineEvent.appendChild(eventCard);
+                timelineEvent.appendChild(timelineNode);
+                monthTimeline.appendChild(timelineEvent);
+            });
+            
+            monthSection.appendChild(monthHeader);
+            monthSection.appendChild(monthTimeline);
+            monthlyView.appendChild(monthSection);
+        });
+    }
+    
+    // Update daily timeline view
+    function updateDailyView(dailySections) {
+        const dailyView = document.getElementById('daily-view');
+        if (!dailyView) return;
+        
+        // Clear existing content
+        dailyView.innerHTML = '';
+        
+        // Rebuild daily sections
+        dailySections.forEach((day, index) => {
+            const timelineEvent = document.createElement('div');
+            timelineEvent.className = `timeline-event daily-event ${day.is_even ? 'right' : 'left'}`;
+            
+            const courseBadge = day.course_name ? 
+                `<div class="course-badge"><i class="fas fa-graduation-cap"></i>${day.course_name}</div>` : '';
+            
+            const dayEventCard = document.createElement('div');
+            dayEventCard.className = 'day-event-card';
+            dayEventCard.innerHTML = `
+                <div class="day-header">
+                    <div class="day-header-icon ${day.first_activity_color}">
+                        <i class="fas fa-${day.first_activity_icon}"></i>
+                    </div>
+                    <div class="day-header-content">
+                        <h3 class="day-header-title">${day.section_name}</h3>
+                        ${courseBadge}
+                    </div>
+                </div>
+                <div class="day-header-meta">
+                    <div class="day-meta-item">
+                        <span class="day-meta-icon">📅</span>
+                        <span class="day-meta-text">${day.date}</span>
+                    </div>
+                    <div class="day-meta-item">
+                        <span class="day-meta-icon">⏱</span>
+                        <span class="day-meta-text">${day.total_duration} hours</span>
+                    </div>
+                    <div class="day-meta-item">
+                        <span class="day-meta-icon">🧩</span>
+                        <span class="day-meta-text">${day.activity_count} activities</span>
+                    </div>
+                </div>
+            `;
+            
+            const timelineNode = document.createElement('div');
+            timelineNode.className = `timeline-node ${day.first_activity_color}`;
+            
+            timelineEvent.appendChild(dayEventCard);
+            timelineEvent.appendChild(timelineNode);
+            dailyView.appendChild(timelineEvent);
+        });
+    }
+    
+    // Notification function
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `pathway-notification ${type}`;
+        notification.textContent = message;
+        
+        // Style the notification
+        const bgColor = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${bgColor};
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+            font-size: 14px;
+            font-weight: 500;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Animate in
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+});
+</script>

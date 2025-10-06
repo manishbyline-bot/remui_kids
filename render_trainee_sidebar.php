@@ -166,6 +166,12 @@ body {
                     </a>
                 </li>
                 <li class="riyada-nav-item">
+                    <a href="<?php echo $wwwroot; ?>/theme/remui_kids/my_pathway.php" class="riyada-nav-link" data-page="pathway">
+                        <span class="riyada-nav-icon">🗺️</span>
+                        <span class="riyada-nav-text">My Pathway</span>
+                    </a>
+                </li>
+                <li class="riyada-nav-item">
                     <a href="<?php echo $wwwroot; ?>/badges/mybadges.php" class="riyada-nav-link" data-page="achievements">
                         <span class="riyada-nav-icon">🏆</span>
                         <span class="riyada-nav-text">Achievements</span>
@@ -380,6 +386,8 @@ function getCurrentPage(path) {
         return 'dashboard';
     } else if (path.includes('/my_learning.php')) {
         return 'courses';
+    } else if (path.includes('/my_pathway.php')) {
+        return 'pathway';
     } else if (path.includes('/courses.php') || path.includes('/my/courses.php')) {
         return 'courses';
     } else if (path.includes('/course/index.php')) {

@@ -12,7 +12,7 @@
 
 <div class="section-viewer-container">
     <!-- Page Header -->
-    <div class="section-header">
+    <div class="section-viewer-header">
         <div class="header-content">
             <div class="course-info">
                 <div class="course-image">
@@ -21,7 +21,7 @@
                 <div class="course-details">
                     <h1>{{course.fullname}}</h1>
                     <h2 class="section-title">{{section_name}}</h2>
-                    <div class="section-meta">
+                    <div class="course-meta">
                         <span class="meta-item">
                             <i class="fas fa-tasks"></i>
                             {{total_activities}} Activities
@@ -46,85 +46,74 @@
         </div>
     </div>
 
-    <!-- Section Summary -->
-    {{#section_summary}}
-    <div class="section-summary">
-        <div class="summary-content">{{{section_summary}}}</div>
-    </div>
-    {{/section_summary}}
-
-    <!-- Progress Bar -->
-    <div class="progress-section">
-        <div class="progress-header">
-            <h3>Section Progress</h3>
-            <span class="progress-text">{{completed_count}}/{{total_activities}} activities completed</span>
+    <!-- Section Content -->
+    <div class="section-viewer-content">
+        <!-- Section Summary -->
+        {{#section_summary}}
+        <div class="section-summary">
+            <div class="summary-content">{{{section_summary}}}</div>
         </div>
-        <div class="progress-bar">
-            <div class="progress-fill" style="width: {{progress_percentage}}%"></div>
-        </div>
-    </div>
+        {{/section_summary}}
 
-    <!-- Activities List -->
-    <div class="activities-container">
-        <h3 class="activities-title">
-            <i class="fas fa-list"></i>
-            Section Activities
-        </h3>
+        <!-- Progress Bar -->
+        <div class="progress-section">
+            <div class="progress-header">
+                <h3>Section Progress</h3>
+                <span class="progress-text">{{completed_count}}/{{total_activities}} activities completed</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{progress_percentage}}%"></div>
+            </div>
+        </div>
+
+        <!-- Activities List -->
+        <div class="activities-container">
+            <h3 class="activities-title">
+                <i class="fas fa-list"></i>
+                Section Activities
+            </h3>
         
-        {{#activities}}
-        <div class="activity-list">
+        <div class="activities-list">
             {{#activities}}
             <div class="activity-item {{#completed}}completed{{/completed}}" data-activity="{{id}}">
-                <!-- Connection line to next activity -->
-                {{^last}}
-                <div class="connection-line"></div>
-                {{/last}}
-                
-                <!-- Activity node -->
-                <div class="activity-node">
-                    <div class="node-circle {{#completed}}completed{{/completed}}">
+                <div class="activity-content">
+                    <div class="activity-icon">
                         {{#completed}}
-                        <i class="fas fa-check"></i>
+                        <i class="fas fa-check-circle text-success"></i>
                         {{/completed}}
                         {{^completed}}
-                        <i class="fas fa-{{icon}}"></i>
+                        <i class="fas fa-{{icon}} text-primary"></i>
                         {{/completed}}
                     </div>
-                </div>
-                
-                <!-- Activity content -->
-                <div class="activity-content">
-                    <div class="activity-header">
-                        <h4 class="activity-name">{{name}}</h4>
-                        <div class="activity-type">
-                            <span class="type-badge">{{modname}}</span>
+                    
+                    <div class="activity-details">
+                        <h5 class="activity-name">{{name}}</h5>
+                        <div class="activity-meta">
+                            <span class="activity-type">{{modname}}</span>
+                            {{#completed}}
+                            <span class="status-badge completed">
+                                <i class="fas fa-check"></i>
+                                Completed
+                            </span>
+                            {{/completed}}
+                            {{^completed}}
+                            <span class="status-badge pending">
+                                <i class="fas fa-clock"></i>
+                                Pending
+                            </span>
+                            {{/completed}}
                         </div>
                     </div>
                     
-                    <div class="activity-status">
-                        {{#completed}}
-                        <span class="status-completed">
-                            <i class="fas fa-check-circle"></i>
-                            Completed
-                        </span>
-                        {{/completed}}
-                        {{^completed}}
-                        <span class="status-pending">
-                            <i class="fas fa-clock"></i>
-                            Pending
-                        </span>
-                        {{/completed}}
-                    </div>
-                    
                     <div class="activity-actions">
-                        <a href="{{url}}" class="btn-activity {{#completed}}btn-review{{/completed}}">
+                        <a href="{{url}}" class="btn btn-sm {{#completed}}btn-outline-success{{/completed}}{{^completed}}btn-primary{{/completed}}">
                             {{#completed}}
                             <i class="fas fa-eye"></i>
-                            Review Activity
+                            Review
                             {{/completed}}
                             {{^completed}}
                             <i class="fas fa-play"></i>
-                            Start Activity
+                            Start
                             {{/completed}}
                         </a>
                     </div>
@@ -132,24 +121,24 @@
             </div>
             {{/activities}}
         </div>
-        {{/activities}}
-    </div>
+        </div>
 
-    <!-- Navigation -->
-    <div class="section-navigation">
-        {{#prev_section}}
-        <a href="{{wwwroot}}/theme/remui_kids/section_viewer.php?courseid={{courseid}}&section={{section}}" class="nav-button prev">
-            <i class="fas fa-chevron-left"></i>
-            <span>Previous Section</span>
-        </a>
-        {{/prev_section}}
-        
-        {{#next_section}}
-        <a href="{{wwwroot}}/theme/remui_kids/section_viewer.php?courseid={{courseid}}&section={{section}}" class="nav-button next">
-            <span>Next Section</span>
-            <i class="fas fa-chevron-right"></i>
-        </a>
-        {{/next_section}}
+        <!-- Navigation -->
+        <div class="section-navigation">
+            {{#prev_section}}
+            <a href="{{wwwroot}}/theme/remui_kids/section_viewer.php?courseid={{courseid}}&section={{section}}" class="nav-button prev">
+                <i class="fas fa-chevron-left"></i>
+                <span>Previous Section</span>
+            </a>
+            {{/prev_section}}
+            
+            {{#next_section}}
+            <a href="{{wwwroot}}/theme/remui_kids/section_viewer.php?courseid={{courseid}}&section={{section}}" class="nav-button next">
+                <span>Next Section</span>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {{/next_section}}
+        </div>
     </div>
 </div>
 
