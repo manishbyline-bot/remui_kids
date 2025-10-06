@@ -129,8 +129,6 @@ function initializeQuickActions() {
     
     actionButtons.forEach(button => {
         button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
             // Add click animation
             this.style.transform = 'scale(0.95)';
             setTimeout(() => {
@@ -140,17 +138,18 @@ function initializeQuickActions() {
             // Handle action based on class
             if (this.classList.contains('create')) {
                 console.log('Create user action clicked');
-                // Add create user functionality here
             } else if (this.classList.contains('upload')) {
                 console.log('Bulk upload action clicked');
-                // Add bulk upload functionality here
             } else if (this.classList.contains('export')) {
                 console.log('Export users action clicked');
-                // Add export functionality here
             } else if (this.classList.contains('approve')) {
                 console.log('Approve events action clicked');
-                // Add approve events functionality here
             }
+            
+            // Force navigation using window.location
+            e.preventDefault();
+            window.location.href = this.href;
+            return false;
         });
     });
 }

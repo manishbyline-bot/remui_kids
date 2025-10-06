@@ -140,6 +140,9 @@ echo $OUTPUT->header();
 
 // Add recent uploads JavaScript
 $PAGE->requires->js('/theme/remui_kids/js/recent_uploads.js');
+
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
 ?>
 
 <style>

@@ -128,6 +128,9 @@ echo $OUTPUT->header();
 
 // Add active users JavaScript
 $PAGE->requires->js('/theme/remui_kids/js/active_users.js');
+
+// Ensure jQuery is available for any dependencies
+$PAGE->requires->jquery();
 ?>
 
 <div class="user-details-container">
