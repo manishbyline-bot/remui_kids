@@ -231,33 +231,39 @@
                             {{#sections}}
                             <div class="timeline-event {{#completed}}completed{{/completed}}" 
                                  data-section="{{section_number}}">
-                                <div class="event-card {{#completed}}completed{{/completed}}">
-                                    <div class="event-header">
-                                        <div class="event-type-icon {{type_color}}">
-                                            <i class="fas fa-{{icon}}"></i>
-                                        </div>
-                                        <div class="event-content">
-                                            <h4 class="event-title">{{day_name}} Event</h4>
-                                            <p class="event-subtitle">{{day_name}} Activities</p>
-                                        </div>
+                            <div class="event-card {{#completed}}completed{{/completed}}">
+                                <div class="event-header">
+                                    <div class="event-type-icon {{type_color}}">
+                                        <i class="fas fa-{{icon}}"></i>
                                     </div>
-                                    <div class="event-details">
-                                        <div class="event-meta">
-                                            <span class="event-date">
-                                                <i class="fas fa-calendar"></i>
-                                                {{date}}
-                                            </span>
-                                            <span class="event-duration">
-                                                <i class="fas fa-clock"></i>
-                                                {{activities.0.duration}}
-                                            </span>
+                                    <div class="event-content">
+                                        <h4 class="event-title">{{day_name}} Event</h4>
+                                        <p class="event-subtitle">{{day_name}} Activities</p>
+                                        {{#course_name}}
+                                        <div class="course-badge">
+                                            <i class="fas fa-graduation-cap"></i>
+                                            {{course_name}}
                                         </div>
-                                        <div class="event-type-badge {{type_color}}">{{activities.0.type}}</div>
-                                    </div>
-                                    <div class="event-footer">
-                                        <span class="event-month">{{../month_name}} • Week {{section_number}}</span>
+                                        {{/course_name}}
                                     </div>
                                 </div>
+                                <div class="event-details">
+                                    <div class="event-meta">
+                                        <span class="event-date">
+                                            <i class="fas fa-calendar"></i>
+                                            {{date}}
+                                        </span>
+                                        <span class="event-duration">
+                                            <i class="fas fa-clock"></i>
+                                            {{activities.0.duration}}
+                                        </span>
+                                    </div>
+                                    <div class="event-type-badge {{type_color}}">{{activities.0.type}}</div>
+                                </div>
+                                <div class="event-footer">
+                                    <span class="event-month">{{../month_name}} • Week {{section_number}}</span>
+                                </div>
+                            </div>
                                 <div class="timeline-node {{type_color}}"></div>
                             </div>
                             {{/sections}}
@@ -277,7 +283,12 @@
                                 </div>
                                 <div class="day-header-content">
                                     <h3 class="day-header-title">{{section_name}}</h3>
-                                    <p class="day-header-subtitle">📘 Section Overview</p>
+                                    {{#course_name}}
+                                    <div class="course-badge">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        {{course_name}}
+                                    </div>
+                                    {{/course_name}}
                                 </div>
                             </div>
                             <div class="day-header-meta">
@@ -327,8 +338,9 @@
                             <i class="fas fa-clock"></i>
                         </div>
                         <div class="stat-content">
-                            <div class="stat-value">{{hours_completed}}</div>
+                            <div class="stat-value">{{total_hours_spent}}</div>
                             <div class="stat-label">Hours Completed</div>
+                            <div class="stat-subtitle">of {{total_hours_estimated}} total</div>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -336,18 +348,159 @@
                             <i class="fas fa-trophy"></i>
                         </div>
                         <div class="stat-content">
-                            <div class="stat-value">{{events_completed}}</div>
-                            <div class="stat-label">Events Completed</div>
+                            <div class="stat-value">{{total_activities_completed}}</div>
+                            <div class="stat-label">Activities Completed</div>
+                            <div class="stat-subtitle">of {{total_activities_available}} total</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">{{completed_courses}}</div>
+                            <div class="stat-label">Courses Completed</div>
+                            <div class="stat-subtitle">of {{total_courses}} total</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Progress Chart Placeholder -->
-            <div class="progress-chart">
-                <div class="chart-placeholder">
-                    <i class="fas fa-chart-line"></i>
-                    <p>Progress visualization coming soon</p>
+            <!-- Course Progress Breakdown -->
+            <div class="course-progress-section">
+                <h3 class="section-title">Course Progress Breakdown</h3>
+                {{#has_course_progress}}
+                <div class="course-progress-list">
+                    {{#course_progress_data}}
+                    <div class="course-progress-card">
+                        <div class="course-progress-header">
+                            <div class="course-info">
+                                <h4 class="course-name">{{course_name}}</h4>
+                                <div class="course-status status-{{status}}">
+                                    {{#status}}
+                                    {{#completed}}Completed{{/completed}}
+                                    {{#in_progress}}In Progress{{/in_progress}}
+                                    {{#not_started}}Not Started{{/not_started}}
+                                    {{/status}}
+                                </div>
+                            </div>
+                            <div class="course-progress-percentage">
+                                <span class="progress-number">{{progress}}%</span>
+                            </div>
+                        </div>
+                        <div class="course-progress-bar">
+                            <div class="progress-fill" style="width: {{progress}}%"></div>
+                        </div>
+                        <div class="course-progress-details">
+                            <div class="progress-detail-item">
+                                <span class="detail-label">Activities:</span>
+                                <span class="detail-value">{{activities_completed}}/{{activities_total}}</span>
+                            </div>
+                            <div class="progress-detail-item">
+                                <span class="detail-label">Hours:</span>
+                                <span class="detail-value">{{hours_spent}}/{{hours_estimated}}</span>
+                            </div>
+                            <div class="progress-detail-item">
+                                <span class="detail-label">Enrolled:</span>
+                                <span class="detail-value">{{timeenrolled}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{/course_progress_data}}
+                </div>
+                {{/has_course_progress}}
+                {{^has_course_progress}}
+                <div class="no-progress-data">
+                    <div class="no-progress-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="no-progress-text">No course progress data available</div>
+                </div>
+                {{/has_course_progress}}
+            </div>
+
+            <!-- Progress Visualization -->
+            <div class="progress-visualization">
+                <h3 class="section-title">Learning Journey Visualization</h3>
+                <div class="progress-chart-container">
+                    <div class="chart-tabs">
+                        <button class="chart-tab active" data-chart="overview">Overview</button>
+                        <button class="chart-tab" data-chart="timeline">Timeline</button>
+                        <button class="chart-tab" data-chart="achievements">Achievements</button>
+                    </div>
+                    
+                    <div class="chart-content">
+                        <!-- Overview Chart -->
+                        <div class="chart-panel active" id="overview-chart">
+                            <div class="progress-radial-chart">
+                                <div class="radial-progress">
+                                    <svg class="radial-chart" viewBox="0 0 100 100">
+                                        <circle class="radial-bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="radial-progress" cx="50" cy="50" r="40" 
+                                                style="stroke-dasharray: {{pathway_progress}} 100;"></circle>
+                                    </svg>
+                                    <div class="radial-text">
+                                        <span class="radial-percentage">{{pathway_progress}}%</span>
+                                        <span class="radial-label">Complete</span>
+                                    </div>
+                                </div>
+                                <div class="radial-stats">
+                                    <div class="radial-stat">
+                                        <span class="stat-number">{{completed_courses}}</span>
+                                        <span class="stat-text">Courses Completed</span>
+                                    </div>
+                                    <div class="radial-stat">
+                                        <span class="stat-number">{{in_progress_courses}}</span>
+                                        <span class="stat-text">In Progress</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Timeline Chart -->
+                        <div class="chart-panel" id="timeline-chart">
+                            <div class="timeline-progress">
+                                <div class="timeline-header">
+                                    <h4>Learning Timeline</h4>
+                                    <p>Your progress over time</p>
+                                </div>
+                                <div class="timeline-chart">
+                                    <div class="timeline-placeholder">
+                                        <i class="fas fa-chart-line"></i>
+                                        <p>Timeline visualization coming soon</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Achievements Chart -->
+                        <div class="chart-panel" id="achievements-chart">
+                            <div class="achievements-progress">
+                                <div class="achievements-header">
+                                    <h4>Learning Achievements</h4>
+                                    <p>Your accomplishments and milestones</p>
+                                </div>
+                                <div class="achievements-grid">
+                                    <div class="achievement-badge {{#completed_courses}}earned{{/completed_courses}}">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        <span>Course Completion</span>
+                                    </div>
+                                    <div class="achievement-badge {{#total_activities_completed}}earned{{/total_activities_completed}}">
+                                        <i class="fas fa-tasks"></i>
+                                        <span>Activity Master</span>
+                                    </div>
+                                    <div class="achievement-badge {{#total_hours_spent}}earned{{/total_hours_spent}}">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Time Dedication</span>
+                                    </div>
+                                    <div class="achievement-badge {{#pathway_progress}}earned{{/pathway_progress}}">
+                                        <i class="fas fa-star"></i>
+                                        <span>Progress Champion</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -490,6 +643,27 @@ document.addEventListener('DOMContentLoaded', function() {
          viewFilter.addEventListener('change', updateTimelineView);
      }
 
+     // Chart tabs functionality for My Progress
+     const chartTabs = document.querySelectorAll('.chart-tab');
+     const chartPanels = document.querySelectorAll('.chart-panel');
+
+     chartTabs.forEach(tab => {
+         tab.addEventListener('click', function() {
+             const targetChart = this.getAttribute('data-chart');
+             
+             // Remove active class from all tabs and panels
+             chartTabs.forEach(t => t.classList.remove('active'));
+             chartPanels.forEach(p => p.classList.remove('active'));
+             
+             // Add active class to clicked tab and corresponding panel
+             this.classList.add('active');
+             const targetPanel = document.getElementById(targetChart + '-chart');
+             if (targetPanel) {
+                 targetPanel.classList.add('active');
+             }
+         });
+     });
+
     // Animate progress bars
     const progressBars = document.querySelectorAll('.progress-fill');
     progressBars.forEach(bar => {
@@ -597,6 +771,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }
                     
+                    // Update timeline views with new course data
+                    updateTimelineViews(data);
+                    
                     // Hide loading state
                     pathwayContainer.style.opacity = '1';
                     
@@ -610,6 +787,146 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
         }
     });
+    }
+    
+    // Update timeline views with new course data
+    function updateTimelineViews(data) {
+        // Update monthly view
+        if (data.has_monthly_sections && data.monthly_sections) {
+            updateMonthlyView(data.monthly_sections);
+        }
+        
+        // Update daily view
+        if (data.has_daily_sections && data.daily_sections) {
+            updateDailyView(data.daily_sections);
+        }
+    }
+    
+    // Update monthly timeline view
+    function updateMonthlyView(monthlySections) {
+        const monthlyView = document.getElementById('monthly-view');
+        if (!monthlyView) return;
+        
+        // Clear existing content
+        monthlyView.innerHTML = '';
+        
+        // Rebuild monthly sections
+        monthlySections.forEach(month => {
+            const monthSection = document.createElement('div');
+            monthSection.className = 'month-section';
+            
+            const monthHeader = document.createElement('div');
+            monthHeader.className = 'month-header';
+            monthHeader.innerHTML = `<div class="month-title">${month.month_name}</div>`;
+            
+            const monthTimeline = document.createElement('div');
+            monthTimeline.className = 'month-timeline';
+            
+            month.sections.forEach(section => {
+                const timelineEvent = document.createElement('div');
+                timelineEvent.className = `timeline-event ${section.completed ? 'completed' : ''}`;
+                timelineEvent.setAttribute('data-section', section.section_number);
+                
+                const eventCard = document.createElement('div');
+                eventCard.className = `event-card ${section.completed ? 'completed' : ''}`;
+                
+                const courseBadge = section.course_name ? 
+                    `<div class="course-badge"><i class="fas fa-graduation-cap"></i>${section.course_name}</div>` : '';
+                
+                eventCard.innerHTML = `
+                    <div class="event-header">
+                        <div class="event-type-icon ${section.type_color}">
+                            <i class="fas fa-${section.icon}"></i>
+                        </div>
+                        <div class="event-content">
+                            <h4 class="event-title">${section.day_name} Event</h4>
+                            <p class="event-subtitle">${section.day_name} Activities</p>
+                            ${courseBadge}
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-meta">
+                            <span class="event-date">
+                                <i class="fas fa-calendar"></i>
+                                ${section.date}
+                            </span>
+                            <span class="event-duration">
+                                <i class="fas fa-clock"></i>
+                                ${section.activities && section.activities[0] ? section.activities[0].duration : '8 hours'}
+                            </span>
+                        </div>
+                        <div class="event-type-badge ${section.type_color}">${section.type}</div>
+                    </div>
+                    <div class="event-footer">
+                        <span class="event-month">${month.month_name} • Week ${section.section_number}</span>
+                    </div>
+                `;
+                
+                const timelineNode = document.createElement('div');
+                timelineNode.className = `timeline-node ${section.type_color}`;
+                
+                timelineEvent.appendChild(eventCard);
+                timelineEvent.appendChild(timelineNode);
+                monthTimeline.appendChild(timelineEvent);
+            });
+            
+            monthSection.appendChild(monthHeader);
+            monthSection.appendChild(monthTimeline);
+            monthlyView.appendChild(monthSection);
+        });
+    }
+    
+    // Update daily timeline view
+    function updateDailyView(dailySections) {
+        const dailyView = document.getElementById('daily-view');
+        if (!dailyView) return;
+        
+        // Clear existing content
+        dailyView.innerHTML = '';
+        
+        // Rebuild daily sections
+        dailySections.forEach((day, index) => {
+            const timelineEvent = document.createElement('div');
+            timelineEvent.className = `timeline-event daily-event ${day.is_even ? 'right' : 'left'}`;
+            
+            const courseBadge = day.course_name ? 
+                `<div class="course-badge"><i class="fas fa-graduation-cap"></i>${day.course_name}</div>` : '';
+            
+            const dayEventCard = document.createElement('div');
+            dayEventCard.className = 'day-event-card';
+            dayEventCard.innerHTML = `
+                <div class="day-header">
+                    <div class="day-header-icon ${day.first_activity_color}">
+                        <i class="fas fa-${day.first_activity_icon}"></i>
+                    </div>
+                    <div class="day-header-content">
+                        <h3 class="day-header-title">${day.section_name}</h3>
+                        ${courseBadge}
+                    </div>
+                </div>
+                <div class="day-header-meta">
+                    <div class="day-meta-item">
+                        <span class="day-meta-icon">📅</span>
+                        <span class="day-meta-text">${day.date}</span>
+                    </div>
+                    <div class="day-meta-item">
+                        <span class="day-meta-icon">⏱</span>
+                        <span class="day-meta-text">${day.total_duration} hours</span>
+                    </div>
+                    <div class="day-meta-item">
+                        <span class="day-meta-icon">🧩</span>
+                        <span class="day-meta-text">${day.activity_count} activities</span>
+                    </div>
+                </div>
+            `;
+            
+            const timelineNode = document.createElement('div');
+            timelineNode.className = `timeline-node ${day.first_activity_color}`;
+            
+            timelineEvent.appendChild(dayEventCard);
+            timelineEvent.appendChild(timelineNode);
+            dailyView.appendChild(timelineEvent);
+        });
     }
     
     // Notification function

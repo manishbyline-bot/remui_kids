@@ -52,7 +52,7 @@ if (!empty($enrolled_courses)) {
     $current_pathway = $first_course->fullname;
 }
 
-// Calculate pathway statistics
+// Calculate comprehensive pathway statistics
 $total_courses = count($enrolled_courses);
 $completed_courses = count(array_filter($enrolled_courses, function($course) {
     return $course->status === 'completed';
@@ -61,19 +61,74 @@ $in_progress_courses = count(array_filter($enrolled_courses, function($course) {
     return $course->status === 'in_progress';
 }));
 
-// Calculate overall progress
-$total_progress = 0;
+// Calculate detailed progress data for each course
+$course_progress_data = array();
+$total_activities_completed = 0;
+$total_activities_available = 0;
+$total_hours_spent = 0;
+$total_hours_estimated = 0;
+
 foreach ($enrolled_courses as $course) {
-    if ($course->timecompleted) {
-        $total_progress += 100;
-    } elseif ($course->timestarted) {
-        $time_elapsed = time() - $course->timestarted;
-        $time_weeks = $time_elapsed / (7 * 24 * 60 * 60);
-        $course_progress = min(95, round(($time_weeks / 52) * 100));
-        $total_progress += $course_progress;
+    $course_progress = 0;
+    $activities_completed = 0;
+    $activities_total = 0;
+    $hours_spent = 0;
+    $hours_estimated = 120; // Default 120 hours per course
+    
+    try {
+        // Get course completion data
+        $completion = new completion_info($course);
+        if ($completion->is_enabled()) {
+            $completion_data = $completion->get_completions($userid);
+            $activities_total = count($completion_data);
+            
+            foreach ($completion_data as $completion_item) {
+                if ($completion_item->is_complete()) {
+                    $activities_completed++;
+                }
+            }
+            
+            if ($activities_total > 0) {
+                $course_progress = round(($activities_completed / $activities_total) * 100);
+            }
+        }
+        
+        // Calculate hours spent based on progress
+        if ($course->timecompleted) {
+            $hours_spent = $hours_estimated; // Course completed
+        } elseif ($course->timestarted) {
+            $time_elapsed = time() - $course->timestarted;
+            $time_weeks = $time_elapsed / (7 * 24 * 60 * 60);
+            $estimated_progress = min(95, ($time_weeks / 52) * 100); // Assume 52 week course
+            $hours_spent = round(($hours_estimated * $estimated_progress) / 100);
+        }
+        
+        $course_progress_data[] = array(
+            'course_id' => $course->id,
+            'course_name' => $course->fullname,
+            'progress' => $course_progress,
+            'activities_completed' => $activities_completed,
+            'activities_total' => $activities_total,
+            'hours_spent' => $hours_spent,
+            'hours_estimated' => $hours_estimated,
+            'status' => $course->status,
+            'timeenrolled' => $course->timeenrolled,
+            'timestarted' => $course->timestarted,
+            'timecompleted' => $course->timecompleted
+        );
+        
+        $total_activities_completed += $activities_completed;
+        $total_activities_available += $activities_total;
+        $total_hours_spent += $hours_spent;
+        $total_hours_estimated += $hours_estimated;
+        
+    } catch (Exception $e) {
+        error_log("Error calculating progress for course {$course->id}: " . $e->getMessage());
     }
 }
-$pathway_progress = $total_courses > 0 ? round($total_progress / $total_courses) : 0;
+
+// Calculate overall progress
+$pathway_progress = $total_courses > 0 ? round(($total_activities_completed / max($total_activities_available, 1)) * 100) : 0;
 
 // Calculate real course metrics based on selected course
 $selected_course = null;
@@ -170,26 +225,32 @@ $recent_achievements = array(
 // Get upcoming events (mock data)
 $upcoming_events = array();
 
-// Get real pathway events/timeline from selected course
+// Get real pathway events/timeline from selected course only (initial load)
 $pathway_events = array();
 $monthly_sections = array();
 $daily_sections = array();
 
 if ($selected_course) {
     try {
+        $all_monthly_data = array();
+        $all_daily_data = array();
+        
+        // Process only the selected course for initial load
+        $course = $selected_course;
+        
         // Get course modules/activities
-        $modinfo = get_fast_modinfo($selected_course);
+        $modinfo = get_fast_modinfo($course);
         $sections = $modinfo->get_section_info_all();
         
-        $monthly_data = array();
-        $daily_data = array();
+        // Get completion info for this course
+        $completion = new completion_info($course);
         
         foreach ($sections as $section) {
             if ($section->section == 0) continue; // Skip general section
             
             // Calculate dates
             $section_week = $section->section;
-            $start_date = $selected_course->startdate ? $selected_course->startdate : time();
+            $start_date = $course->startdate ? $course->startdate : time();
             $event_date = $start_date + ($section_week * 7 * 24 * 60 * 60); // One week per section
             
             $month_key = date('Y-m', $event_date);
@@ -289,15 +350,17 @@ if ($selected_course) {
                             'duration' => $activity_duration,
                             'date' => $activity_date,
                             'time' => $activity_time,
-                            'url' => $cm->url ? $cm->url->out(false) : '#'
+                            'url' => $cm->url ? $cm->url->out(false) : '#',
+                            'course_name' => $course->fullname,
+                            'course_id' => $course->id
                         );
                     }
                 }
             }
             
-            // Group by month
-            if (!isset($monthly_data[$month_key])) {
-                $monthly_data[$month_key] = array(
+            // Group by month with course information
+            if (!isset($all_monthly_data[$month_key])) {
+                $all_monthly_data[$month_key] = array(
                     'month_name' => $month_name,
                     'month_key' => $month_key,
                     'sections' => array()
@@ -312,7 +375,7 @@ if ($selected_course) {
                 'duration' => '2 hours'
             );
             
-            $monthly_data[$month_key]['sections'][] = array(
+            $all_monthly_data[$month_key]['sections'][] = array(
                 'section_number' => $section_week,
                 'day_name' => $day_name,
                 'section_name' => $section_name,
@@ -321,14 +384,17 @@ if ($selected_course) {
                 'type' => $first_activity['type'],
                 'type_color' => $first_activity['type_color'],
                 'icon' => $first_activity['icon'],
-                'completed' => !empty($section_activities) && $section_activities[0]['completed']
+                'completed' => !empty($section_activities) && $section_activities[0]['completed'],
+                'course_name' => $course->fullname,
+                'course_id' => $course->id
             );
             
             // Set total duration to 8 hours for each day
             $total_duration = 8;
             
-            // Group by day
-            $daily_data[$day_key] = array(
+            // Group by day with course information
+            $day_key_with_course = $day_key . '_' . $course->id; // Make unique per course
+            $all_daily_data[$day_key_with_course] = array(
                 'day_name' => $day_name,
                 'section_name' => $section_name,
                 'date' => date('M d, Y', $event_date),
@@ -338,17 +404,19 @@ if ($selected_course) {
                 'total_duration' => $total_duration,
                 'first_activity_type' => !empty($section_activities) ? $section_activities[0]['type'] : 'Activity',
                 'first_activity_icon' => !empty($section_activities) ? $section_activities[0]['icon'] : 'file',
-                'first_activity_color' => !empty($section_activities) ? $section_activities[0]['type_color'] : 'blue'
+                'first_activity_color' => !empty($section_activities) ? $section_activities[0]['type_color'] : 'blue',
+                'course_name' => $course->fullname,
+                'course_id' => $course->id
             );
         }
         
         // Convert to arrays for template
-        foreach ($monthly_data as $month) {
+        foreach ($all_monthly_data as $month) {
             $monthly_sections[] = $month;
         }
         
         $day_index = 0;
-        foreach ($daily_data as $day) {
+        foreach ($all_daily_data as $day) {
             $day['is_even'] = ($day_index % 2 == 0);
             $daily_sections[] = $day;
             $day_index++;
@@ -403,7 +471,17 @@ $templatecontext = array(
     'has_daily_sections' => count($daily_sections) > 0,
     'has_achievements' => count($recent_achievements) > 0,
     'has_upcoming' => count($upcoming_events) > 0,
-    'has_pathways' => count($pathway_options) > 0
+    'has_pathways' => count($pathway_options) > 0,
+    // Enhanced progress data
+    'total_courses' => $total_courses,
+    'completed_courses' => $completed_courses,
+    'in_progress_courses' => $in_progress_courses,
+    'total_activities_completed' => $total_activities_completed,
+    'total_activities_available' => $total_activities_available,
+    'total_hours_spent' => $total_hours_spent,
+    'total_hours_estimated' => $total_hours_estimated,
+    'course_progress_data' => $course_progress_data,
+    'has_course_progress' => count($course_progress_data) > 0
 );
 
 // Output the page
